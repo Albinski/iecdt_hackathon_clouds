@@ -134,6 +134,7 @@ Each team gets four scored submissions per day, and the leaderboard keeps each t
 | `handcrafted` | 55 per-tile statistics, no training | — | 0.914 | 0.923 | 0.516 | 0.886 | 0.810 | Best overall so far; beats AE on task 6 by +0.10, loses on task 7 |
 | `physical` | 144 physical features (`hand` + 89 new), no training | — | 0.949 | 0.958 | 0.547 | 0.960 | 0.853 | Beats every autoencoder on every task; +0.03 on task 6 over `hand` |
 | `ae512_phys` | `d512_w64` + `physical` stacked (656 dims) | 5,000 | 0.954 | 0.968 | 0.553 | 0.969 | 0.861 | Best on val so far; submitted as submission 1 |
+| `contr_loss` | `d512_w64` + contrastive loss | 5,000 | 0.476 | 0.817 | 0.392 | 0.905 | 0.647 | Worse on all metrics :P |
 
 **Dimension sweep takeaways:** Scores rise steadily with embedding size up to 256, with diminishing returns (+0.04 from 32 → 64, about +0.01 from 128 → 256). Widening the encoder to 64 at D = 512 improves the regression tasks well beyond seed noise but leaves task 6 unchanged. Task 6 plateaus at a macro-F1 of about 0.42 for all D ≥ 128, which suggests the reconstruction objective, not the embedding size, is what limits the classification task.
 
