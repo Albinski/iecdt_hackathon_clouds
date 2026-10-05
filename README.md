@@ -197,21 +197,60 @@ Notes on the implementation, which follows
   measured rather than guessed. `mean+std` is the default: the standard
   deviation across tokens measures sub-tile heterogeneity, which is what cloud
   fraction and scene type turn on and what a mean pool discards.
-- **Fusion.** `concat_embeddings.py` joins any two embedding files on
-  `tile_index`. Since the handcrafted statistics and the learned encoder fail in
-  different places (+0.10 on `task_6`, −0.06 on `task_7`), the union is worth
-  measuring:
+- **Fusion.** `iecdt_hackathon/concat_embeddings.py` joins any number of
+  embedding files on `tile_index`. The 144 `physical` features already score
+  0.853 untrained and stacking them onto the autoencoder gained a further 0.008
+  (`ae512_phys`, 0.861), so the same union is the first thing to try with an
+  I-JEPA encoder in place of the autoencoder:
   ```bash
   uv run python -m iecdt_hackathon.concat_embeddings \
-    --inputs embeddings/val/ijepa_meanstd.npz embeddings/val/handcrafted.npz \
-    --out embeddings/val/fused.npz
+    --inputs embeddings/val/ijepa_meanstd.npz embeddings/val/physical.npz \
+    --out embeddings/val/ijepa_phys.npz
   ```
+  `scripts/concat_embeddings.py` does the same job with positional arguments;
+  either is fine, both write through `save_embeddings`.
 
 ### Log
 
-Every run, its parameters and its per-task scores are in [`run-log.md`](run-log.md).
+| Run | Change from baseline | Steps | task_4 R² | task_5 R² | task_6 F1 | task_7 R² | Overall | Notes |
+|---|---|---|---|---|---|---|---|---|
+| `baseline` | — | 20,000 | | | | | | Not yet run |
+| `d32` | `embedding_dim` 32 | 5,000 | 0.789 | 0.855 | 0.334 | 0.812 | 0.697 | |
+| `d64` | `embedding_dim` 64 | 5,000 | 0.816 | 0.859 | 0.380 | 0.901 | 0.739 | |
+| `d128` | `embedding_dim` 128 | 5,000 | 0.871 | 0.905 | 0.411 | 0.922 | 0.777 | |
+| `d256` | default config (seed 0) | 5,000 | 0.888 | 0.913 | 0.435 | 0.931 | 0.792 | |
+| `d256_seed1` | default config (seed 1) | 5,000 | 0.885 | 0.905 | 0.418 | 0.928 | 0.784 | Seed noise ≈ 0.008 overall, 0.017 on task 6 |
+| `d512_w64` | `embedding_dim` 512, `width` 64 | 5,000 | 0.926 | 0.928 | 0.415 | 0.944 | 0.803 | Best so far; regression up, task 6 flat. Width and dim changed together |
+| `handcrafted` | 55 per-tile statistics, no training | — | 0.914 | 0.923 | 0.516 | 0.886 | 0.810 | Best overall so far; beats AE on task 6 by +0.10, loses on task 7 |
+| `physical` | 144 physical features (`hand` + 89 new), no training | — | 0.949 | 0.958 | 0.547 | 0.960 | 0.853 | Beats every autoencoder on every task; +0.03 on task 6 over `hand` |
+| `ae512_phys` | `d512_w64` + `physical` stacked (656 dims) | 5,000 | 0.954 | 0.968 | 0.553 | 0.969 | 0.861 | Best on val so far; submitted as submission 1 |
+
+I-JEPA runs, with their full parameter sets, are in [`run-log.md`](run-log.md).
 
 **Dimension sweep takeaways:** Scores rise steadily with embedding size up to 256, with diminishing returns (+0.04 from 32 → 64, about +0.01 from 128 → 256). Widening the encoder to 64 at D = 512 improves the regression tasks well beyond seed noise but leaves task 6 unchanged. Task 6 plateaus at a macro-F1 of about 0.42 for all D ≥ 128, which suggests the reconstruction objective, not the embedding size, is what limits the classification task.
+
+**Physical features takeaways:** Converting radiances to reflectance and brightness temperature, and adding a reflectance × temperature regime histogram, height relative to the local sea surface, cirrus/phase band differences, cloud-object statistics and multiscale texture, lifts every task: 144 untrained features (0.853) beat every autoencoder trained so far. Stacking them with the 512-dim autoencoder adds a further, smaller gain (0.861). Task 6 is still limited by its rare classes: in the combined model class 4 gets 1 of 20 tiles right, class 6 gets 11 of 41 and class 9 gets 17 of 43. Its balanced accuracy is lower than `physical` alone (0.57 vs 0.62), so stacking traded some rare-class recall for accuracy on the common classes.
+
+### Submissions
+
+| # | Date | Embedding | Dims | Test overall (10 tasks) | Rank | Notes |
+|---|---|---|---|---|---|---|
+| 1 | 2026-10-05 | `ae512_physical` (`d512_w64` + `physical`) | 656 | 0.780 | 1 of 3 | First submission |
+
+#### Submission 1: per-task scores
+
+| Task | Metric | Test | Val (5-fold CV) |
+|---|---|---|---|
+| task_1 | R² | 0.932 | hidden |
+| task_2 | macro-F1 | 0.605 | hidden |
+| task_3 | R² | 0.682 | hidden |
+| task_4 | R² | 0.949 | 0.954 |
+| task_5 | R² | 0.968 | 0.968 |
+| task_6 | macro-F1 | 0.541 | 0.553 |
+| task_7 | R² | 0.961 | 0.969 |
+| task_8 | R² | 0.882 | hidden |
+| task_9 | R² | 0.629 | hidden |
+| task_10 | R² | 0.651 | hidden |
 
 ## Repository layout
 
@@ -239,6 +278,10 @@ iecdt_hackathon/
   print_leaderboard.py  current standings in the terminal
 configs/default.yaml    baseline autoencoder configuration
 configs/ijepa.yaml      I-JEPA configuration
+scripts/
+  explore_tasks.py      the 55 radiance statistics, plus task diagnostics
+  physical_features.py  the 144 physical features (reflectance, Tb, regimes)
+  concat_embeddings.py  positional-argument variant of the joiner
 tests/                  shape, masking, checkpoint-contract and logging tests
 run-log.md              every experiment, its parameters and its scores
 sweep_dim.sh            embedding-size sweep

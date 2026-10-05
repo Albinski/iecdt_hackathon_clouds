@@ -31,13 +31,15 @@ Conventions:
 | `d256_seed1` | ConvAE | 256 | 5,000 | `training.seed=1` | 0.885 | 0.905 | 0.418 | 0.928 | 0.784 |
 | `d512_w64` | ConvAE | 512 | 5,000 | `model.embedding_dim=512` `model.width=64` | 0.926 | 0.928 | 0.415 | 0.944 | **0.803** |
 | `handcrafted` | 55 per-tile statistics, no training | 55 | — | — | 0.914 | 0.923 | **0.516** | 0.886 | **0.810** |
+| `physical` | 144 physical features, no training | 144 | — | `scripts/physical_features.py` | 0.949 | 0.958 | **0.547** | 0.960 | **0.853** |
+| `ae512_phys` | ConvAE ⊕ `physical` | 656 | 5,000 | `scripts/concat_embeddings.py` | 0.954 | 0.968 | **0.553** | 0.969 | **0.861** |
 | `ae-d512` | ConvAE | 512 | 20,000 | `model.embedding_dim=512` `model.width=64` | 0.925 | 0.928 | 0.417 | 0.944 | 0.8036 |
 | `ijepa-s16` | I-JEPA ViT-S/16 | 768 | 50,000 | — (config default) | | | | | *running* |
 | `ijepa-s16-cache` | I-JEPA ViT-S/16 | 768 | 150,000 | `data.cache=ram_uint8` | | | | | *running* |
 | `ijepa-ti16-cache` | I-JEPA ViT-Ti/16 | 384 | 200,000 | `model.arch=vit_tiny` `model.pred_emb_dim=96` `data.cache=ram_uint8` | | | | | *running* |
 | `ijepa-b16-cache` | I-JEPA ViT-B/16 | 1536 | 70,000 | `model.arch=vit_base` `model.pred_emb_dim=384` `model.pred_num_heads=6` `data.cache=ram_uint8` | | | | | *running* |
 | `ijepa-s16-lr15` | I-JEPA ViT-S/16 | 768 | 150,000 | `data.cache=ram_uint8` `training.lr=1.5e-4` `training.start_lr=3.0e-5` | | | | | *running* |
-| `fused` | best I-JEPA ⊕ `handcrafted` | +55 | — | `concat_embeddings.py` | | | | | *after the above* |
+| `ijepa_phys` | best I-JEPA ⊕ `physical` | +144 | — | `concat_embeddings.py` | | | | | *after the above* |
 
 ## Notes
 
@@ -48,9 +50,26 @@ Conventions:
   where the ±0.008 threshold above comes from.
 - **`d512_w64`** — width and D moved together, so the two effects are not
   separable from this row alone.
-- **`handcrafted`** — the bar to beat. Untrained, 55 dimensions, and it wins
-  overall. Its margin is entirely on `task_6` (+0.10 over the best autoencoder)
-  while it loses `task_7` (−0.06), which is what makes fusion worth measuring.
+- **`handcrafted`** — 55 radiance statistics (`scripts/explore_tasks.py`).
+  Superseded by `physical`, but kept because the ±0.008 threshold and the
+  fusion argument were both derived from it: its margin was entirely on `task_6`
+  (+0.10 over the best autoencoder) while it lost `task_7` (−0.06).
+- **`physical`** — **the bar to beat is now 0.853, not 0.810.** The same 55
+  statistics plus 89 physically motivated features: band-1 reflectance with a
+  sun-angle correction, inverse-Planck brightness temperatures for bands 29/31/32,
+  a 7×7 reflectance × temperature regime histogram, height above the local sea
+  surface (warmest decile as the surface), the 11–12 µm split window and 8.5–11 µm
+  phase difference, connected-component statistics for bright and for cold cloud,
+  and multiscale block-mean variability at 4/16/64 px. Untrained, and it beats
+  every autoencoder **on every one of the four tasks** — including `task_7`,
+  where the 55-dim version lost. That removes the complementarity that made
+  fusion with the autoencoder attractive.
+- **`ae512_phys`** — stacking gains only +0.008 over `physical` alone, which is
+  exactly the seed-noise threshold, and its `task_6` *balanced accuracy* is
+  **lower** than `physical` alone (0.57 vs 0.62). So the autoencoder contributes
+  almost nothing once the physical features are present. **This is the result
+  I-JEPA now has to beat: not 0.853 on its own, but +0.008 on top of
+  `physical`.**
 - **`task_6` plateaus at ≈0.42 for every D ≥ 128** while the regressions keep
   climbing. The limit is the objective, not the capacity — this is the
   hypothesis I-JEPA is meant to test, so report `task_6` separately rather than
