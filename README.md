@@ -16,10 +16,10 @@ to use the supplied data and is quite heavily Claude-generated. I'm expecting th
 most teams will want to build their own repository for training their models. The 
 key bits of the repository are:
 - The PyTorch dataset `ModisTileDataset` at `iecdt_hackathon/data.py` that describes 
-  how to load the data
+  how to load the data.
 - The embedding script at `iecdt_hackathon/embed.py` that shows you how to format the 
   embedding file. If you develop your own model this script won't work anymore but it 
-  shows you how to format the `*.npz` file for submission.
+  shows you how to format the `*.npz` file for submission
 - Evaluation of validation embeddings on 4 validation tasks with `iecdt_hackathon/evaluate.py`.
 - The `submit.sh` file that you'll use to submit your test embeddings for scoring.
 
