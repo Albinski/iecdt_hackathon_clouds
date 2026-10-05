@@ -122,10 +122,17 @@ Each team gets four scored submissions per day, and the leaderboard keeps each t
 
 ### Log
 
-| Run | Change from baseline | Steps | task_4 R² | task_5 R² | task_6 F1 | task_7 R² | Notes |
-|---|---|---|---|---|---|---|---|
-| `baseline` | — | 20,000 | | | | | Reference |
-| `dim_sweep` | `embedding_dim` 32–512 | 5,000 | | | | | In progress |
+| Run | Change from baseline | Steps | task_4 R² | task_5 R² | task_6 F1 | task_7 R² | Overall | Notes |
+|---|---|---|---|---|---|---|---|---|
+| `baseline` | — | 20,000 | | | | | | Not yet run |
+| `d32` | `embedding_dim` 32 | 5,000 | 0.789 | 0.855 | 0.334 | 0.812 | 0.697 | |
+| `d64` | `embedding_dim` 64 | 5,000 | 0.816 | 0.859 | 0.380 | 0.901 | 0.739 | |
+| `d128` | `embedding_dim` 128 | 5,000 | 0.871 | 0.905 | 0.411 | 0.922 | 0.777 | |
+| `d256` | default config (seed 0) | 5,000 | 0.888 | 0.913 | 0.435 | 0.931 | 0.792 | |
+| `d256_seed1` | default config (seed 1) | 5,000 | 0.885 | 0.905 | 0.418 | 0.928 | 0.784 | Seed noise ≈ 0.008 overall, 0.017 on task 6 |
+| `d512_w64` | `embedding_dim` 512, `width` 64 | 5,000 | 0.926 | 0.928 | 0.415 | 0.944 | 0.803 | Best so far; regression up, task 6 flat. Width and dim changed together |
+
+**Dimension sweep takeaways:** Scores rise steadily with embedding size up to 256, with diminishing returns (+0.04 from 32 → 64, about +0.01 from 128 → 256). Widening the encoder to 64 at D = 512 improves the regression tasks well beyond seed noise but leaves task 6 unchanged. Task 6 plateaus at a macro-F1 of about 0.42 for all D ≥ 128, which suggests the reconstruction objective, not the embedding size, is what limits the classification task.
 
 ## Repository layout
 
@@ -151,6 +158,10 @@ submit.sh               submit test embeddings to the leaderboard
 The starter code, data pipeline and evaluation framework were written by **Tim Reichelt** (University of Oxford) for the IECDT Hackathon, and are published at [treigerm/iecdt_hackathon_climate](https://github.com/treigerm/iecdt_hackathon_climate). This repository builds on that work.
 
 Compute and storage are provided by [JASMIN](https://jasmin.ac.uk), the UK's collaborative data analysis environment. MODIS data are from NASA's Aqua satellite. The hackathon is part of the Intelligent Earth CDT at the University of Oxford.
+
+### Use of AI tools
+
+Claude (Anthropic) was used to help with environment setup, experiment scripts and documentation. All code was reviewed and tested, and the experimental design and interpretation are my own.
 
 ## Licence
 
