@@ -1,0 +1,43 @@
+Job 57375250 (ijepa-s16) on gpuhost003.jc.rl.ac.uk, started Mon  5 Oct 18:29:11 BST 2026
+module=train_ijepa config=configs/ijepa.yaml overrides=--set training.steps=50000 --set training.max_seconds=25200
+CUDA_VISIBLE_DEVICES=[0]
+GPU 0: NVIDIA A100-SXM4-40GB (UUID: GPU-189f1c7e-a448-35e0-baff-71e1249e7a87)
+torch 2.14.0+cu130  cuda 13.0  devices 1
+ok: NVIDIA A100-SXM4-40GB
+preflight passed
+train: 100000 tiles | val: 4000 tiles | 6 channels | 256x256
+sentinel zeros in tile 0: 0.00000%
+model: ijepa/vit_small, 24.70M trainable, embedding_dim 768
+wandb: online run 'ijepa-s16' -> https://wandb.ai/moritz-hauschulz/iecdt-hackathon/runs/gpkuyu5a
+pooling variants: mean, meanstd, mean4, mean4std
+step      50/50000  loss 0.283210  lr 6.24e-05  wd 0.040  m 0.9960  ctx  83 tgt  42  4.42 it/s
+step     100/50000  loss 0.138499  lr 6.48e-05  wd 0.041  m 0.9960  ctx  67 tgt  49  5.20 it/s
+step     150/50000  loss 0.077158  lr 6.72e-05  wd 0.041  m 0.9960  ctx  70 tgt  48  5.62 it/s
+step     200/50000  loss 0.059718  lr 6.96e-05  wd 0.041  m 0.9960  ctx  70 tgt  48  5.62 it/s
+step     250/50000  loss 0.045500  lr 7.20e-05  wd 0.042  m 0.9960  ctx  72 tgt  42  5.78 it/s
+step     300/50000  loss 0.030834  lr 7.44e-05  wd 0.042  m 0.9960  ctx  70 tgt  49  5.83 it/s
+step     350/50000  loss 0.021996  lr 7.68e-05  wd 0.043  m 0.9960  ctx  79 tgt  42  5.90 it/s
+step     400/50000  loss 0.017845  lr 7.92e-05  wd 0.043  m 0.9960  ctx  69 tgt  42  5.91 it/s
+step     450/50000  loss 0.015512  lr 8.16e-05  wd 0.043  m 0.9960  ctx  65 tgt  48  5.94 it/s
+step     500/50000  loss 0.014250  lr 8.40e-05  wd 0.044  m 0.9960  ctx  67 tgt  42  5.99 it/s
+step     500  feature_std 0.3212  token_std 0.2401  eff_rank 4.2
+step     550/50000  loss 0.013720  lr 8.64e-05  wd 0.044  m 0.9960  ctx  65 tgt  48  6.00 it/s
+step     600/50000  loss 0.014055  lr 8.88e-05  wd 0.044  m 0.9960  ctx  86 tgt  36  6.01 it/s
+step     650/50000  loss 0.014020  lr 9.12e-05  wd 0.045  m 0.9961  ctx  81 tgt  42  6.02 it/s
+step     700/50000  loss 0.015276  lr 9.36e-05  wd 0.045  m 0.9961  ctx  67 tgt  49  6.01 it/s
+step     750/50000  loss 0.015822  lr 9.60e-05  wd 0.045  m 0.9961  ctx  66 tgt  48  6.01 it/s
+step     800/50000  loss 0.015651  lr 9.84e-05  wd 0.046  m 0.9961  ctx  79 tgt  40  5.94 it/s
+step     850/50000  loss 0.016258  lr 1.01e-04  wd 0.046  m 0.9961  ctx  81 tgt  42  5.98 it/s
+step     900/50000  loss 0.016134  lr 1.03e-04  wd 0.046  m 0.9961  ctx  70 tgt  48  5.99 it/s
+step     950/50000  loss 0.017296  lr 1.06e-04  wd 0.047  m 0.9961  ctx  78 tgt  42  6.01 it/s
+step    1000/50000  loss 0.017908  lr 1.08e-04  wd 0.047  m 0.9961  ctx  85 tgt  40  6.02 it/s
+step    1000  feature_std 0.5215  token_std 0.2929  eff_rank 5.3
+step    1050/50000  loss 0.020084  lr 1.10e-04  wd 0.048  m 0.9961  ctx  73 tgt  42  6.02 it/s
+step    1100/50000  loss 0.018501  lr 1.13e-04  wd 0.048  m 0.9961  ctx  67 tgt  42  6.04 it/s
+step    1150/50000  loss 0.022818  lr 1.15e-04  wd 0.048  m 0.9961  ctx  93 tgt  35  6.05 it/s
+step    1200/50000  loss 0.022072  lr 1.18e-04  wd 0.049  m 0.9961  ctx  78 tgt  42  6.07 it/s
+step    1250/50000  loss 0.021469  lr 1.20e-04  wd 0.049  m 0.9961  ctx  65 tgt  48  6.07 it/s
+step    1300/50000  loss 0.021496  lr 1.22e-04  wd 0.049  m 0.9961  ctx  73 tgt  42  6.07 it/s
+step    1350/50000  loss 0.023785  lr 1.25e-04  wd 0.050  m 0.9961  ctx  69 tgt  48  6.08 it/s
+step    1400/50000  loss 0.024107  lr 1.27e-04  wd 0.050  m 0.9961  ctx  67 tgt  48  6.09 it/s
+step    1450/50000  loss 0.025237  lr 1.30e-04  wd 0.050  m 0.9961  ctx  71 tgt  42  6.08 it/s

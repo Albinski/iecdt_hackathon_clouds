@@ -83,6 +83,12 @@ training:
   device: cuda
   seed: 0
 
+  # Abort a collapsed run instead of letting it hold a GPU for hours. Trips
+  # when the within-tile token std or the loss sits at a floor no healthy run
+  # reaches, for collapse_patience consecutive collapse_every checks.
+  collapse_guard: true
+  collapse_patience: 3
+
   log_every: 50
   probe_every: 2000        # ~20 s: 4000 tiles + 3 OLS probes, ~1.5% overhead
   collapse_every: 500

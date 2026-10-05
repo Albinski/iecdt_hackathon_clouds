@@ -39,6 +39,7 @@ import xarray as xr
 import yaml
 
 from .data import build_dataloader
+from .embeddings import MAX_EMBEDDING_DIM
 from .evaluate import overall_score, run_probes_local
 from .ijepa.cache import CachedTileDataset, build_ram_cache
 from .ijepa.masking import MultiBlockMaskCollator
@@ -228,8 +229,40 @@ def main():
     probe_every = t.get("probe_every", 2000)
     collapse_every = t.get("collapse_every", 500)
 
+    # A pooling whose width exceeds the submission cap cannot be embedded at
+    # all (`save_embeddings` refuses it), so there is no point writing its
+    # checkpoint. This bites ViT-B, where mean+std over the last four blocks
+    # would be 6,144 wide against a limit of 4,096.
+    variants, too_wide = [], []
+    live_pool = model.pool
+    for tag, pool in POOL_VARIANTS.items():
+        model.pool = pool
+        (variants if model.embedding_dim <= MAX_EMBEDDING_DIM else too_wide).append(
+            (tag, pool) if model.embedding_dim <= MAX_EMBEDDING_DIM
+            else (tag, model.embedding_dim)
+        )
+    model.pool = live_pool
+    print(
+        "pooling variants: "
+        + ", ".join(f"{tag}" for tag, _ in variants)
+        + (
+            "  (skipping "
+            + ", ".join(f"{tag} at D={dim} > {MAX_EMBEDDING_DIM}" for tag, dim in too_wide)
+            + ")"
+            if too_wide
+            else ""
+        ),
+        flush=True,
+    )
+
+    collapse_guard = t.get("collapse_guard", True)
+    collapse_loss = t.get("collapse_loss", 1e-3)
+    collapse_token_std = t.get("collapse_token_std", 1e-3)
+    collapse_patience = t.get("collapse_patience", 3)
+
     best_score = -float("inf")
     step, started, running = 0, time.time(), []
+    collapsed = 0
     stop = False
 
     model.train()
@@ -309,6 +342,38 @@ def main():
                 if run:
                     run.log({f"collapse/{k}": v for k, v in stats.items()}, step=step)
 
+                # Abort a collapsed run rather than let it hold a GPU for
+                # hours. Both tests below are unambiguous pathologies, not
+                # tuning signals: healthy smooth_l1 on layer-normed targets
+                # plateaus around 0.1-0.5, and tokens within a tile never
+                # become bit-identical unless the encoder has given up.
+                # `effective_rank` is logged but deliberately not gated on,
+                # since it is bounded by the batch size and so not comparable
+                # across configurations.
+                if collapse_guard and (
+                    stats["token_std"] < collapse_token_std
+                    or loss.item() < collapse_loss
+                ):
+                    collapsed += 1
+                    print(
+                        f"step {step:>7}  COLLAPSE WARNING {collapsed}/"
+                        f"{collapse_patience}  (token_std "
+                        f"{stats['token_std']:.2e}, loss {loss.item():.2e})",
+                        flush=True,
+                    )
+                    if collapsed >= collapse_patience:
+                        print(
+                            f"\nAborting: representation collapsed for "
+                            f"{collapsed * collapse_every} steps. Lower "
+                            f"training.lr (1.5e-4 is the documented fallback) "
+                            f"and keep training.ema[0] at 0.996 or above.",
+                            flush=True,
+                        )
+                        stop = True
+                        break
+                else:
+                    collapsed = 0
+
             if step % probe_every == 0 or step == total_steps:
                 jepa_loss = held_out_loss(
                     model, val_mask_loader, val_collator, device, amp_dtype,
@@ -336,7 +401,7 @@ def main():
                     # model_cfg -- otherwise every variant would claim the
                     # default pooling's width in its metadata.
                     live_pool = model.pool
-                    for tag, pool in POOL_VARIANTS.items():
+                    for tag, pool in variants:
                         model.pool = pool
                         save(run_dir / f"best_{tag}.pt", model, model_name,
                              model_cfg | {"pool": pool}, cfg, step, jepa_loss, base_ds)
@@ -346,11 +411,11 @@ def main():
     print(f"\nDone at step {step}. Best probe mean R2 {best_score:.4f}.")
     print(
         f"Checkpoints in {run_dir}: "
-        + ", ".join(f"best_{k}.pt" for k in POOL_VARIANTS)
+        + ", ".join(f"best_{tag}.pt" for tag, _ in variants)
     )
     print(
         "\nScore every pooling side by side with:\n"
-        "  for v in " + " ".join(POOL_VARIANTS) + "; do \\\n"
+        "  for v in " + " ".join(tag for tag, _ in variants) + "; do \\\n"
         f"    python -m iecdt_hackathon.embed --checkpoint {run_dir}/best_$v.pt \\\n"
         "      --data-dir $ROOT/val --out embeddings/val --name ijepa_$v --overwrite; done\n"
         "  python -m iecdt_hackathon.evaluate --embeddings embeddings/val/ijepa_*.npz"

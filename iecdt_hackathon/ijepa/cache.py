@@ -60,9 +60,16 @@ def build_ram_cache(dataset, num_workers=8, n_sample=2000, log_every=20_000):
     lo, hi = quantisation_range(dataset, n_sample=n_sample)
 
     probe = dataset[0]["image"]
-    cache = torch.empty(
-        (len(dataset), *probe.shape), dtype=torch.uint8
-    ).share_memory_()
+    cache = torch.empty((len(dataset), *probe.shape), dtype=torch.uint8)
+    try:
+        # Shared memory guarantees the workers never copy. It lives in
+        # /dev/shm, which counts against the job's --mem cgroup, so fall back
+        # rather than die: the workers only ever read this tensor, and fork
+        # gives them copy-on-write access to a plain one for free.
+        cache = cache.share_memory_()
+    except (OSError, RuntimeError) as exc:
+        print(f"  shared memory unavailable ({exc}); relying on fork COW",
+              flush=True)
     scale = 255.0 / (hi - lo)
 
     loader = build_dataloader(dataset, 64, shuffle=False, num_workers=num_workers)
