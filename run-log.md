@@ -34,12 +34,18 @@ Conventions:
 | `physical` | 144 physical features, no training | 144 | — | `scripts/physical_features.py` | 0.949 | 0.958 | **0.547** | 0.960 | **0.853** |
 | `ae512_phys` | ConvAE ⊕ `physical` | 656 | 5,000 | `scripts/concat_embeddings.py` | 0.954 | 0.968 | **0.553** | 0.969 | **0.861** |
 | `ae-d512` | ConvAE | 512 | 20,000 | `model.embedding_dim=512` `model.width=64` | 0.925 | 0.928 | 0.417 | 0.944 | 0.8036 |
-| `ijepa-s16` | I-JEPA ViT-S/16 | 768 | 50,000 | — (config default) | | | | | *running* |
+| `ijepa-s16_mean` | I-JEPA ViT-S/16 | 384 | 50,000 | — (config default) | 0.9604 | 0.9545 | 0.4879 | 0.9749 | 0.8444 |
+| `ijepa-s16_meanstd` | I-JEPA ViT-S/16 | 768 | 50,000 | — (config default) | 0.9620 | 0.9579 | 0.4875 | 0.9766 | 0.8460 |
+| `ijepa-s16_mean4` | I-JEPA ViT-S/16 | 1536 | 50,000 | — (config default) | 0.9627 | 0.9595 | 0.4838 | **0.9793** | **0.8463** |
+| `ijepa-s16_mean4std` | I-JEPA ViT-S/16 | 3072 | 50,000 | — (config default) | 0.9556 | 0.9553 | 0.4787 | 0.9757 | 0.8413 |
 | `ijepa-s16-cache` | I-JEPA ViT-S/16 | 768 | 150,000 | `data.cache=ram_uint8` | | | | | *running* |
 | `ijepa-ti16-cache` | I-JEPA ViT-Ti/16 | 384 | 200,000 | `model.arch=vit_tiny` `model.pred_emb_dim=96` `data.cache=ram_uint8` | | | | | *running* |
 | `ijepa-b16-cache` | I-JEPA ViT-B/16 | 1536 | 70,000 | `model.arch=vit_base` `model.pred_emb_dim=384` `model.pred_num_heads=6` `data.cache=ram_uint8` | | | | | *running* |
 | `ijepa-s16-lr15` | I-JEPA ViT-S/16 | 768 | 150,000 | `data.cache=ram_uint8` `training.lr=1.5e-4` `training.start_lr=3.0e-5` | | | | | *running* |
-| `ijepa_phys` | best I-JEPA ⊕ `physical` | +144 | — | `concat_embeddings.py` | | | | | *after the above* |
+| `ae512_phys*` | `ae-d512` ⊕ `physical` | 656 | — | `concat_embeddings.py` | 0.9546 | 0.9679 | **0.5709** | 0.9692 | 0.8656 |
+| `ijepa_phys` | `ijepa-s16_meanstd` ⊕ `physical` | 912 | — | `concat_embeddings.py` | 0.9688 | 0.9704 | 0.5275 | 0.9802 | 0.8617 |
+| `ijepa4_phys` | `ijepa-s16_mean4` ⊕ `physical` | 1680 | — | `concat_embeddings.py` | 0.9685 | 0.9692 | 0.5455 | **0.9812** | **0.8661** |
+| `ijepa_ae_phys` | `ijepa-s16_meanstd` ⊕ `ae-d512` ⊕ `physical` | 1424 | — | `concat_embeddings.py` | 0.9672 | 0.9714 | 0.5359 | 0.9802 | 0.8637 |
 
 ## Notes
 
@@ -74,6 +80,40 @@ Conventions:
   climbing. The limit is the objective, not the capacity — this is the
   hypothesis I-JEPA is meant to test, so report `task_6` separately rather than
   only the mean.
+- **`ijepa-s16`** — the hypothesis confirmed. 0.8463 against the best
+  autoencoder's 0.803 is **+0.043, five times seed noise**, and `task_6` moves
+  0.415 → 0.488 where quadrupling the autoencoder's training moved it 0.002. The
+  limit really was the reconstruction objective.
+- **Pooling is a non-lever.** 384 → 1536 spans 0.8444–0.8463, i.e. 0.002, inside
+  noise; `mean4std` at 3072 *regresses* to 0.8413, as the plan predicted it
+  would. Four checkpoints per run cost almost nothing and have now settled the
+  question — use `meanstd` or `mean4` and drop the 3072 variant from future
+  sweeps.
+- **I-JEPA and `physical` are complementary, unlike the autoencoder.** I-JEPA
+  wins all three regressions (`task_4` +0.013, `task_7` +0.019, `task_5` level)
+  and loses `task_6` by 0.059. The autoencoder lost to `physical` on all four.
+  That difference is why fusion was worth building here and was not there.
+- **`ae512_phys*`** — rebuilt locally as a control, and it does **not** exactly
+  reproduce the `ae512_phys` row above: 0.8656 against 0.861. The cause is
+  identified rather than mysterious — I stacked `ae-d512` (20,000 steps) because
+  `d512_w64`'s (5,000 steps) `.npz` is not on this disk. The two score 0.8036 and
+  0.803 standalone, and three of the four fused tasks agree to three decimals;
+  the whole 0.005 gap is `task_6` (0.5709 vs 0.553), a swing of 0.018 — which is
+  exactly that task's noise threshold. Treat `ae512_phys*` as the calibrated
+  comparator for the rows below it, not as a reproduction.
+- **The headline, and it is a negative one: fused I-JEPA and fused autoencoder
+  are indistinguishable.** `ijepa4_phys` 0.8661 against `ae512_phys*` 0.8656 is
+  a gap of **0.0005**, one-sixteenth of seed noise. I-JEPA is +0.043 better
+  standalone and that advantage almost entirely disappears once the 144 physical
+  features are present — both encoders add about +0.013 on top of them. The
+  honest reading is that `physical` already captures most of what either learned
+  encoder knows, and the remaining headroom on these four tasks is small.
+- **The val proxy slightly under-weights I-JEPA.** It scores 3 regressions and 1
+  classification (75% regression); the leaderboard scores 8 regressions and 2
+  classifications (80%). Since I-JEPA's gain is entirely in the regressions and
+  its deficit entirely in `task_6`, re-weighting the fused rows 80/20 moves
+  `ijepa4_phys` to 0.8875 and `ae512_phys*` to 0.8853 — still a 0.002 gap, so
+  this changes the ranking's sign but not the conclusion that they are tied.
 - **Each I-JEPA row is really four.** Pooling lives in `model_cfg`, so one
   training run writes `best_mean.pt`, `best_meanstd.pt`, `best_mean4.pt` and
   `best_mean4std.pt` from the same weights, and the job scores all of them as
