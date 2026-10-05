@@ -1,0 +1,31 @@
+[project]
+name = "iecdt-hackathon"
+version = "0.1.0"
+description = "MODIS satellite image embedding benchmark for the IECDT hackathon"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "matplotlib>=3.8",
+    "netcdf4>=1.7",
+    "numpy>=1.26",
+    "pyyaml>=6.0",
+    "rich>=13.0",
+    "scikit-learn>=1.4",
+    "torch>=2.4",
+    "tqdm>=4.66",
+    "xarray>=2024.3",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[project.optional-dependencies]
+wandb = ["wandb>=0.17"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["iecdt_hackathon"]
+
