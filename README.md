@@ -131,6 +131,7 @@ Each team gets four scored submissions per day, and the leaderboard keeps each t
 | `d256` | default config (seed 0) | 5,000 | 0.888 | 0.913 | 0.435 | 0.931 | 0.792 | |
 | `d256_seed1` | default config (seed 1) | 5,000 | 0.885 | 0.905 | 0.418 | 0.928 | 0.784 | Seed noise ≈ 0.008 overall, 0.017 on task 6 |
 | `d512_w64` | `embedding_dim` 512, `width` 64 | 5,000 | 0.926 | 0.928 | 0.415 | 0.944 | 0.803 | Best so far; regression up, task 6 flat. Width and dim changed together |
+| `handcrafted` | 55 per-tile statistics, no training | — | 0.914 | 0.923 | 0.516 | 0.886 | 0.810 | Best overall so far; beats AE on task 6 by +0.10, loses on task 7 |
 
 **Dimension sweep takeaways:** Scores rise steadily with embedding size up to 256, with diminishing returns (+0.04 from 32 → 64, about +0.01 from 128 → 256). Widening the encoder to 64 at D = 512 improves the regression tasks well beyond seed noise but leaves task 6 unchanged. Task 6 plateaus at a macro-F1 of about 0.42 for all D ≥ 128, which suggests the reconstruction objective, not the embedding size, is what limits the classification task.
 
