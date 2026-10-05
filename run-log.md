@@ -84,11 +84,17 @@ Conventions:
   autoencoder's 0.803 is **+0.043, five times seed noise**, and `task_6` moves
   0.415 → 0.488 where quadrupling the autoencoder's training moved it 0.002. The
   limit really was the reconstruction objective.
-- **Pooling is a non-lever.** 384 → 1536 spans 0.8444–0.8463, i.e. 0.002, inside
-  noise; `mean4std` at 3072 *regresses* to 0.8413, as the plan predicted it
-  would. Four checkpoints per run cost almost nothing and have now settled the
-  question — use `meanstd` or `mean4` and drop the 3072 variant from future
-  sweeps.
+- **Pooling is a non-lever alone and a large lever fused, in the opposite
+  direction.** Standalone, 384 → 1536 spans 0.8444–0.8463, i.e. 0.002, inside
+  noise, and `mean4std` at 3072 regresses to 0.8413 as the plan predicted. But
+  concatenated with the 144 physical features the ordering inverts and the
+  spread grows fivefold: `mean` (384+144) reaches **0.8720** while
+  `meanstd` (768+144) gets 0.8617 and `mean4` (1536+144) 0.8661. `task_6` drives
+  it — 0.5703, 0.5275, 0.5455 — which is what an unregularised
+  `LogisticRegression(C=inf)` on 10,000 rows should do as the column count
+  climbs. So **the narrowest pooling is the one to fuse**, and the earlier
+  "drop the 3072 variant" conclusion stands for a different reason than the one
+  I gave: width is not free once something is concatenated onto it.
 - **I-JEPA and `physical` are complementary, unlike the autoencoder.** I-JEPA
   wins all three regressions (`task_4` +0.013, `task_7` +0.019, `task_5` level)
   and loses `task_6` by 0.059. The autoencoder lost to `physical` on all four.
