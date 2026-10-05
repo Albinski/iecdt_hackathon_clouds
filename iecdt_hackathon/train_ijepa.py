@@ -45,6 +45,7 @@ from .ijepa.masking import MultiBlockMaskCollator
 from .ijepa.schedules import linear_schedule, param_groups, warmup_cosine
 from .models import build_model
 from .tasks import REGRESSION_TASKS, TASKS
+from . import tracking
 from .train import build_datasets, load_config, save
 
 #: The three regression tasks. See the module docstring for why `task_6` is out.
@@ -217,19 +218,7 @@ def main():
         param_groups(model.context_encoder, model.predictor), lr=t["lr"]
     )
 
-    run = None
-    if args.wandb:
-        # Never let a logging import kill a 12 h job: wandb is an optional extra
-        # and may simply not be installed.
-        try:
-            import wandb
-
-            run = wandb.init(
-                project=t.get("wandb_project", "iecdt-hackathon"),
-                config=cfg, dir=str(run_dir),
-            )
-        except Exception as exc:
-            print(f"wandb unavailable ({exc}); continuing without it", flush=True)
+    run = tracking.init(cfg, run_dir, enabled=args.wandb)
 
     total_steps = t["steps"]
     warmup = t.get("warmup_steps") or int(total_steps * t.get("warmup_frac", 0.1))
@@ -366,8 +355,7 @@ def main():
         "      --data-dir $ROOT/val --out embeddings/val --name ijepa_$v --overwrite; done\n"
         "  python -m iecdt_hackathon.evaluate --embeddings embeddings/val/ijepa_*.npz"
     )
-    if run:
-        run.finish()
+    tracking.finish(run)
 
 
 if __name__ == "__main__":

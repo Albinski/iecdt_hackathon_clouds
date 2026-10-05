@@ -98,7 +98,34 @@ uv run python -m iecdt_hackathon.evaluate \
   --embeddings base=embeddings/val/baseline.npz new=embeddings/val/new.npz
 ```
 
-### 4. Submit
+### 4. Track runs (optional)
+
+Pass `--wandb` to either training script to log losses, learning rate, weight
+decay, EMA momentum and the in-loop probe score to
+[Weights & Biases](https://wandb.ai). Install it once and log in:
+
+```bash
+uv sync --extra wandb
+uv run wandb login          # or export WANDB_API_KEY=...
+```
+
+The run is named after its `--out` directory and tagged with the objective and
+architecture, so one string identifies the checkpoint, the embedding file and
+the graphs.
+
+**Orchid compute nodes have no outbound network**, so `training.wandb_mode:
+auto` writes the run to disk whenever `SLURM_JOB_ID` is set and leaves the push
+command in `runs/<name>/wandb_sync.txt`. After the job finishes, from a *login*
+node:
+
+```bash
+uv run wandb sync runs/<name>/wandb/offline-run-*
+```
+
+Logging never affects training: a missing package, a missing API key or a failed
+handshake prints one line and the run continues without it.
+
+### 5. Submit
 
 Embed the **test** split, then submit from a JASMIN **sci server** over SSH.
 
@@ -186,18 +213,7 @@ Notes on the implementation, which follows
 
 ### Log
 
-| Run | Change from baseline | Steps | task_4 R² | task_5 R² | task_6 F1 | task_7 R² | Overall | Notes |
-|---|---|---|---|---|---|---|---|---|
-| `baseline` | — | 20,000 | | | | | | Not yet run |
-| `d32` | `embedding_dim` 32 | 5,000 | 0.789 | 0.855 | 0.334 | 0.812 | 0.697 | |
-| `d64` | `embedding_dim` 64 | 5,000 | 0.816 | 0.859 | 0.380 | 0.901 | 0.739 | |
-| `d128` | `embedding_dim` 128 | 5,000 | 0.871 | 0.905 | 0.411 | 0.922 | 0.777 | |
-| `d256` | default config (seed 0) | 5,000 | 0.888 | 0.913 | 0.435 | 0.931 | 0.792 | |
-| `d256_seed1` | default config (seed 1) | 5,000 | 0.885 | 0.905 | 0.418 | 0.928 | 0.784 | Seed noise ≈ 0.008 overall, 0.017 on task 6 |
-| `d512_w64` | `embedding_dim` 512, `width` 64 | 5,000 | 0.926 | 0.928 | 0.415 | 0.944 | 0.803 | Best so far; regression up, task 6 flat. Width and dim changed together |
-| `handcrafted` | 55 per-tile statistics, no training | — | 0.914 | 0.923 | 0.516 | 0.886 | 0.810 | Best overall so far; beats AE on task 6 by +0.10, loses on task 7 |
-| `ijepa_meanstd` | I-JEPA ViT-S/16, mean+std pooling, D = 768 | | | | | | | Not yet run |
-| `fused` | `ijepa_meanstd` ⊕ `handcrafted`, D = 823 | | | | | | | Not yet run |
+Every run, its parameters and its per-task scores are in [`run-log.md`](run-log.md).
 
 **Dimension sweep takeaways:** Scores rise steadily with embedding size up to 256, with diminishing returns (+0.04 from 32 → 64, about +0.01 from 128 → 256). Widening the encoder to 64 at D = 512 improves the regression tasks well beyond seed noise but leaves task 6 unchanged. Task 6 plateaus at a macro-F1 of about 0.42 for all D ≥ 128, which suggests the reconstruction objective, not the embedding size, is what limits the classification task.
 
@@ -209,6 +225,7 @@ iecdt_hackathon/
   models.py             model registry (any model must expose .encode)
   train.py              autoencoder training loop, config-driven
   train_ijepa.py        I-JEPA training loop
+  tracking.py           Weights & Biases setup, offline-safe
   ijepa/
     vision_transformer.py  ViT encoder and predictor, no CLS token
     masking.py             multi-block context/target mask collator
@@ -227,6 +244,7 @@ iecdt_hackathon/
 configs/default.yaml    baseline autoencoder configuration
 configs/ijepa.yaml      I-JEPA configuration
 tests/test_ijepa.py     shape, masking and checkpoint-contract tests
+run-log.md              every experiment, its parameters and its scores
 sweep_dim.sh            embedding-size sweep
 train_ijepa.sbatch      I-JEPA pretraining on one A100, with a GPU preflight
 submit.sh               submit test embeddings to the leaderboard

@@ -24,7 +24,14 @@ TEAM=yourteam   # TODO: set your team name before the submission embed
 echo "Job $SLURM_JOB_ID on $(hostname), started $(date)"
 
 # Environment is synced on the login node before submission; don't re-sync here.
+#   uv sync --extra wandb        <- needed once, for the logging
 RUN="uv run --frozen --no-sync"
+
+# Orchid compute nodes have no outbound network, so the run is written to
+# disk and pushed afterwards from a login node. `tracking.resolve_mode`
+# already picks offline whenever SLURM_JOB_ID is set; this makes it explicit
+# and survives anyone copying the command out of this file by hand.
+export WANDB_MODE=offline
 
 # --- GPU preflight ----------------------------------------------------------
 # A previous run died at torch._C._cuda_init() with "No CUDA GPUs are available"
@@ -56,7 +63,8 @@ echo "preflight passed"
 # --- Pretrain ---------------------------------------------------------------
 $RUN python -m iecdt_hackathon.train_ijepa \
     --config configs/ijepa.yaml \
-    --out "$RUN_DIR"
+    --out "$RUN_DIR" \
+    --wandb
 
 # --- Score every pooling variant on the validation split --------------------
 # All four come from the same weights and differ only in model_cfg["pool"], so
@@ -84,3 +92,6 @@ $RUN python -m iecdt_hackathon.embed \
     --overwrite
 
 echo "Finished $(date)"
+echo
+echo "Push the offline wandb run from a LOGIN node (not here):"
+cat "$RUN_DIR/wandb_sync.txt" 2>/dev/null || echo "  uv run wandb sync $RUN_DIR/wandb/offline-run-*"

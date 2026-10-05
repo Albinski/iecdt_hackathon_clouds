@@ -88,3 +88,6 @@ training:
   collapse_every: 500
   val_batches: 20
   wandb_project: iecdt-hackathon
+  # auto -> offline inside a SLURM job (orchid nodes have no outbound
+  # network), online on a login node. online | offline | disabled to force.
+  wandb_mode: auto

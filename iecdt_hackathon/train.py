@@ -18,6 +18,7 @@ import numpy as np
 import torch
 import yaml
 
+from . import tracking
 from .data import ModisTileDataset, build_dataloader
 from .models import build_model
 
@@ -114,11 +115,7 @@ def main():
     optimizer = torch.optim.AdamW(model.parameters(), lr=t["lr"],
                                   weight_decay=t.get("weight_decay", 0.01))
 
-    run = None
-    if args.wandb:
-        import wandb
-        run = wandb.init(project=t.get("wandb_project", "iecdt-hackathon"),
-                         config=cfg, dir=str(run_dir))
+    run = tracking.init(cfg, run_dir, enabled=args.wandb)
 
     total_steps = t["steps"]
     warmup = t.get("warmup_steps", min(500, total_steps // 20))
@@ -178,8 +175,7 @@ def main():
     print(f"\nDone. Best val loss {best_val:.6f}. Checkpoints in {run_dir}")
     print(f"Evaluate with:\n  python -m iecdt_hackathon.evaluate "
           f"--checkpoint {run_dir / 'best.pt'}")
-    if run:
-        run.finish()
+    tracking.finish(run)
 
 
 def save(path, model, model_name, model_cfg, cfg, step, val_loss, dataset):
