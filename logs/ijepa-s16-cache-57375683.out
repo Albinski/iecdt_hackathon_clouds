@@ -8,3 +8,14 @@ preflight passed
 train: 100000 tiles | val: 4000 tiles | 6 channels | 256x256
 sentinel zeros in tile 0: 0.00000%
 building 39.3 GB uint8 RAM cache of 100,000 tiles
+  cached 20,032/100,000 tiles  480 tiles/s
+  cached 40,000/100,000 tiles  494 tiles/s
+  cached 60,032/100,000 tiles  494 tiles/s
+  cached 80,000/100,000 tiles  495 tiles/s
+  cached 100,000/100,000 tiles  495 tiles/s
+  cache built: 39.3 GB in 3.4 min
+model: ijepa/vit_small, 24.70M trainable, embedding_dim 768
+wandb: online run 'ijepa-s16-cache' -> https://wandb.ai/moritz-hauschulz/iecdt-hackathon/runs/sdndhar3
+pooling variants: mean, meanstd, mean4, mean4std
+[1;34mwandb[0m: 
+[1;34mwandb[0m: 🚀 View run [33mijepa-s16-cache[0m at: [34mhttps://wandb.ai/moritz-hauschulz/iecdt-hackathon/runs/sdndhar3[0m

@@ -1,0 +1,21 @@
+Job 57375684 (ijepa-s16-lr15) on gpuhost005.jc.rl.ac.uk, started Mon  5 Oct 18:35:21 BST 2026
+module=train_ijepa config=configs/ijepa.yaml overrides=--set data.cache=ram_uint8 --set training.steps=150000 --set training.lr=1.5e-4 --set training.start_lr=3.0e-5 --set training.max_seconds=25200
+CUDA_VISIBLE_DEVICES=[0]
+GPU 0: NVIDIA A100-SXM4-40GB (UUID: GPU-4db4f38b-9ad0-cffb-8916-b99bff264d56)
+torch 2.14.0+cu130  cuda 13.0  devices 1
+ok: NVIDIA A100-SXM4-40GB
+preflight passed
+train: 100000 tiles | val: 4000 tiles | 6 channels | 256x256
+sentinel zeros in tile 0: 0.00000%
+building 39.3 GB uint8 RAM cache of 100,000 tiles
+  cached 20,032/100,000 tiles  532 tiles/s
+  cached 40,000/100,000 tiles  565 tiles/s
+  cached 60,032/100,000 tiles  583 tiles/s
+  cached 80,000/100,000 tiles  600 tiles/s
+  cached 100,000/100,000 tiles  616 tiles/s
+  cache built: 39.3 GB in 2.7 min
+model: ijepa/vit_small, 24.70M trainable, embedding_dim 768
+wandb: online run 'ijepa-s16-lr15' -> https://wandb.ai/moritz-hauschulz/iecdt-hackathon/runs/9ro1zthz
+pooling variants: mean, meanstd, mean4, mean4std
+[1;34mwandb[0m: 
+[1;34mwandb[0m: 🚀 View run [33mijepa-s16-lr15[0m at: [34mhttps://wandb.ai/moritz-hauschulz/iecdt-hackathon/runs/9ro1zthz[0m

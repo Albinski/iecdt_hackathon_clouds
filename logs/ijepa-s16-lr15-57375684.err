@@ -1,12 +1,11 @@
 wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from /home/users/bigmo/.netrc.
 wandb: Currently logged in as: moritz-hauschulz to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
-wandb: setting up run 98mmu2mx
 wandb: Tracking run with wandb version 0.30.0
-wandb: Run data is saved locally in runs/ijepa-b16-cache/wandb/run-20261005_183354-98mmu2mx
+wandb: Run data is saved locally in runs/ijepa-s16-lr15/wandb/run-20261005_183906-9ro1zthz
 wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run ijepa-b16-cache
+wandb: Syncing run ijepa-s16-lr15
 wandb: ⭐️ View project at https://wandb.ai/moritz-hauschulz/iecdt-hackathon
-wandb: 🚀 View run at https://wandb.ai/moritz-hauschulz/iecdt-hackathon/runs/98mmu2mx
+wandb: 🚀 View run at https://wandb.ai/moritz-hauschulz/iecdt-hackathon/runs/9ro1zthz
 Traceback (most recent call last):
   File "<frozen runpy>", line 198, in _run_module_as_main
   File "<frozen runpy>", line 88, in _run_code

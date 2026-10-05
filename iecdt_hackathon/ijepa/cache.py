@@ -41,7 +41,14 @@ def quantisation_range(dataset, n_sample=2000, percentiles=(0.1, 99.9), seed=0):
     rows = rng.choice(len(dataset), size=n_sample, replace=False)
     sample = np.stack([dataset[int(i)]["image"].numpy() for i in rows])
     lo, hi = np.percentile(sample, percentiles, axis=(0, 2, 3))
-    return lo.astype(np.float32), np.maximum(hi - lo, 1e-6).astype(np.float32) + lo
+    # Cast before any arithmetic. `np.percentile` returns float64, and letting
+    # one float64 survive into the returned range silently promotes every
+    # cached image to double -- which torch then refuses against bf16 weights
+    # with "Input type (double) and bias type (c10::BFloat16) should be the
+    # same", several minutes into a job.
+    lo = lo.astype(np.float32)
+    hi = np.maximum(hi.astype(np.float32), lo + np.float32(1e-6))
+    return lo, hi
 
 
 def build_ram_cache(dataset, num_workers=8, n_sample=2000, log_every=20_000):
@@ -59,17 +66,24 @@ def build_ram_cache(dataset, num_workers=8, n_sample=2000, log_every=20_000):
         )
     lo, hi = quantisation_range(dataset, n_sample=n_sample)
 
+    # The dataloader workers must inherit this tensor rather than receive a
+    # copy of it. `fork` gives them copy-on-write access for free, since
+    # nothing ever writes to the cache after it is built; `spawn` would pickle
+    # the whole 39 GB to every worker instead.
+    start_method = torch.multiprocessing.get_start_method(allow_none=True)
+    if start_method not in (None, "fork"):
+        raise RuntimeError(
+            f"data.cache needs the 'fork' start method so workers share the "
+            f"cache; this process uses {start_method!r}. Either set "
+            f"data.cache=none or torch.multiprocessing.set_start_method('fork')."
+        )
+
     probe = dataset[0]["image"]
+    # Deliberately *not* share_memory_(): that allocates a second 39 GB block
+    # in /dev/shm and copies into it, so peak RSS doubles and both halves count
+    # against the job's --mem cgroup. Measured at 96.7 GB against a 120 GB
+    # limit on the first attempt. Fork COW gives the same sharing for one copy.
     cache = torch.empty((len(dataset), *probe.shape), dtype=torch.uint8)
-    try:
-        # Shared memory guarantees the workers never copy. It lives in
-        # /dev/shm, which counts against the job's --mem cgroup, so fall back
-        # rather than die: the workers only ever read this tensor, and fork
-        # gives them copy-on-write access to a plain one for free.
-        cache = cache.share_memory_()
-    except (OSError, RuntimeError) as exc:
-        print(f"  shared memory unavailable ({exc}); relying on fork COW",
-              flush=True)
     scale = 255.0 / (hi - lo)
 
     loader = build_dataloader(dataset, 64, shuffle=False, num_workers=num_workers)
@@ -106,8 +120,13 @@ class CachedTileDataset(torch.utils.data.Dataset):
     def __init__(self, cache, tile_indices, lo, hi):
         self.cache = cache
         self.tile_indices = list(tile_indices)
-        self.lo = torch.from_numpy(np.asarray(lo)).view(-1, 1, 1)
-        self.span = torch.from_numpy(np.asarray(hi - lo)).view(-1, 1, 1) / 255.0
+        # float32 explicitly, not inherited from whatever numpy handed over:
+        # a single float64 here promotes every image to double and the failure
+        # surfaces in the first conv, minutes into a run.
+        self.lo = torch.as_tensor(lo, dtype=torch.float32).view(-1, 1, 1)
+        self.span = (
+            torch.as_tensor(hi - lo, dtype=torch.float32).view(-1, 1, 1) / 255.0
+        )
 
     def __len__(self):
         return len(self.tile_indices)

@@ -117,7 +117,22 @@ class MultiBlockMaskCollator:
         """
         h, w = block
         tries, timeout = 0, 20
+        # Hard ceiling on total attempts. Once `tries` exceeds the number of
+        # acceptable regions the block is unconstrained, so if it still cannot
+        # satisfy `min_keep` then no block of this size ever will -- the
+        # configuration is impossible and this loop would spin forever. A hung
+        # job looks exactly like a slow one and would quietly consume its whole
+        # allocation, so fail loudly instead.
+        attempts, max_attempts = 0, 20 * (len(acceptable or ()) + 2)
         while True:
+            attempts += 1
+            if attempts > max_attempts:
+                raise ValueError(
+                    f"Cannot sample a {h}x{w} block keeping more than "
+                    f"{min_keep} of {self.n_patches} patches on a "
+                    f"{self.grid_h}x{self.grid_w} grid. Lower min_keep_enc / "
+                    f"min_keep_pred, or use a larger tile or smaller patch."
+                )
             top = int(torch.randint(0, self.grid_h - h, (1,), generator=generator))
             left = int(torch.randint(0, self.grid_w - w, (1,), generator=generator))
             mask = torch.zeros((self.grid_h, self.grid_w), dtype=torch.int32)

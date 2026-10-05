@@ -41,3 +41,613 @@ step    1300/50000  loss 0.021496  lr 1.22e-04  wd 0.049  m 0.9961  ctx  73 tgt 
 step    1350/50000  loss 0.023785  lr 1.25e-04  wd 0.050  m 0.9961  ctx  69 tgt  48  6.08 it/s
 step    1400/50000  loss 0.024107  lr 1.27e-04  wd 0.050  m 0.9961  ctx  67 tgt  48  6.09 it/s
 step    1450/50000  loss 0.025237  lr 1.30e-04  wd 0.050  m 0.9961  ctx  71 tgt  42  6.08 it/s
+step    1500/50000  loss 0.025205  lr 1.32e-04  wd 0.051  m 0.9961  ctx  67 tgt  48  6.10 it/s
+step    1500  feature_std 0.6029  token_std 0.4013  eff_rank 7.0
+step    1550/50000  loss 0.025162  lr 1.34e-04  wd 0.051  m 0.9961  ctx  65 tgt  48  6.10 it/s
+step    1600/50000  loss 0.025296  lr 1.37e-04  wd 0.052  m 0.9961  ctx  67 tgt  42  6.06 it/s
+step    1650/50000  loss 0.026352  lr 1.39e-04  wd 0.052  m 0.9961  ctx  68 tgt  48  6.05 it/s
+step    1700/50000  loss 0.027483  lr 1.42e-04  wd 0.052  m 0.9961  ctx  67 tgt  42  6.07 it/s
+step    1750/50000  loss 0.027021  lr 1.44e-04  wd 0.053  m 0.9961  ctx  70 tgt  48  6.08 it/s
+step    1800/50000  loss 0.029441  lr 1.46e-04  wd 0.053  m 0.9961  ctx  69 tgt  48  6.09 it/s
+step    1850/50000  loss 0.028759  lr 1.49e-04  wd 0.053  m 0.9961  ctx  78 tgt  40  6.08 it/s
+step    1900/50000  loss 0.028921  lr 1.51e-04  wd 0.054  m 0.9962  ctx  75 tgt  42  6.09 it/s
+step    1950/50000  loss 0.029976  lr 1.54e-04  wd 0.054  m 0.9962  ctx  66 tgt  48  6.09 it/s
+step    2000/50000  loss 0.029495  lr 1.56e-04  wd 0.054  m 0.9962  ctx  65 tgt  54  6.10 it/s
+step    2000  feature_std 0.5780  token_std 0.4781  eff_rank 8.3
+  task_4     R2 +0.7171  [5 folds]
+  task_5     R2 +0.9148  [5 folds]
+  task_7     R2 +0.9114  [5 folds]
+step    2000  val jepa 0.033606  probe mean R2 0.8478  <- best
+step    2050/50000  loss 0.028988  lr 1.58e-04  wd 0.055  m 0.9962  ctx  77 tgt  42  5.32 it/s
+step    2100/50000  loss 0.031943  lr 1.61e-04  wd 0.055  m 0.9962  ctx  69 tgt  42  5.38 it/s
+step    2150/50000  loss 0.030683  lr 1.63e-04  wd 0.055  m 0.9962  ctx  71 tgt  48  5.41 it/s
+step    2200/50000  loss 0.033168  lr 1.66e-04  wd 0.056  m 0.9962  ctx  81 tgt  36  5.42 it/s
+step    2250/50000  loss 0.033805  lr 1.68e-04  wd 0.056  m 0.9962  ctx  89 tgt  36  5.44 it/s
+step    2300/50000  loss 0.033757  lr 1.70e-04  wd 0.057  m 0.9962  ctx  72 tgt  48  5.45 it/s
+step    2350/50000  loss 0.033222  lr 1.73e-04  wd 0.057  m 0.9962  ctx  81 tgt  42  5.43 it/s
+step    2400/50000  loss 0.034385  lr 1.75e-04  wd 0.057  m 0.9962  ctx  67 tgt  49  5.45 it/s
+step    2450/50000  loss 0.035391  lr 1.78e-04  wd 0.058  m 0.9962  ctx  65 tgt  54  5.45 it/s
+step    2500/50000  loss 0.035751  lr 1.80e-04  wd 0.058  m 0.9962  ctx  83 tgt  40  5.46 it/s
+step    2500  feature_std 0.6188  token_std 0.4908  eff_rank 10.4
+step    2550/50000  loss 0.037330  lr 1.82e-04  wd 0.058  m 0.9962  ctx  73 tgt  48  5.48 it/s
+step    2600/50000  loss 0.036696  lr 1.85e-04  wd 0.059  m 0.9962  ctx  68 tgt  48  5.48 it/s
+step    2650/50000  loss 0.038385  lr 1.87e-04  wd 0.059  m 0.9962  ctx  69 tgt  42  5.50 it/s
+step    2700/50000  loss 0.039701  lr 1.90e-04  wd 0.059  m 0.9962  ctx  72 tgt  42  5.50 it/s
+step    2750/50000  loss 0.041909  lr 1.92e-04  wd 0.060  m 0.9962  ctx  66 tgt  42  5.52 it/s
+step    2800/50000  loss 0.042846  lr 1.94e-04  wd 0.060  m 0.9962  ctx  71 tgt  48  5.53 it/s
+step    2850/50000  loss 0.044755  lr 1.97e-04  wd 0.061  m 0.9962  ctx  75 tgt  42  5.53 it/s
+step    2900/50000  loss 0.045638  lr 1.99e-04  wd 0.061  m 0.9962  ctx  78 tgt  42  5.55 it/s
+step    2950/50000  loss 0.046701  lr 2.02e-04  wd 0.061  m 0.9962  ctx  65 tgt  49  5.56 it/s
+step    3000/50000  loss 0.047628  lr 2.04e-04  wd 0.062  m 0.9962  ctx  69 tgt  48  5.57 it/s
+step    3000  feature_std 0.6366  token_std 0.4808  eff_rank 13.2
+step    3050/50000  loss 0.048331  lr 2.06e-04  wd 0.062  m 0.9962  ctx  77 tgt  42  5.58 it/s
+step    3100/50000  loss 0.049889  lr 2.09e-04  wd 0.062  m 0.9962  ctx  81 tgt  42  5.59 it/s
+step    3150/50000  loss 0.050079  lr 2.11e-04  wd 0.063  m 0.9963  ctx  72 tgt  42  5.58 it/s
+step    3200/50000  loss 0.052052  lr 2.14e-04  wd 0.063  m 0.9963  ctx  87 tgt  36  5.58 it/s
+step    3250/50000  loss 0.053241  lr 2.16e-04  wd 0.063  m 0.9963  ctx  65 tgt  48  5.60 it/s
+step    3300/50000  loss 0.055347  lr 2.18e-04  wd 0.064  m 0.9963  ctx  70 tgt  48  5.60 it/s
+step    3350/50000  loss 0.059242  lr 2.21e-04  wd 0.064  m 0.9963  ctx  79 tgt  42  5.61 it/s
+step    3400/50000  loss 0.058310  lr 2.23e-04  wd 0.064  m 0.9963  ctx  68 tgt  42  5.62 it/s
+step    3450/50000  loss 0.060010  lr 2.26e-04  wd 0.065  m 0.9963  ctx  69 tgt  49  5.62 it/s
+step    3500/50000  loss 0.059482  lr 2.28e-04  wd 0.065  m 0.9963  ctx  65 tgt  48  5.64 it/s
+step    3500  feature_std 0.6826  token_std 0.4672  eff_rank 15.7
+step    3550/50000  loss 0.061744  lr 2.30e-04  wd 0.066  m 0.9963  ctx  96 tgt  36  5.64 it/s
+step    3600/50000  loss 0.061663  lr 2.33e-04  wd 0.066  m 0.9963  ctx  77 tgt  42  5.65 it/s
+step    3650/50000  loss 0.062440  lr 2.35e-04  wd 0.066  m 0.9963  ctx  79 tgt  42  5.66 it/s
+step    3700/50000  loss 0.062608  lr 2.38e-04  wd 0.067  m 0.9963  ctx  81 tgt  42  5.66 it/s
+step    3750/50000  loss 0.065164  lr 2.40e-04  wd 0.067  m 0.9963  ctx  69 tgt  48  5.67 it/s
+step    3800/50000  loss 0.068094  lr 2.42e-04  wd 0.067  m 0.9963  ctx  69 tgt  42  5.68 it/s
+step    3850/50000  loss 0.068186  lr 2.45e-04  wd 0.068  m 0.9963  ctx  95 tgt  35  5.68 it/s
+step    3900/50000  loss 0.068424  lr 2.47e-04  wd 0.068  m 0.9963  ctx  68 tgt  49  5.69 it/s
+step    3950/50000  loss 0.067697  lr 2.50e-04  wd 0.068  m 0.9963  ctx  66 tgt  49  5.67 it/s
+step    4000/50000  loss 0.066978  lr 2.52e-04  wd 0.069  m 0.9963  ctx  66 tgt  42  5.68 it/s
+step    4000  feature_std 0.7033  token_std 0.4486  eff_rank 17.8
+  task_4     R2 +0.7466  [5 folds]
+  task_5     R2 +0.9245  [5 folds]
+  task_7     R2 +0.9391  [5 folds]
+step    4000  val jepa 0.067385  probe mean R2 0.8701  <- best
+step    4050/50000  loss 0.070984  lr 2.54e-04  wd 0.069  m 0.9963  ctx  72 tgt  42  5.33 it/s
+step    4100/50000  loss 0.070296  lr 2.57e-04  wd 0.070  m 0.9963  ctx  67 tgt  48  5.36 it/s
+step    4150/50000  loss 0.068259  lr 2.59e-04  wd 0.070  m 0.9963  ctx  67 tgt  48  5.37 it/s
+step    4200/50000  loss 0.070092  lr 2.62e-04  wd 0.070  m 0.9963  ctx  80 tgt  40  5.38 it/s
+step    4250/50000  loss 0.069899  lr 2.64e-04  wd 0.071  m 0.9963  ctx  65 tgt  48  5.39 it/s
+step    4300/50000  loss 0.069413  lr 2.66e-04  wd 0.071  m 0.9963  ctx  65 tgt  48  5.40 it/s
+step    4350/50000  loss 0.072063  lr 2.69e-04  wd 0.071  m 0.9963  ctx  65 tgt  48  5.41 it/s
+step    4400/50000  loss 0.072367  lr 2.71e-04  wd 0.072  m 0.9964  ctx  75 tgt  42  5.41 it/s
+step    4450/50000  loss 0.071789  lr 2.74e-04  wd 0.072  m 0.9964  ctx  68 tgt  48  5.42 it/s
+step    4500/50000  loss 0.072108  lr 2.76e-04  wd 0.072  m 0.9964  ctx  67 tgt  48  5.42 it/s
+step    4500  feature_std 0.6990  token_std 0.4276  eff_rank 20.1
+step    4550/50000  loss 0.072048  lr 2.78e-04  wd 0.073  m 0.9964  ctx  68 tgt  49  5.43 it/s
+step    4600/50000  loss 0.071472  lr 2.81e-04  wd 0.073  m 0.9964  ctx  66 tgt  49  5.44 it/s
+step    4650/50000  loss 0.069751  lr 2.83e-04  wd 0.073  m 0.9964  ctx  76 tgt  48  5.44 it/s
+step    4700/50000  loss 0.072244  lr 2.86e-04  wd 0.074  m 0.9964  ctx  67 tgt  49  5.45 it/s
+step    4750/50000  loss 0.073065  lr 2.88e-04  wd 0.074  m 0.9964  ctx  66 tgt  48  5.45 it/s
+step    4800/50000  loss 0.071192  lr 2.90e-04  wd 0.075  m 0.9964  ctx  73 tgt  48  5.45 it/s
+step    4850/50000  loss 0.073346  lr 2.93e-04  wd 0.075  m 0.9964  ctx  65 tgt  48  5.47 it/s
+step    4900/50000  loss 0.074495  lr 2.95e-04  wd 0.075  m 0.9964  ctx  71 tgt  48  5.47 it/s
+step    4950/50000  loss 0.075761  lr 2.98e-04  wd 0.076  m 0.9964  ctx  69 tgt  56  5.48 it/s
+step    5000/50000  loss 0.074677  lr 3.00e-04  wd 0.076  m 0.9964  ctx  65 tgt  48  5.48 it/s
+step    5000  feature_std 0.6980  token_std 0.4200  eff_rank 21.6
+step    5050/50000  loss 0.074751  lr 3.00e-04  wd 0.076  m 0.9964  ctx  70 tgt  42  5.49 it/s
+step    5100/50000  loss 0.073536  lr 3.00e-04  wd 0.077  m 0.9964  ctx  98 tgt  35  5.50 it/s
+step    5150/50000  loss 0.074895  lr 3.00e-04  wd 0.077  m 0.9964  ctx  68 tgt  48  5.50 it/s
+step    5200/50000  loss 0.076196  lr 3.00e-04  wd 0.077  m 0.9964  ctx  65 tgt  54  5.51 it/s
+step    5250/50000  loss 0.076159  lr 3.00e-04  wd 0.078  m 0.9964  ctx  68 tgt  42  5.51 it/s
+step    5300/50000  loss 0.078022  lr 3.00e-04  wd 0.078  m 0.9964  ctx  65 tgt  49  5.52 it/s
+step    5350/50000  loss 0.076804  lr 3.00e-04  wd 0.079  m 0.9964  ctx  65 tgt  54  5.53 it/s
+step    5400/50000  loss 0.077457  lr 3.00e-04  wd 0.079  m 0.9964  ctx  66 tgt  49  5.53 it/s
+step    5450/50000  loss 0.077953  lr 3.00e-04  wd 0.079  m 0.9964  ctx  69 tgt  42  5.54 it/s
+step    5500/50000  loss 0.078847  lr 3.00e-04  wd 0.080  m 0.9964  ctx  67 tgt  48  5.53 it/s
+step    5500  feature_std 0.6747  token_std 0.4168  eff_rank 23.7
+step    5550/50000  loss 0.078144  lr 3.00e-04  wd 0.080  m 0.9964  ctx  65 tgt  48  5.54 it/s
+step    5600/50000  loss 0.078872  lr 3.00e-04  wd 0.080  m 0.9964  ctx  81 tgt  36  5.54 it/s
+step    5650/50000  loss 0.077761  lr 3.00e-04  wd 0.081  m 0.9965  ctx  70 tgt  48  5.55 it/s
+step    5700/50000  loss 0.079276  lr 3.00e-04  wd 0.081  m 0.9965  ctx  83 tgt  40  5.55 it/s
+step    5750/50000  loss 0.081068  lr 3.00e-04  wd 0.081  m 0.9965  ctx  65 tgt  49  5.56 it/s
+step    5800/50000  loss 0.080898  lr 3.00e-04  wd 0.082  m 0.9965  ctx  70 tgt  48  5.57 it/s
+step    5850/50000  loss 0.081525  lr 3.00e-04  wd 0.082  m 0.9965  ctx  72 tgt  42  5.57 it/s
+step    5900/50000  loss 0.080910  lr 3.00e-04  wd 0.082  m 0.9965  ctx  70 tgt  48  5.58 it/s
+step    5950/50000  loss 0.081827  lr 3.00e-04  wd 0.083  m 0.9965  ctx  68 tgt  48  5.58 it/s
+step    6000/50000  loss 0.082215  lr 3.00e-04  wd 0.083  m 0.9965  ctx  96 tgt  35  5.58 it/s
+step    6000  feature_std 0.6949  token_std 0.4139  eff_rank 25.4
+  task_4     R2 +0.7621  [5 folds]
+  task_5     R2 +0.9328  [5 folds]
+  task_7     R2 +0.9478  [5 folds]
+step    6000  val jepa 0.078029  probe mean R2 0.8809  <- best
+step    6050/50000  loss 0.080657  lr 3.00e-04  wd 0.084  m 0.9965  ctx  83 tgt  42  5.36 it/s
+step    6100/50000  loss 0.081276  lr 3.00e-04  wd 0.084  m 0.9965  ctx  73 tgt  42  5.38 it/s
+step    6150/50000  loss 0.083995  lr 3.00e-04  wd 0.084  m 0.9965  ctx  66 tgt  48  5.39 it/s
+step    6200/50000  loss 0.083484  lr 2.99e-04  wd 0.085  m 0.9965  ctx  66 tgt  48  5.39 it/s
+step    6250/50000  loss 0.083033  lr 2.99e-04  wd 0.085  m 0.9965  ctx  65 tgt  49  5.39 it/s
+step    6300/50000  loss 0.083904  lr 2.99e-04  wd 0.085  m 0.9965  ctx  66 tgt  42  5.40 it/s
+step    6350/50000  loss 0.082760  lr 2.99e-04  wd 0.086  m 0.9965  ctx  72 tgt  48  5.40 it/s
+step    6400/50000  loss 0.083628  lr 2.99e-04  wd 0.086  m 0.9965  ctx  71 tgt  42  5.41 it/s
+step    6450/50000  loss 0.082839  lr 2.99e-04  wd 0.086  m 0.9965  ctx  70 tgt  48  5.41 it/s
+step    6500/50000  loss 0.082134  lr 2.99e-04  wd 0.087  m 0.9965  ctx  66 tgt  49  5.42 it/s
+step    6500  feature_std 0.6673  token_std 0.4151  eff_rank 26.1
+step    6550/50000  loss 0.083893  lr 2.99e-04  wd 0.087  m 0.9965  ctx  66 tgt  54  5.43 it/s
+step    6600/50000  loss 0.084596  lr 2.99e-04  wd 0.088  m 0.9965  ctx  68 tgt  48  5.43 it/s
+step    6650/50000  loss 0.082757  lr 2.99e-04  wd 0.088  m 0.9965  ctx  77 tgt  42  5.44 it/s
+step    6700/50000  loss 0.083997  lr 2.99e-04  wd 0.088  m 0.9965  ctx  71 tgt  48  5.44 it/s
+step    6750/50000  loss 0.085741  lr 2.99e-04  wd 0.089  m 0.9965  ctx  65 tgt  49  5.45 it/s
+step    6800/50000  loss 0.084494  lr 2.99e-04  wd 0.089  m 0.9965  ctx  97 tgt  36  5.45 it/s
+step    6850/50000  loss 0.084380  lr 2.99e-04  wd 0.089  m 0.9965  ctx  68 tgt  49  5.45 it/s
+step    6900/50000  loss 0.084975  lr 2.99e-04  wd 0.090  m 0.9966  ctx  85 tgt  35  5.46 it/s
+step    6950/50000  loss 0.086686  lr 2.99e-04  wd 0.090  m 0.9966  ctx  68 tgt  49  5.46 it/s
+step    7000/50000  loss 0.084008  lr 2.99e-04  wd 0.090  m 0.9966  ctx  75 tgt  48  5.47 it/s
+step    7000  feature_std 0.6929  token_std 0.4164  eff_rank 27.1
+step    7050/50000  loss 0.086334  lr 2.98e-04  wd 0.091  m 0.9966  ctx  68 tgt  42  5.46 it/s
+step    7100/50000  loss 0.087700  lr 2.98e-04  wd 0.091  m 0.9966  ctx  65 tgt  48  5.47 it/s
+step    7150/50000  loss 0.085151  lr 2.98e-04  wd 0.091  m 0.9966  ctx  66 tgt  49  5.47 it/s
+step    7200/50000  loss 0.087131  lr 2.98e-04  wd 0.092  m 0.9966  ctx  74 tgt  42  5.48 it/s
+step    7250/50000  loss 0.087380  lr 2.98e-04  wd 0.092  m 0.9966  ctx  66 tgt  48  5.48 it/s
+step    7300/50000  loss 0.086820  lr 2.98e-04  wd 0.093  m 0.9966  ctx  68 tgt  48  5.49 it/s
+step    7350/50000  loss 0.087525  lr 2.98e-04  wd 0.093  m 0.9966  ctx  76 tgt  42  5.49 it/s
+step    7400/50000  loss 0.086247  lr 2.98e-04  wd 0.093  m 0.9966  ctx  73 tgt  42  5.49 it/s
+step    7450/50000  loss 0.089241  lr 2.98e-04  wd 0.094  m 0.9966  ctx  65 tgt  48  5.50 it/s
+step    7500/50000  loss 0.088402  lr 2.98e-04  wd 0.094  m 0.9966  ctx  71 tgt  48  5.50 it/s
+step    7500  feature_std 0.6834  token_std 0.4258  eff_rank 28.3
+step    7550/50000  loss 0.087647  lr 2.98e-04  wd 0.094  m 0.9966  ctx  71 tgt  42  5.51 it/s
+step    7600/50000  loss 0.088430  lr 2.98e-04  wd 0.095  m 0.9966  ctx  65 tgt  56  5.51 it/s
+step    7650/50000  loss 0.087296  lr 2.97e-04  wd 0.095  m 0.9966  ctx  68 tgt  42  5.51 it/s
+step    7700/50000  loss 0.087698  lr 2.97e-04  wd 0.095  m 0.9966  ctx  75 tgt  42  5.52 it/s
+step    7750/50000  loss 0.088208  lr 2.97e-04  wd 0.096  m 0.9966  ctx  69 tgt  48  5.52 it/s
+step    7800/50000  loss 0.088610  lr 2.97e-04  wd 0.096  m 0.9966  ctx  71 tgt  48  5.53 it/s
+step    7850/50000  loss 0.088584  lr 2.97e-04  wd 0.097  m 0.9966  ctx  65 tgt  48  5.52 it/s
+step    7900/50000  loss 0.089757  lr 2.97e-04  wd 0.097  m 0.9966  ctx  72 tgt  48  5.52 it/s
+step    7950/50000  loss 0.089321  lr 2.97e-04  wd 0.097  m 0.9966  ctx  65 tgt  48  5.53 it/s
+step    8000/50000  loss 0.089649  lr 2.97e-04  wd 0.098  m 0.9966  ctx  89 tgt  36  5.53 it/s
+step    8000  feature_std 0.6674  token_std 0.4287  eff_rank 30.4
+  task_4     R2 +0.7700  [5 folds]
+  task_5     R2 +0.9381  [5 folds]
+  task_7     R2 +0.9548  [5 folds]
+step    8000  val jepa 0.087671  probe mean R2 0.8876  <- best
+step    8050/50000  loss 0.089841  lr 2.97e-04  wd 0.098  m 0.9966  ctx  68 tgt  48  5.37 it/s
+step    8100/50000  loss 0.089582  lr 2.97e-04  wd 0.098  m 0.9966  ctx  73 tgt  42  5.38 it/s
+step    8150/50000  loss 0.089700  lr 2.96e-04  wd 0.099  m 0.9967  ctx  81 tgt  42  5.39 it/s
+step    8200/50000  loss 0.089213  lr 2.96e-04  wd 0.099  m 0.9967  ctx  66 tgt  48  5.39 it/s
+step    8250/50000  loss 0.090175  lr 2.96e-04  wd 0.099  m 0.9967  ctx  69 tgt  49  5.40 it/s
+step    8300/50000  loss 0.089984  lr 2.96e-04  wd 0.100  m 0.9967  ctx  66 tgt  49  5.40 it/s
+step    8350/50000  loss 0.088999  lr 2.96e-04  wd 0.100  m 0.9967  ctx  65 tgt  49  5.41 it/s
+step    8400/50000  loss 0.089202  lr 2.96e-04  wd 0.100  m 0.9967  ctx  67 tgt  48  5.41 it/s
+step    8450/50000  loss 0.091234  lr 2.96e-04  wd 0.101  m 0.9967  ctx  65 tgt  48  5.41 it/s
+step    8500/50000  loss 0.090668  lr 2.96e-04  wd 0.101  m 0.9967  ctx  78 tgt  42  5.42 it/s
+step    8500  feature_std 0.6693  token_std 0.4266  eff_rank 31.4
+step    8550/50000  loss 0.090533  lr 2.95e-04  wd 0.102  m 0.9967  ctx  74 tgt  42  5.42 it/s
+step    8600/50000  loss 0.090156  lr 2.95e-04  wd 0.102  m 0.9967  ctx  66 tgt  48  5.42 it/s
+step    8650/50000  loss 0.090868  lr 2.95e-04  wd 0.102  m 0.9967  ctx  70 tgt  42  5.42 it/s
+step    8700/50000  loss 0.090470  lr 2.95e-04  wd 0.103  m 0.9967  ctx  76 tgt  42  5.43 it/s
+step    8750/50000  loss 0.089355  lr 2.95e-04  wd 0.103  m 0.9967  ctx  78 tgt  40  5.43 it/s
+step    8800/50000  loss 0.090668  lr 2.95e-04  wd 0.103  m 0.9967  ctx  67 tgt  48  5.43 it/s
+step    8850/50000  loss 0.090906  lr 2.95e-04  wd 0.104  m 0.9967  ctx  69 tgt  42  5.44 it/s
+step    8900/50000  loss 0.091697  lr 2.94e-04  wd 0.104  m 0.9967  ctx  76 tgt  42  5.44 it/s
+step    8950/50000  loss 0.091190  lr 2.94e-04  wd 0.104  m 0.9967  ctx  65 tgt  49  5.44 it/s
+step    9000/50000  loss 0.091085  lr 2.94e-04  wd 0.105  m 0.9967  ctx  78 tgt  42  5.45 it/s
+step    9000  feature_std 0.6680  token_std 0.4282  eff_rank 32.6
+step    9050/50000  loss 0.092790  lr 2.94e-04  wd 0.105  m 0.9967  ctx  67 tgt  48  5.45 it/s
+step    9100/50000  loss 0.092313  lr 2.94e-04  wd 0.106  m 0.9967  ctx  66 tgt  49  5.45 it/s
+step    9150/50000  loss 0.091988  lr 2.94e-04  wd 0.106  m 0.9967  ctx  74 tgt  42  5.46 it/s
+step    9200/50000  loss 0.091142  lr 2.94e-04  wd 0.106  m 0.9967  ctx  79 tgt  40  5.46 it/s
+step    9250/50000  loss 0.092647  lr 2.93e-04  wd 0.107  m 0.9967  ctx  68 tgt  49  5.46 it/s
+step    9300/50000  loss 0.092923  lr 2.93e-04  wd 0.107  m 0.9967  ctx  76 tgt  40  5.47 it/s
+step    9350/50000  loss 0.092223  lr 2.93e-04  wd 0.107  m 0.9967  ctx  67 tgt  48  5.47 it/s
+step    9400/50000  loss 0.092626  lr 2.93e-04  wd 0.108  m 0.9968  ctx  69 tgt  48  5.47 it/s
+step    9450/50000  loss 0.092915  lr 2.93e-04  wd 0.108  m 0.9968  ctx  69 tgt  42  5.47 it/s
+step    9500/50000  loss 0.091515  lr 2.93e-04  wd 0.108  m 0.9968  ctx  75 tgt  42  5.48 it/s
+step    9500  feature_std 0.6601  token_std 0.4308  eff_rank 35.5
+step    9550/50000  loss 0.092219  lr 2.93e-04  wd 0.109  m 0.9968  ctx  73 tgt  48  5.48 it/s
+step    9600/50000  loss 0.093447  lr 2.92e-04  wd 0.109  m 0.9968  ctx  77 tgt  42  5.48 it/s
+step    9650/50000  loss 0.091897  lr 2.92e-04  wd 0.109  m 0.9968  ctx  77 tgt  42  5.49 it/s
+step    9700/50000  loss 0.090769  lr 2.92e-04  wd 0.110  m 0.9968  ctx  75 tgt  42  5.49 it/s
+step    9750/50000  loss 0.092336  lr 2.92e-04  wd 0.110  m 0.9968  ctx  89 tgt  35  5.49 it/s
+step    9800/50000  loss 0.093489  lr 2.92e-04  wd 0.111  m 0.9968  ctx  78 tgt  40  5.49 it/s
+step    9850/50000  loss 0.093912  lr 2.92e-04  wd 0.111  m 0.9968  ctx  65 tgt  48  5.50 it/s
+step    9900/50000  loss 0.092329  lr 2.91e-04  wd 0.111  m 0.9968  ctx  65 tgt  49  5.50 it/s
+step    9950/50000  loss 0.091936  lr 2.91e-04  wd 0.112  m 0.9968  ctx  72 tgt  42  5.50 it/s
+step   10000/50000  loss 0.092352  lr 2.91e-04  wd 0.112  m 0.9968  ctx  85 tgt  35  5.50 it/s
+step   10000  feature_std 0.6469  token_std 0.4228  eff_rank 35.3
+  task_4     R2 +0.7877  [5 folds]
+  task_5     R2 +0.9413  [5 folds]
+  task_7     R2 +0.9591  [5 folds]
+step   10000  val jepa 0.089773  probe mean R2 0.8960  <- best
+step   10050/50000  loss 0.093098  lr 2.91e-04  wd 0.112  m 0.9968  ctx  74 tgt  48  5.37 it/s
+step   10100/50000  loss 0.092320  lr 2.91e-04  wd 0.113  m 0.9968  ctx  91 tgt  35  5.38 it/s
+step   10150/50000  loss 0.092128  lr 2.90e-04  wd 0.113  m 0.9968  ctx  75 tgt  48  5.39 it/s
+step   10200/50000  loss 0.091874  lr 2.90e-04  wd 0.113  m 0.9968  ctx  81 tgt  42  5.39 it/s
+step   10250/50000  loss 0.091790  lr 2.90e-04  wd 0.114  m 0.9968  ctx  72 tgt  42  5.39 it/s
+step   10300/50000  loss 0.091994  lr 2.90e-04  wd 0.114  m 0.9968  ctx  65 tgt  48  5.39 it/s
+step   10350/50000  loss 0.091471  lr 2.90e-04  wd 0.115  m 0.9968  ctx  65 tgt  48  5.40 it/s
+step   10400/50000  loss 0.092522  lr 2.90e-04  wd 0.115  m 0.9968  ctx  69 tgt  42  5.40 it/s
+step   10450/50000  loss 0.092658  lr 2.89e-04  wd 0.115  m 0.9968  ctx  72 tgt  42  5.40 it/s
+step   10500/50000  loss 0.092812  lr 2.89e-04  wd 0.116  m 0.9968  ctx  68 tgt  48  5.41 it/s
+step   10500  feature_std 0.6497  token_std 0.4291  eff_rank 36.3
+step   10550/50000  loss 0.093507  lr 2.89e-04  wd 0.116  m 0.9968  ctx  70 tgt  49  5.41 it/s
+step   10600/50000  loss 0.091688  lr 2.89e-04  wd 0.116  m 0.9968  ctx  74 tgt  42  5.42 it/s
+step   10650/50000  loss 0.092778  lr 2.89e-04  wd 0.117  m 0.9969  ctx  69 tgt  42  5.42 it/s
+step   10700/50000  loss 0.093553  lr 2.88e-04  wd 0.117  m 0.9969  ctx  73 tgt  42  5.42 it/s
+step   10750/50000  loss 0.093891  lr 2.88e-04  wd 0.117  m 0.9969  ctx  78 tgt  42  5.43 it/s
+step   10800/50000  loss 0.092989  lr 2.88e-04  wd 0.118  m 0.9969  ctx  65 tgt  54  5.43 it/s
+step   10850/50000  loss 0.093989  lr 2.88e-04  wd 0.118  m 0.9969  ctx  66 tgt  49  5.43 it/s
+step   10900/50000  loss 0.093535  lr 2.88e-04  wd 0.118  m 0.9969  ctx  72 tgt  42  5.44 it/s
+step   10950/50000  loss 0.094323  lr 2.87e-04  wd 0.119  m 0.9969  ctx  67 tgt  48  5.43 it/s
+step   11000/50000  loss 0.094149  lr 2.87e-04  wd 0.119  m 0.9969  ctx  78 tgt  42  5.44 it/s
+step   11000  feature_std 0.6397  token_std 0.4272  eff_rank 38.4
+step   11050/50000  loss 0.094561  lr 2.87e-04  wd 0.120  m 0.9969  ctx  94 tgt  36  5.44 it/s
+step   11100/50000  loss 0.093574  lr 2.87e-04  wd 0.120  m 0.9969  ctx  72 tgt  42  5.44 it/s
+step   11150/50000  loss 0.094638  lr 2.86e-04  wd 0.120  m 0.9969  ctx  65 tgt  49  5.45 it/s
+step   11200/50000  loss 0.094709  lr 2.86e-04  wd 0.121  m 0.9969  ctx  81 tgt  36  5.45 it/s
+step   11250/50000  loss 0.095017  lr 2.86e-04  wd 0.121  m 0.9969  ctx  65 tgt  48  5.45 it/s
+step   11300/50000  loss 0.094656  lr 2.86e-04  wd 0.121  m 0.9969  ctx  72 tgt  42  5.46 it/s
+step   11350/50000  loss 0.094022  lr 2.86e-04  wd 0.122  m 0.9969  ctx  73 tgt  48  5.46 it/s
+step   11400/50000  loss 0.094712  lr 2.85e-04  wd 0.122  m 0.9969  ctx  72 tgt  42  5.46 it/s
+step   11450/50000  loss 0.094439  lr 2.85e-04  wd 0.122  m 0.9969  ctx  79 tgt  42  5.46 it/s
+step   11500/50000  loss 0.095265  lr 2.85e-04  wd 0.123  m 0.9969  ctx  94 tgt  35  5.47 it/s
+step   11500  feature_std 0.6396  token_std 0.4327  eff_rank 40.5
+step   11550/50000  loss 0.094575  lr 2.85e-04  wd 0.123  m 0.9969  ctx  77 tgt  42  5.47 it/s
+step   11600/50000  loss 0.096199  lr 2.84e-04  wd 0.124  m 0.9969  ctx  85 tgt  40  5.47 it/s
+step   11650/50000  loss 0.094011  lr 2.84e-04  wd 0.124  m 0.9969  ctx  81 tgt  42  5.47 it/s
+step   11700/50000  loss 0.094626  lr 2.84e-04  wd 0.124  m 0.9969  ctx  73 tgt  42  5.48 it/s
+step   11750/50000  loss 0.093985  lr 2.84e-04  wd 0.125  m 0.9969  ctx  69 tgt  42  5.47 it/s
+step   11800/50000  loss 0.094853  lr 2.83e-04  wd 0.125  m 0.9969  ctx  72 tgt  48  5.48 it/s
+step   11850/50000  loss 0.095497  lr 2.83e-04  wd 0.125  m 0.9969  ctx  67 tgt  49  5.48 it/s
+step   11900/50000  loss 0.095258  lr 2.83e-04  wd 0.126  m 0.9970  ctx  71 tgt  49  5.48 it/s
+step   11950/50000  loss 0.093946  lr 2.83e-04  wd 0.126  m 0.9970  ctx  68 tgt  42  5.49 it/s
+step   12000/50000  loss 0.094667  lr 2.83e-04  wd 0.126  m 0.9970  ctx  69 tgt  42  5.49 it/s
+step   12000  feature_std 0.6356  token_std 0.4363  eff_rank 41.5
+  task_4     R2 +0.7835  [5 folds]
+  task_5     R2 +0.9423  [5 folds]
+  task_7     R2 +0.9624  [5 folds]
+step   12000  val jepa 0.090034  probe mean R2 0.8961  <- best
+step   12050/50000  loss 0.095521  lr 2.82e-04  wd 0.127  m 0.9970  ctx  65 tgt  49  5.37 it/s
+step   12100/50000  loss 0.095579  lr 2.82e-04  wd 0.127  m 0.9970  ctx  78 tgt  42  5.39 it/s
+step   12150/50000  loss 0.095062  lr 2.82e-04  wd 0.127  m 0.9970  ctx  66 tgt  48  5.39 it/s
+step   12200/50000  loss 0.095345  lr 2.82e-04  wd 0.128  m 0.9970  ctx  82 tgt  42  5.39 it/s
+step   12250/50000  loss 0.095131  lr 2.81e-04  wd 0.128  m 0.9970  ctx  70 tgt  49  5.39 it/s
+step   12300/50000  loss 0.094435  lr 2.81e-04  wd 0.129  m 0.9970  ctx  74 tgt  42  5.40 it/s
+step   12350/50000  loss 0.096148  lr 2.81e-04  wd 0.129  m 0.9970  ctx  68 tgt  49  5.40 it/s
+step   12400/50000  loss 0.094602  lr 2.80e-04  wd 0.129  m 0.9970  ctx  66 tgt  49  5.40 it/s
+step   12450/50000  loss 0.095008  lr 2.80e-04  wd 0.130  m 0.9970  ctx  81 tgt  36  5.40 it/s
+step   12500/50000  loss 0.094796  lr 2.80e-04  wd 0.130  m 0.9970  ctx  74 tgt  40  5.40 it/s
+step   12500  feature_std 0.6249  token_std 0.4437  eff_rank 42.7
+step   12550/50000  loss 0.095993  lr 2.80e-04  wd 0.130  m 0.9970  ctx  68 tgt  48  5.41 it/s
+step   12600/50000  loss 0.095071  lr 2.79e-04  wd 0.131  m 0.9970  ctx  86 tgt  36  5.41 it/s
+step   12650/50000  loss 0.095067  lr 2.79e-04  wd 0.131  m 0.9970  ctx  68 tgt  42  5.41 it/s
+step   12700/50000  loss 0.095127  lr 2.79e-04  wd 0.131  m 0.9970  ctx  70 tgt  42  5.42 it/s
+step   12750/50000  loss 0.094852  lr 2.79e-04  wd 0.132  m 0.9970  ctx  72 tgt  48  5.42 it/s
+step   12800/50000  loss 0.095057  lr 2.78e-04  wd 0.132  m 0.9970  ctx  73 tgt  42  5.42 it/s
+step   12850/50000  loss 0.096200  lr 2.78e-04  wd 0.133  m 0.9970  ctx  71 tgt  48  5.42 it/s
+step   12900/50000  loss 0.094924  lr 2.78e-04  wd 0.133  m 0.9970  ctx  69 tgt  48  5.43 it/s
+step   12950/50000  loss 0.095206  lr 2.78e-04  wd 0.133  m 0.9970  ctx  75 tgt  42  5.43 it/s
+step   13000/50000  loss 0.093990  lr 2.77e-04  wd 0.134  m 0.9970  ctx  69 tgt  42  5.43 it/s
+step   13000  feature_std 0.6295  token_std 0.4367  eff_rank 42.8
+step   13050/50000  loss 0.094682  lr 2.77e-04  wd 0.134  m 0.9970  ctx  66 tgt  49  5.44 it/s
+step   13100/50000  loss 0.094675  lr 2.77e-04  wd 0.134  m 0.9970  ctx  96 tgt  35  5.44 it/s
+step   13150/50000  loss 0.093741  lr 2.76e-04  wd 0.135  m 0.9971  ctx  73 tgt  40  5.44 it/s
+step   13200/50000  loss 0.093639  lr 2.76e-04  wd 0.135  m 0.9971  ctx  67 tgt  42  5.44 it/s
+step   13250/50000  loss 0.095259  lr 2.76e-04  wd 0.135  m 0.9971  ctx  66 tgt  48  5.44 it/s
+step   13300/50000  loss 0.094858  lr 2.76e-04  wd 0.136  m 0.9971  ctx  66 tgt  56  5.44 it/s
+step   13350/50000  loss 0.094327  lr 2.75e-04  wd 0.136  m 0.9971  ctx  65 tgt  49  5.44 it/s
+step   13400/50000  loss 0.094590  lr 2.75e-04  wd 0.136  m 0.9971  ctx  67 tgt  48  5.45 it/s
+step   13450/50000  loss 0.095560  lr 2.75e-04  wd 0.137  m 0.9971  ctx  66 tgt  48  5.45 it/s
+step   13500/50000  loss 0.095583  lr 2.74e-04  wd 0.137  m 0.9971  ctx  75 tgt  42  5.45 it/s
+step   13500  feature_std 0.6292  token_std 0.4365  eff_rank 44.4
+step   13550/50000  loss 0.094286  lr 2.74e-04  wd 0.138  m 0.9971  ctx  70 tgt  49  5.46 it/s
+step   13600/50000  loss 0.094318  lr 2.74e-04  wd 0.138  m 0.9971  ctx  69 tgt  48  5.46 it/s
+step   13650/50000  loss 0.095252  lr 2.74e-04  wd 0.138  m 0.9971  ctx  65 tgt  48  5.46 it/s
+step   13700/50000  loss 0.095030  lr 2.73e-04  wd 0.139  m 0.9971  ctx  72 tgt  42  5.46 it/s
+step   13750/50000  loss 0.095179  lr 2.73e-04  wd 0.139  m 0.9971  ctx  71 tgt  48  5.47 it/s
+step   13800/50000  loss 0.094914  lr 2.73e-04  wd 0.139  m 0.9971  ctx  77 tgt  42  5.47 it/s
+step   13850/50000  loss 0.095409  lr 2.72e-04  wd 0.140  m 0.9971  ctx  89 tgt  35  5.47 it/s
+step   13900/50000  loss 0.095088  lr 2.72e-04  wd 0.140  m 0.9971  ctx  80 tgt  42  5.47 it/s
+step   13950/50000  loss 0.095457  lr 2.72e-04  wd 0.140  m 0.9971  ctx  65 tgt  49  5.47 it/s
+step   14000/50000  loss 0.095874  lr 2.71e-04  wd 0.141  m 0.9971  ctx  68 tgt  49  5.48 it/s
+step   14000  feature_std 0.6264  token_std 0.4435  eff_rank 46.5
+  task_4     R2 +0.7820  [5 folds]
+  task_5     R2 +0.9428  [5 folds]
+  task_7     R2 +0.9637  [5 folds]
+step   14000  val jepa 0.090680  probe mean R2 0.8962  <- best
+step   14050/50000  loss 0.095682  lr 2.71e-04  wd 0.141  m 0.9971  ctx  68 tgt  48  5.38 it/s
+step   14100/50000  loss 0.095187  lr 2.71e-04  wd 0.142  m 0.9971  ctx  75 tgt  42  5.38 it/s
+step   14150/50000  loss 0.095156  lr 2.71e-04  wd 0.142  m 0.9971  ctx  77 tgt  42  5.38 it/s
+step   14200/50000  loss 0.094859  lr 2.70e-04  wd 0.142  m 0.9971  ctx  72 tgt  42  5.38 it/s
+step   14250/50000  loss 0.094887  lr 2.70e-04  wd 0.143  m 0.9971  ctx  65 tgt  48  5.39 it/s
+step   14300/50000  loss 0.094734  lr 2.70e-04  wd 0.143  m 0.9971  ctx  66 tgt  48  5.39 it/s
+step   14350/50000  loss 0.095302  lr 2.69e-04  wd 0.143  m 0.9971  ctx  66 tgt  48  5.39 it/s
+step   14400/50000  loss 0.094299  lr 2.69e-04  wd 0.144  m 0.9972  ctx  86 tgt  36  5.40 it/s
+step   14450/50000  loss 0.094849  lr 2.69e-04  wd 0.144  m 0.9972  ctx  71 tgt  42  5.40 it/s
+step   14500/50000  loss 0.094891  lr 2.68e-04  wd 0.144  m 0.9972  ctx  65 tgt  48  5.40 it/s
+step   14500  feature_std 0.6217  token_std 0.4421  eff_rank 46.7
+step   14550/50000  loss 0.094736  lr 2.68e-04  wd 0.145  m 0.9972  ctx  66 tgt  48  5.40 it/s
+step   14600/50000  loss 0.095331  lr 2.68e-04  wd 0.145  m 0.9972  ctx  65 tgt  48  5.40 it/s
+step   14650/50000  loss 0.095799  lr 2.67e-04  wd 0.145  m 0.9972  ctx  85 tgt  40  5.41 it/s
+step   14700/50000  loss 0.095015  lr 2.67e-04  wd 0.146  m 0.9972  ctx  71 tgt  42  5.41 it/s
+step   14750/50000  loss 0.094978  lr 2.67e-04  wd 0.146  m 0.9972  ctx  72 tgt  42  5.41 it/s
+step   14800/50000  loss 0.095552  lr 2.66e-04  wd 0.147  m 0.9972  ctx  67 tgt  42  5.41 it/s
+step   14850/50000  loss 0.096474  lr 2.66e-04  wd 0.147  m 0.9972  ctx  68 tgt  48  5.41 it/s
+step   14900/50000  loss 0.095348  lr 2.66e-04  wd 0.147  m 0.9972  ctx  79 tgt  42  5.42 it/s
+step   14950/50000  loss 0.096759  lr 2.65e-04  wd 0.148  m 0.9972  ctx  67 tgt  48  5.42 it/s
+step   15000/50000  loss 0.095567  lr 2.65e-04  wd 0.148  m 0.9972  ctx  68 tgt  48  5.42 it/s
+step   15000  feature_std 0.6350  token_std 0.4473  eff_rank 47.6
+step   15050/50000  loss 0.094794  lr 2.65e-04  wd 0.148  m 0.9972  ctx  69 tgt  49  5.42 it/s
+step   15100/50000  loss 0.095994  lr 2.64e-04  wd 0.149  m 0.9972  ctx  73 tgt  42  5.43 it/s
+step   15150/50000  loss 0.095257  lr 2.64e-04  wd 0.149  m 0.9972  ctx  69 tgt  49  5.43 it/s
+step   15200/50000  loss 0.095813  lr 2.64e-04  wd 0.149  m 0.9972  ctx  65 tgt  49  5.43 it/s
+step   15250/50000  loss 0.094567  lr 2.63e-04  wd 0.150  m 0.9972  ctx  81 tgt  36  5.43 it/s
+step   15300/50000  loss 0.095170  lr 2.63e-04  wd 0.150  m 0.9972  ctx  68 tgt  48  5.43 it/s
+step   15350/50000  loss 0.095681  lr 2.63e-04  wd 0.151  m 0.9972  ctx  65 tgt  48  5.44 it/s
+step   15400/50000  loss 0.096622  lr 2.62e-04  wd 0.151  m 0.9972  ctx  67 tgt  42  5.44 it/s
+step   15450/50000  loss 0.095749  lr 2.62e-04  wd 0.151  m 0.9972  ctx  67 tgt  49  5.44 it/s
+step   15500/50000  loss 0.095480  lr 2.62e-04  wd 0.152  m 0.9972  ctx  70 tgt  42  5.44 it/s
+step   15500  feature_std 0.6300  token_std 0.4506  eff_rank 48.4
+step   15550/50000  loss 0.095174  lr 2.61e-04  wd 0.152  m 0.9972  ctx  74 tgt  48  5.45 it/s
+step   15600/50000  loss 0.095149  lr 2.61e-04  wd 0.152  m 0.9972  ctx  65 tgt  48  5.45 it/s
+step   15650/50000  loss 0.094773  lr 2.61e-04  wd 0.153  m 0.9973  ctx  67 tgt  48  5.45 it/s
+step   15700/50000  loss 0.095280  lr 2.60e-04  wd 0.153  m 0.9973  ctx  67 tgt  49  5.45 it/s
+step   15750/50000  loss 0.095808  lr 2.60e-04  wd 0.153  m 0.9973  ctx  69 tgt  48  5.45 it/s
+step   15800/50000  loss 0.094959  lr 2.59e-04  wd 0.154  m 0.9973  ctx  77 tgt  42  5.45 it/s
+step   15850/50000  loss 0.096940  lr 2.59e-04  wd 0.154  m 0.9973  ctx  77 tgt  42  5.45 it/s
+step   15900/50000  loss 0.095222  lr 2.59e-04  wd 0.154  m 0.9973  ctx  66 tgt  48  5.45 it/s
+step   15950/50000  loss 0.096451  lr 2.58e-04  wd 0.155  m 0.9973  ctx  72 tgt  42  5.46 it/s
+step   16000/50000  loss 0.095843  lr 2.58e-04  wd 0.155  m 0.9973  ctx  66 tgt  48  5.46 it/s
+step   16000  feature_std 0.6229  token_std 0.4579  eff_rank 50.5
+  task_4     R2 +0.7955  [5 folds]
+  task_5     R2 +0.9441  [5 folds]
+  task_7     R2 +0.9643  [5 folds]
+step   16000  val jepa 0.092852  probe mean R2 0.9013  <- best
+step   16050/50000  loss 0.095728  lr 2.58e-04  wd 0.156  m 0.9973  ctx  70 tgt  49  5.37 it/s
+step   16100/50000  loss 0.095669  lr 2.57e-04  wd 0.156  m 0.9973  ctx  70 tgt  48  5.38 it/s
+step   16150/50000  loss 0.096294  lr 2.57e-04  wd 0.156  m 0.9973  ctx  82 tgt  42  5.39 it/s
+step   16200/50000  loss 0.097111  lr 2.57e-04  wd 0.157  m 0.9973  ctx  65 tgt  49  5.39 it/s
+step   16250/50000  loss 0.096844  lr 2.56e-04  wd 0.157  m 0.9973  ctx  78 tgt  42  5.39 it/s
+step   16300/50000  loss 0.097354  lr 2.56e-04  wd 0.157  m 0.9973  ctx  77 tgt  48  5.39 it/s
+step   16350/50000  loss 0.096216  lr 2.55e-04  wd 0.158  m 0.9973  ctx  71 tgt  48  5.39 it/s
+step   16400/50000  loss 0.096898  lr 2.55e-04  wd 0.158  m 0.9973  ctx  93 tgt  35  5.40 it/s
+step   16450/50000  loss 0.097884  lr 2.55e-04  wd 0.158  m 0.9973  ctx  73 tgt  48  5.39 it/s
+step   16500/50000  loss 0.096695  lr 2.54e-04  wd 0.159  m 0.9973  ctx  66 tgt  48  5.40 it/s
+step   16500  feature_std 0.6262  token_std 0.4600  eff_rank 50.8
+step   16550/50000  loss 0.098037  lr 2.54e-04  wd 0.159  m 0.9973  ctx  69 tgt  42  5.40 it/s
+step   16600/50000  loss 0.096851  lr 2.54e-04  wd 0.160  m 0.9973  ctx  87 tgt  40  5.40 it/s
+step   16650/50000  loss 0.097212  lr 2.53e-04  wd 0.160  m 0.9973  ctx  68 tgt  42  5.40 it/s
+step   16700/50000  loss 0.098629  lr 2.53e-04  wd 0.160  m 0.9973  ctx  67 tgt  42  5.41 it/s
+step   16750/50000  loss 0.096309  lr 2.52e-04  wd 0.161  m 0.9973  ctx  65 tgt  49  5.41 it/s
+step   16800/50000  loss 0.098035  lr 2.52e-04  wd 0.161  m 0.9973  ctx  67 tgt  42  5.41 it/s
+step   16850/50000  loss 0.097933  lr 2.52e-04  wd 0.161  m 0.9973  ctx  65 tgt  49  5.41 it/s
+step   16900/50000  loss 0.097362  lr 2.51e-04  wd 0.162  m 0.9974  ctx  81 tgt  42  5.41 it/s
+step   16950/50000  loss 0.099002  lr 2.51e-04  wd 0.162  m 0.9974  ctx  72 tgt  49  5.42 it/s
+step   17000/50000  loss 0.098926  lr 2.51e-04  wd 0.162  m 0.9974  ctx  68 tgt  54  5.42 it/s
+step   17000  feature_std 0.6280  token_std 0.4637  eff_rank 50.8
+step   17050/50000  loss 0.098041  lr 2.50e-04  wd 0.163  m 0.9974  ctx  68 tgt  48  5.42 it/s
+step   17100/50000  loss 0.098693  lr 2.50e-04  wd 0.163  m 0.9974  ctx  74 tgt  42  5.42 it/s
+step   17150/50000  loss 0.098348  lr 2.49e-04  wd 0.163  m 0.9974  ctx  66 tgt  48  5.42 it/s
+step   17200/50000  loss 0.098912  lr 2.49e-04  wd 0.164  m 0.9974  ctx  65 tgt  48  5.42 it/s
+step   17250/50000  loss 0.100160  lr 2.49e-04  wd 0.164  m 0.9974  ctx  87 tgt  40  5.42 it/s
+step   17300/50000  loss 0.099096  lr 2.48e-04  wd 0.165  m 0.9974  ctx  77 tgt  40  5.43 it/s
+step   17350/50000  loss 0.100030  lr 2.48e-04  wd 0.165  m 0.9974  ctx  77 tgt  40  5.43 it/s
+step   17400/50000  loss 0.100104  lr 2.47e-04  wd 0.165  m 0.9974  ctx  66 tgt  42  5.43 it/s
+step   17450/50000  loss 0.099282  lr 2.47e-04  wd 0.166  m 0.9974  ctx  73 tgt  42  5.43 it/s
+step   17500/50000  loss 0.098304  lr 2.47e-04  wd 0.166  m 0.9974  ctx  65 tgt  48  5.43 it/s
+step   17500  feature_std 0.6222  token_std 0.4691  eff_rank 52.0
+step   17550/50000  loss 0.098704  lr 2.46e-04  wd 0.166  m 0.9974  ctx  67 tgt  56  5.44 it/s
+step   17600/50000  loss 0.099846  lr 2.46e-04  wd 0.167  m 0.9974  ctx  70 tgt  48  5.44 it/s
+step   17650/50000  loss 0.099749  lr 2.45e-04  wd 0.167  m 0.9974  ctx  66 tgt  56  5.44 it/s
+step   17700/50000  loss 0.099369  lr 2.45e-04  wd 0.167  m 0.9974  ctx  73 tgt  48  5.44 it/s
+step   17750/50000  loss 0.099404  lr 2.45e-04  wd 0.168  m 0.9974  ctx  66 tgt  48  5.44 it/s
+step   17800/50000  loss 0.100280  lr 2.44e-04  wd 0.168  m 0.9974  ctx  67 tgt  48  5.44 it/s
+step   17850/50000  loss 0.100525  lr 2.44e-04  wd 0.169  m 0.9974  ctx  71 tgt  42  5.45 it/s
+step   17900/50000  loss 0.100691  lr 2.43e-04  wd 0.169  m 0.9974  ctx  75 tgt  42  5.45 it/s
+step   17950/50000  loss 0.100238  lr 2.43e-04  wd 0.169  m 0.9974  ctx  77 tgt  42  5.45 it/s
+step   18000/50000  loss 0.100082  lr 2.43e-04  wd 0.170  m 0.9974  ctx  76 tgt  42  5.45 it/s
+step   18000  feature_std 0.6257  token_std 0.4699  eff_rank 52.8
+  task_4     R2 +0.7988  [5 folds]
+  task_5     R2 +0.9433  [5 folds]
+  task_7     R2 +0.9657  [5 folds]
+step   18000  val jepa 0.097670  probe mean R2 0.9026  <- best
+step   18050/50000  loss 0.100821  lr 2.42e-04  wd 0.170  m 0.9974  ctx  73 tgt  48  5.37 it/s
+step   18100/50000  loss 0.100655  lr 2.42e-04  wd 0.170  m 0.9974  ctx  66 tgt  42  5.38 it/s
+step   18150/50000  loss 0.100968  lr 2.41e-04  wd 0.171  m 0.9975  ctx  65 tgt  48  5.38 it/s
+step   18200/50000  loss 0.102011  lr 2.41e-04  wd 0.171  m 0.9975  ctx  68 tgt  48  5.39 it/s
+step   18250/50000  loss 0.101838  lr 2.40e-04  wd 0.171  m 0.9975  ctx  65 tgt  48  5.39 it/s
+step   18300/50000  loss 0.100590  lr 2.40e-04  wd 0.172  m 0.9975  ctx  66 tgt  56  5.39 it/s
+step   18350/50000  loss 0.102113  lr 2.40e-04  wd 0.172  m 0.9975  ctx  72 tgt  42  5.39 it/s
+step   18400/50000  loss 0.102690  lr 2.39e-04  wd 0.172  m 0.9975  ctx  69 tgt  48  5.39 it/s
+step   18450/50000  loss 0.103743  lr 2.39e-04  wd 0.173  m 0.9975  ctx  79 tgt  42  5.39 it/s
+step   18500/50000  loss 0.103698  lr 2.38e-04  wd 0.173  m 0.9975  ctx  76 tgt  42  5.39 it/s
+step   18500  feature_std 0.6333  token_std 0.4798  eff_rank 54.0
+step   18550/50000  loss 0.102563  lr 2.38e-04  wd 0.174  m 0.9975  ctx  78 tgt  40  5.40 it/s
+step   18600/50000  loss 0.103860  lr 2.38e-04  wd 0.174  m 0.9975  ctx  73 tgt  48  5.40 it/s
+step   18650/50000  loss 0.102630  lr 2.37e-04  wd 0.174  m 0.9975  ctx  79 tgt  42  5.40 it/s
+step   18700/50000  loss 0.103010  lr 2.37e-04  wd 0.175  m 0.9975  ctx  66 tgt  48  5.40 it/s
+step   18750/50000  loss 0.102846  lr 2.36e-04  wd 0.175  m 0.9975  ctx  75 tgt  42  5.40 it/s
+step   18800/50000  loss 0.103091  lr 2.36e-04  wd 0.175  m 0.9975  ctx  67 tgt  49  5.40 it/s
+step   18850/50000  loss 0.103353  lr 2.35e-04  wd 0.176  m 0.9975  ctx  66 tgt  48  5.40 it/s
+step   18900/50000  loss 0.104321  lr 2.35e-04  wd 0.176  m 0.9975  ctx  73 tgt  42  5.41 it/s
+step   18950/50000  loss 0.103335  lr 2.35e-04  wd 0.176  m 0.9975  ctx  86 tgt  35  5.41 it/s
+step   19000/50000  loss 0.103094  lr 2.34e-04  wd 0.177  m 0.9975  ctx  77 tgt  42  5.41 it/s
+step   19000  feature_std 0.6330  token_std 0.4840  eff_rank 53.0
+step   19050/50000  loss 0.103921  lr 2.34e-04  wd 0.177  m 0.9975  ctx  67 tgt  48  5.41 it/s
+step   19100/50000  loss 0.103714  lr 2.33e-04  wd 0.178  m 0.9975  ctx  72 tgt  48  5.41 it/s
+step   19150/50000  loss 0.104289  lr 2.33e-04  wd 0.178  m 0.9975  ctx  69 tgt  42  5.42 it/s
+step   19200/50000  loss 0.104760  lr 2.32e-04  wd 0.178  m 0.9975  ctx  69 tgt  48  5.42 it/s
+step   19250/50000  loss 0.104267  lr 2.32e-04  wd 0.179  m 0.9975  ctx  71 tgt  42  5.42 it/s
+step   19300/50000  loss 0.104644  lr 2.31e-04  wd 0.179  m 0.9975  ctx  93 tgt  35  5.42 it/s
+step   19350/50000  loss 0.103700  lr 2.31e-04  wd 0.179  m 0.9975  ctx  68 tgt  42  5.42 it/s
+step   19400/50000  loss 0.104020  lr 2.31e-04  wd 0.180  m 0.9976  ctx  67 tgt  49  5.43 it/s
+step   19450/50000  loss 0.104501  lr 2.30e-04  wd 0.180  m 0.9976  ctx  88 tgt  35  5.43 it/s
+step   19500/50000  loss 0.104584  lr 2.30e-04  wd 0.180  m 0.9976  ctx  71 tgt  48  5.43 it/s
+step   19500  feature_std 0.6381  token_std 0.4863  eff_rank 54.0
+step   19550/50000  loss 0.103886  lr 2.29e-04  wd 0.181  m 0.9976  ctx  68 tgt  42  5.43 it/s
+step   19600/50000  loss 0.103432  lr 2.29e-04  wd 0.181  m 0.9976  ctx  81 tgt  36  5.43 it/s
+step   19650/50000  loss 0.104236  lr 2.28e-04  wd 0.181  m 0.9976  ctx  66 tgt  42  5.43 it/s
+step   19700/50000  loss 0.103541  lr 2.28e-04  wd 0.182  m 0.9976  ctx  81 tgt  42  5.43 it/s
+step   19750/50000  loss 0.105106  lr 2.28e-04  wd 0.182  m 0.9976  ctx  67 tgt  48  5.43 it/s
+step   19800/50000  loss 0.104067  lr 2.27e-04  wd 0.183  m 0.9976  ctx  74 tgt  42  5.44 it/s
+step   19850/50000  loss 0.104091  lr 2.27e-04  wd 0.183  m 0.9976  ctx  67 tgt  42  5.44 it/s
+step   19900/50000  loss 0.104983  lr 2.26e-04  wd 0.183  m 0.9976  ctx  69 tgt  48  5.44 it/s
+step   19950/50000  loss 0.104256  lr 2.26e-04  wd 0.184  m 0.9976  ctx  80 tgt  40  5.44 it/s
+step   20000/50000  loss 0.104096  lr 2.25e-04  wd 0.184  m 0.9976  ctx  65 tgt  49  5.44 it/s
+step   20000  feature_std 0.6334  token_std 0.4873  eff_rank 54.1
+  task_4     R2 +0.7995  [5 folds]
+  task_5     R2 +0.9463  [5 folds]
+  task_7     R2 +0.9668  [5 folds]
+step   20000  val jepa 0.101779  probe mean R2 0.9042  <- best
+step   20050/50000  loss 0.104420  lr 2.25e-04  wd 0.184  m 0.9976  ctx  66 tgt  49  5.38 it/s
+step   20100/50000  loss 0.104031  lr 2.24e-04  wd 0.185  m 0.9976  ctx  74 tgt  42  5.38 it/s
+step   20150/50000  loss 0.104703  lr 2.24e-04  wd 0.185  m 0.9976  ctx  81 tgt  36  5.39 it/s
+step   20200/50000  loss 0.104809  lr 2.23e-04  wd 0.185  m 0.9976  ctx  73 tgt  42  5.39 it/s
+step   20250/50000  loss 0.104775  lr 2.23e-04  wd 0.186  m 0.9976  ctx  75 tgt  42  5.39 it/s
+step   20300/50000  loss 0.104708  lr 2.23e-04  wd 0.186  m 0.9976  ctx  68 tgt  48  5.39 it/s
+step   20350/50000  loss 0.105667  lr 2.22e-04  wd 0.187  m 0.9976  ctx  89 tgt  35  5.39 it/s
+step   20400/50000  loss 0.105074  lr 2.22e-04  wd 0.187  m 0.9976  ctx  68 tgt  48  5.39 it/s
+step   20450/50000  loss 0.105675  lr 2.21e-04  wd 0.187  m 0.9976  ctx  95 tgt  36  5.39 it/s
+step   20500/50000  loss 0.104651  lr 2.21e-04  wd 0.188  m 0.9976  ctx  67 tgt  42  5.40 it/s
+step   20500  feature_std 0.6364  token_std 0.4940  eff_rank 55.4
+step   20550/50000  loss 0.106224  lr 2.20e-04  wd 0.188  m 0.9976  ctx  76 tgt  42  5.40 it/s
+step   20600/50000  loss 0.106400  lr 2.20e-04  wd 0.188  m 0.9976  ctx  90 tgt  36  5.40 it/s
+step   20650/50000  loss 0.106944  lr 2.19e-04  wd 0.189  m 0.9977  ctx  82 tgt  40  5.40 it/s
+step   20700/50000  loss 0.107064  lr 2.19e-04  wd 0.189  m 0.9977  ctx  76 tgt  42  5.40 it/s
+step   20750/50000  loss 0.106509  lr 2.18e-04  wd 0.189  m 0.9977  ctx  68 tgt  48  5.40 it/s
+step   20800/50000  loss 0.106706  lr 2.18e-04  wd 0.190  m 0.9977  ctx  68 tgt  48  5.41 it/s
+step   20850/50000  loss 0.106050  lr 2.17e-04  wd 0.190  m 0.9977  ctx  69 tgt  48  5.41 it/s
+step   20900/50000  loss 0.106008  lr 2.17e-04  wd 0.190  m 0.9977  ctx  73 tgt  42  5.41 it/s
+step   20950/50000  loss 0.107393  lr 2.17e-04  wd 0.191  m 0.9977  ctx  65 tgt  49  5.41 it/s
+step   21000/50000  loss 0.107117  lr 2.16e-04  wd 0.191  m 0.9977  ctx  80 tgt  42  5.41 it/s
+step   21000  feature_std 0.6401  token_std 0.4981  eff_rank 56.3
+step   21050/50000  loss 0.106969  lr 2.16e-04  wd 0.192  m 0.9977  ctx  66 tgt  48  5.41 it/s
+step   21100/50000  loss 0.107123  lr 2.15e-04  wd 0.192  m 0.9977  ctx  66 tgt  49  5.41 it/s
+step   21150/50000  loss 0.107340  lr 2.15e-04  wd 0.192  m 0.9977  ctx  73 tgt  48  5.41 it/s
+step   21200/50000  loss 0.107296  lr 2.14e-04  wd 0.193  m 0.9977  ctx  73 tgt  42  5.42 it/s
+step   21250/50000  loss 0.107618  lr 2.14e-04  wd 0.193  m 0.9977  ctx  75 tgt  42  5.42 it/s
+step   21300/50000  loss 0.107020  lr 2.13e-04  wd 0.193  m 0.9977  ctx  77 tgt  42  5.42 it/s
+step   21350/50000  loss 0.108220  lr 2.13e-04  wd 0.194  m 0.9977  ctx  66 tgt  49  5.42 it/s
+step   21400/50000  loss 0.107137  lr 2.12e-04  wd 0.194  m 0.9977  ctx  90 tgt  36  5.42 it/s
+step   21450/50000  loss 0.108000  lr 2.12e-04  wd 0.194  m 0.9977  ctx  70 tgt  48  5.43 it/s
+step   21500/50000  loss 0.108777  lr 2.11e-04  wd 0.195  m 0.9977  ctx  93 tgt  36  5.43 it/s
+step   21500  feature_std 0.6464  token_std 0.5009  eff_rank 54.6
+step   21550/50000  loss 0.108169  lr 2.11e-04  wd 0.195  m 0.9977  ctx  75 tgt  42  5.43 it/s
+step   21600/50000  loss 0.108514  lr 2.10e-04  wd 0.196  m 0.9977  ctx  67 tgt  48  5.43 it/s
+step   21650/50000  loss 0.108096  lr 2.10e-04  wd 0.196  m 0.9977  ctx  77 tgt  40  5.43 it/s
+step   21700/50000  loss 0.108892  lr 2.09e-04  wd 0.196  m 0.9977  ctx  81 tgt  42  5.43 it/s
+step   21750/50000  loss 0.108618  lr 2.09e-04  wd 0.197  m 0.9977  ctx  68 tgt  48  5.43 it/s
+step   21800/50000  loss 0.108914  lr 2.08e-04  wd 0.197  m 0.9977  ctx  70 tgt  48  5.44 it/s
+step   21850/50000  loss 0.108416  lr 2.08e-04  wd 0.197  m 0.9977  ctx  91 tgt  36  5.44 it/s
+step   21900/50000  loss 0.109105  lr 2.07e-04  wd 0.198  m 0.9978  ctx  70 tgt  42  5.44 it/s
+step   21950/50000  loss 0.109156  lr 2.07e-04  wd 0.198  m 0.9978  ctx  71 tgt  48  5.44 it/s
+step   22000/50000  loss 0.109894  lr 2.07e-04  wd 0.198  m 0.9978  ctx  73 tgt  40  5.44 it/s
+step   22000  feature_std 0.6432  token_std 0.5106  eff_rank 57.5
+  task_4     R2 +0.8067  [5 folds]
+  task_5     R2 +0.9456  [5 folds]
+  task_7     R2 +0.9673  [5 folds]
+step   22000  val jepa 0.106687  probe mean R2 0.9066  <- best
+step   22050/50000  loss 0.109652  lr 2.06e-04  wd 0.199  m 0.9978  ctx  70 tgt  42  5.38 it/s
+step   22100/50000  loss 0.109731  lr 2.06e-04  wd 0.199  m 0.9978  ctx  71 tgt  42  5.39 it/s
+step   22150/50000  loss 0.108576  lr 2.05e-04  wd 0.199  m 0.9978  ctx  71 tgt  42  5.39 it/s
+step   22200/50000  loss 0.109605  lr 2.05e-04  wd 0.200  m 0.9978  ctx  69 tgt  42  5.39 it/s
+step   22250/50000  loss 0.109811  lr 2.04e-04  wd 0.200  m 0.9978  ctx  67 tgt  48  5.39 it/s
+step   22300/50000  loss 0.110282  lr 2.04e-04  wd 0.201  m 0.9978  ctx  72 tgt  42  5.39 it/s
+step   22350/50000  loss 0.111000  lr 2.03e-04  wd 0.201  m 0.9978  ctx  72 tgt  48  5.39 it/s
+step   22400/50000  loss 0.110932  lr 2.03e-04  wd 0.201  m 0.9978  ctx  69 tgt  42  5.40 it/s
+step   22450/50000  loss 0.110892  lr 2.02e-04  wd 0.202  m 0.9978  ctx  65 tgt  48  5.40 it/s
+step   22500/50000  loss 0.110305  lr 2.02e-04  wd 0.202  m 0.9978  ctx  67 tgt  42  5.40 it/s
+step   22500  feature_std 0.6544  token_std 0.5081  eff_rank 56.7
+step   22550/50000  loss 0.111238  lr 2.01e-04  wd 0.202  m 0.9978  ctx  65 tgt  48  5.40 it/s
+step   22600/50000  loss 0.111709  lr 2.01e-04  wd 0.203  m 0.9978  ctx  67 tgt  48  5.40 it/s
+step   22650/50000  loss 0.111355  lr 2.00e-04  wd 0.203  m 0.9978  ctx  68 tgt  48  5.40 it/s
+step   22700/50000  loss 0.110325  lr 2.00e-04  wd 0.203  m 0.9978  ctx  81 tgt  36  5.40 it/s
+step   22750/50000  loss 0.110271  lr 1.99e-04  wd 0.204  m 0.9978  ctx  69 tgt  42  5.40 it/s
+step   22800/50000  loss 0.110828  lr 1.99e-04  wd 0.204  m 0.9978  ctx  69 tgt  42  5.41 it/s
+step   22850/50000  loss 0.111940  lr 1.98e-04  wd 0.205  m 0.9978  ctx  68 tgt  42  5.41 it/s
+step   22900/50000  loss 0.111440  lr 1.98e-04  wd 0.205  m 0.9978  ctx  83 tgt  40  5.41 it/s
+step   22950/50000  loss 0.111384  lr 1.97e-04  wd 0.205  m 0.9978  ctx  68 tgt  48  5.41 it/s
+step   23000/50000  loss 0.110000  lr 1.97e-04  wd 0.206  m 0.9978  ctx  72 tgt  42  5.41 it/s
+step   23000  feature_std 0.6547  token_std 0.5186  eff_rank 57.6
+step   23050/50000  loss 0.112343  lr 1.96e-04  wd 0.206  m 0.9978  ctx  71 tgt  48  5.41 it/s
+step   23100/50000  loss 0.112286  lr 1.96e-04  wd 0.206  m 0.9978  ctx  84 tgt  40  5.42 it/s
+step   23150/50000  loss 0.112489  lr 1.95e-04  wd 0.207  m 0.9979  ctx  69 tgt  48  5.42 it/s
+step   23200/50000  loss 0.112306  lr 1.95e-04  wd 0.207  m 0.9979  ctx  67 tgt  49  5.42 it/s
+step   23250/50000  loss 0.112330  lr 1.94e-04  wd 0.207  m 0.9979  ctx  66 tgt  49  5.42 it/s
+step   23300/50000  loss 0.113853  lr 1.94e-04  wd 0.208  m 0.9979  ctx  84 tgt  42  5.42 it/s
+step   23350/50000  loss 0.112940  lr 1.93e-04  wd 0.208  m 0.9979  ctx  81 tgt  42  5.42 it/s
+step   23400/50000  loss 0.112447  lr 1.93e-04  wd 0.208  m 0.9979  ctx  79 tgt  42  5.42 it/s
+step   23450/50000  loss 0.112683  lr 1.92e-04  wd 0.209  m 0.9979  ctx  65 tgt  48  5.42 it/s
+step   23500/50000  loss 0.112855  lr 1.92e-04  wd 0.209  m 0.9979  ctx  67 tgt  48  5.43 it/s
+step   23500  feature_std 0.6585  token_std 0.5228  eff_rank 59.6
+step   23550/50000  loss 0.113744  lr 1.91e-04  wd 0.210  m 0.9979  ctx  66 tgt  49  5.43 it/s
+step   23600/50000  loss 0.112185  lr 1.91e-04  wd 0.210  m 0.9979  ctx  68 tgt  42  5.43 it/s
+step   23650/50000  loss 0.113452  lr 1.90e-04  wd 0.210  m 0.9979  ctx  69 tgt  48  5.43 it/s
+step   23700/50000  loss 0.113952  lr 1.90e-04  wd 0.211  m 0.9979  ctx  76 tgt  42  5.43 it/s
+step   23750/50000  loss 0.114745  lr 1.89e-04  wd 0.211  m 0.9979  ctx  77 tgt  42  5.43 it/s
+step   23800/50000  loss 0.114012  lr 1.89e-04  wd 0.211  m 0.9979  ctx  65 tgt  49  5.43 it/s
+step   23850/50000  loss 0.114275  lr 1.88e-04  wd 0.212  m 0.9979  ctx  86 tgt  36  5.44 it/s
+step   23900/50000  loss 0.115260  lr 1.88e-04  wd 0.212  m 0.9979  ctx  69 tgt  49  5.44 it/s
+step   23950/50000  loss 0.114580  lr 1.87e-04  wd 0.212  m 0.9979  ctx  82 tgt  42  5.44 it/s
+step   24000/50000  loss 0.114837  lr 1.87e-04  wd 0.213  m 0.9979  ctx  69 tgt  42  5.44 it/s
+step   24000  feature_std 0.6645  token_std 0.5237  eff_rank 58.0
+  task_4     R2 +0.8041  [5 folds]
+  task_5     R2 +0.9460  [5 folds]
+  task_7     R2 +0.9665  [5 folds]
+step   24000  val jepa 0.112268  probe mean R2 0.9055
+step   24050/50000  loss 0.114473  lr 1.86e-04  wd 0.213  m 0.9979  ctx  70 tgt  49  5.39 it/s
+step   24100/50000  loss 0.116294  lr 1.86e-04  wd 0.214  m 0.9979  ctx  67 tgt  48  5.39 it/s
+step   24150/50000  loss 0.115226  lr 1.85e-04  wd 0.214  m 0.9979  ctx  69 tgt  42  5.39 it/s
+step   24200/50000  loss 0.114877  lr 1.85e-04  wd 0.214  m 0.9979  ctx  66 tgt  49  5.39 it/s
+step   24250/50000  loss 0.115786  lr 1.84e-04  wd 0.215  m 0.9979  ctx  66 tgt  54  5.39 it/s
+step   24300/50000  loss 0.116155  lr 1.84e-04  wd 0.215  m 0.9979  ctx  77 tgt  42  5.39 it/s
+step   24350/50000  loss 0.116877  lr 1.83e-04  wd 0.215  m 0.9979  ctx  72 tgt  42  5.40 it/s
+step   24400/50000  loss 0.116155  lr 1.83e-04  wd 0.216  m 0.9980  ctx  79 tgt  40  5.40 it/s
+step   24450/50000  loss 0.116798  lr 1.82e-04  wd 0.216  m 0.9980  ctx  68 tgt  42  5.40 it/s
+step   24500/50000  loss 0.116701  lr 1.82e-04  wd 0.216  m 0.9980  ctx  67 tgt  48  5.40 it/s
+step   24500  feature_std 0.6668  token_std 0.5289  eff_rank 60.1
+step   24550/50000  loss 0.117576  lr 1.81e-04  wd 0.217  m 0.9980  ctx  65 tgt  49  5.40 it/s
+step   24600/50000  loss 0.117397  lr 1.81e-04  wd 0.217  m 0.9980  ctx  67 tgt  42  5.40 it/s
+step   24650/50000  loss 0.117034  lr 1.80e-04  wd 0.217  m 0.9980  ctx  74 tgt  42  5.40 it/s
+step   24700/50000  loss 0.117841  lr 1.80e-04  wd 0.218  m 0.9980  ctx  85 tgt  35  5.41 it/s
+step   24750/50000  loss 0.117278  lr 1.79e-04  wd 0.218  m 0.9980  ctx  74 tgt  42  5.41 it/s
+step   24800/50000  loss 0.118006  lr 1.79e-04  wd 0.219  m 0.9980  ctx  65 tgt  48  5.41 it/s
+step   24850/50000  loss 0.117131  lr 1.78e-04  wd 0.219  m 0.9980  ctx  67 tgt  48  5.41 it/s
+step   24900/50000  loss 0.117768  lr 1.77e-04  wd 0.219  m 0.9980  ctx  66 tgt  48  5.41 it/s
+step   24950/50000  loss 0.117933  lr 1.77e-04  wd 0.220  m 0.9980  ctx  67 tgt  48  5.41 it/s
+step   25000/50000  loss 0.118801  lr 1.76e-04  wd 0.220  m 0.9980  ctx  69 tgt  48  5.41 it/s
+step   25000  feature_std 0.6632  token_std 0.5350  eff_rank 59.3
+step   25050/50000  loss 0.118650  lr 1.76e-04  wd 0.220  m 0.9980  ctx  78 tgt  42  5.41 it/s
+step   25100/50000  loss 0.118732  lr 1.75e-04  wd 0.221  m 0.9980  ctx  67 tgt  48  5.42 it/s
+step   25150/50000  loss 0.119282  lr 1.75e-04  wd 0.221  m 0.9980  ctx  67 tgt  48  5.42 it/s
+step   25200/50000  loss 0.119602  lr 1.74e-04  wd 0.221  m 0.9980  ctx  68 tgt  48  5.42 it/s
+step   25250/50000  loss 0.119080  lr 1.74e-04  wd 0.222  m 0.9980  ctx  79 tgt  42  5.42 it/s
+step   25300/50000  loss 0.119374  lr 1.73e-04  wd 0.222  m 0.9980  ctx  66 tgt  48  5.42 it/s
+step   25350/50000  loss 0.119867  lr 1.73e-04  wd 0.223  m 0.9980  ctx  71 tgt  42  5.42 it/s
+step   25400/50000  loss 0.119988  lr 1.72e-04  wd 0.223  m 0.9980  ctx  73 tgt  40  5.42 it/s
+step   25450/50000  loss 0.119441  lr 1.72e-04  wd 0.223  m 0.9980  ctx  74 tgt  42  5.43 it/s
+step   25500/50000  loss 0.119512  lr 1.71e-04  wd 0.224  m 0.9980  ctx  77 tgt  42  5.43 it/s
+step   25500  feature_std 0.6768  token_std 0.5384  eff_rank 60.9
+step   25550/50000  loss 0.120455  lr 1.71e-04  wd 0.224  m 0.9980  ctx  78 tgt  40  5.43 it/s
+step   25600/50000  loss 0.120237  lr 1.70e-04  wd 0.224  m 0.9980  ctx  77 tgt  40  5.43 it/s
+step   25650/50000  loss 0.120331  lr 1.70e-04  wd 0.225  m 0.9981  ctx  75 tgt  42  5.43 it/s
+step   25700/50000  loss 0.120470  lr 1.69e-04  wd 0.225  m 0.9981  ctx  68 tgt  42  5.43 it/s
+step   25750/50000  loss 0.121949  lr 1.69e-04  wd 0.225  m 0.9981  ctx  75 tgt  42  5.43 it/s
+step   25800/50000  loss 0.121925  lr 1.68e-04  wd 0.226  m 0.9981  ctx  73 tgt  42  5.43 it/s
+step   25850/50000  loss 0.119953  lr 1.68e-04  wd 0.226  m 0.9981  ctx  77 tgt  42  5.43 it/s
+step   25900/50000  loss 0.120770  lr 1.67e-04  wd 0.226  m 0.9981  ctx  71 tgt  42  5.44 it/s
+step   25950/50000  loss 0.121398  lr 1.67e-04  wd 0.227  m 0.9981  ctx  71 tgt  49  5.44 it/s
+step   26000/50000  loss 0.120139  lr 1.66e-04  wd 0.227  m 0.9981  ctx  71 tgt  42  5.44 it/s
+step   26000  feature_std 0.6868  token_std 0.5499  eff_rank 62.3
+  task_4     R2 +0.8111  [5 folds]
+  task_5     R2 +0.9452  [5 folds]
+  task_7     R2 +0.9672  [5 folds]
+step   26000  val jepa 0.118603  probe mean R2 0.9078  <- best
+step   26050/50000  loss 0.121284  lr 1.66e-04  wd 0.228  m 0.9981  ctx  70 tgt  42  5.39 it/s
+step   26100/50000  loss 0.122017  lr 1.65e-04  wd 0.228  m 0.9981  ctx  72 tgt  42  5.39 it/s
+step   26150/50000  loss 0.122014  lr 1.65e-04  wd 0.228  m 0.9981  ctx  65 tgt  49  5.39 it/s
+step   26200/50000  loss 0.121978  lr 1.64e-04  wd 0.229  m 0.9981  ctx  81 tgt  40  5.40 it/s
+step   26250/50000  loss 0.121887  lr 1.64e-04  wd 0.229  m 0.9981  ctx  73 tgt  48  5.40 it/s
+step   26300/50000  loss 0.123091  lr 1.63e-04  wd 0.229  m 0.9981  ctx  65 tgt  49  5.40 it/s
+step   26350/50000  loss 0.122031  lr 1.63e-04  wd 0.230  m 0.9981  ctx  73 tgt  42  5.40 it/s
+step   26400/50000  loss 0.124016  lr 1.62e-04  wd 0.230  m 0.9981  ctx  65 tgt  49  5.40 it/s
+step   26450/50000  loss 0.123201  lr 1.61e-04  wd 0.230  m 0.9981  ctx  73 tgt  48  5.40 it/s
+step   26500/50000  loss 0.123490  lr 1.61e-04  wd 0.231  m 0.9981  ctx  69 tgt  48  5.40 it/s
+step   26500  feature_std 0.6839  token_std 0.5550  eff_rank 62.5
+step   26550/50000  loss 0.123989  lr 1.60e-04  wd 0.231  m 0.9981  ctx  74 tgt  42  5.41 it/s
+step   26600/50000  loss 0.123245  lr 1.60e-04  wd 0.232  m 0.9981  ctx  68 tgt  48  5.40 it/s
+step   26650/50000  loss 0.124580  lr 1.59e-04  wd 0.232  m 0.9981  ctx  75 tgt  42  5.41 it/s
+step   26700/50000  loss 0.124555  lr 1.59e-04  wd 0.232  m 0.9981  ctx  67 tgt  42  5.41 it/s
+step   26750/50000  loss 0.123527  lr 1.58e-04  wd 0.233  m 0.9981  ctx  85 tgt  40  5.41 it/s
+step   26800/50000  loss 0.123629  lr 1.58e-04  wd 0.233  m 0.9981  ctx  67 tgt  54  5.41 it/s

@@ -1,0 +1,8 @@
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from /home/users/bigmo/.netrc.
+wandb: Currently logged in as: moritz-hauschulz to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.30.0
+wandb: Run data is saved locally in runs/ijepa-b16-cache/wandb/run-20261005_195156-0odync0o
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run ijepa-b16-cache
+wandb: ⭐️ View project at https://wandb.ai/moritz-hauschulz/iecdt-hackathon
+wandb: 🚀 View run at https://wandb.ai/moritz-hauschulz/iecdt-hackathon/runs/0odync0o

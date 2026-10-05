@@ -31,12 +31,12 @@ Conventions:
 | `d256_seed1` | ConvAE | 256 | 5,000 | `training.seed=1` | 0.885 | 0.905 | 0.418 | 0.928 | 0.784 |
 | `d512_w64` | ConvAE | 512 | 5,000 | `model.embedding_dim=512` `model.width=64` | 0.926 | 0.928 | 0.415 | 0.944 | **0.803** |
 | `handcrafted` | 55 per-tile statistics, no training | 55 | — | — | 0.914 | 0.923 | **0.516** | 0.886 | **0.810** |
-| `ae-d512` | ConvAE | 512 | 20,000 | `model.embedding_dim=512` `model.width=64` | | | | | *queued* |
-| `ijepa-s16` | I-JEPA ViT-S/16 | 768 | 50,000 | — (config default) | | | | | *queued* |
-| `ijepa-s16-cache` | I-JEPA ViT-S/16 | 768 | 150,000 | `data.cache=ram_uint8` | | | | | *queued* |
-| `ijepa-ti16-cache` | I-JEPA ViT-Ti/16 | 384 | 200,000 | `model.arch=vit_tiny` `model.pred_emb_dim=96` `data.cache=ram_uint8` | | | | | *queued* |
-| `ijepa-b16-cache` | I-JEPA ViT-B/16 | 1536 | 70,000 | `model.arch=vit_base` `model.pred_emb_dim=384` `model.pred_num_heads=6` `data.cache=ram_uint8` | | | | | *queued* |
-| `ijepa-s16-lr15` | I-JEPA ViT-S/16 | 768 | 150,000 | `data.cache=ram_uint8` `training.lr=1.5e-4` `training.start_lr=3.0e-5` | | | | | *queued* |
+| `ae-d512` | ConvAE | 512 | 20,000 | `model.embedding_dim=512` `model.width=64` | 0.925 | 0.928 | 0.417 | 0.944 | 0.8036 |
+| `ijepa-s16` | I-JEPA ViT-S/16 | 768 | 50,000 | — (config default) | | | | | *running* |
+| `ijepa-s16-cache` | I-JEPA ViT-S/16 | 768 | 150,000 | `data.cache=ram_uint8` | | | | | *running* |
+| `ijepa-ti16-cache` | I-JEPA ViT-Ti/16 | 384 | 200,000 | `model.arch=vit_tiny` `model.pred_emb_dim=96` `data.cache=ram_uint8` | | | | | *running* |
+| `ijepa-b16-cache` | I-JEPA ViT-B/16 | 1536 | 70,000 | `model.arch=vit_base` `model.pred_emb_dim=384` `model.pred_num_heads=6` `data.cache=ram_uint8` | | | | | *running* |
+| `ijepa-s16-lr15` | I-JEPA ViT-S/16 | 768 | 150,000 | `data.cache=ram_uint8` `training.lr=1.5e-4` `training.start_lr=3.0e-5` | | | | | *running* |
 | `fused` | best I-JEPA ⊕ `handcrafted` | +55 | — | `concat_embeddings.py` | | | | | *after the above* |
 
 ## Notes
@@ -70,11 +70,11 @@ Submitted 2026-10-05 18:30 (`./sweep_ijepa.sh`), six jobs, one question each.
 | Job | Run | Question it answers |
 |---|---|---|
 | 57375250 | `ijepa-s16` | Does latent prediction beat reconstruction at all? Also measures the true step rate. |
-| 57375683 | `ijepa-s16-cache` | Sample-limited or capacity-limited? The RAM cache removes the I/O bottleneck. |
-| 57375252 | `ijepa-ti16-cache` | Is ViT-S already too big for 100k tiles? |
-| 57375253 | `ijepa-b16-cache` | The other direction — worth a slot only with the cache on. |
-| 57375684 | `ijepa-s16-lr15` | The least-confident hyperparameter. 3.0e-4 is sqrt-scaled from the reference's batch-2048 peak, which is a rule of thumb, not a measurement. |
-| 57375685 | `ae-d512` | The fair comparator. Every autoencoder row above is at 5,000 steps, so without this "I-JEPA beats the AE" compares against an undertrained baseline. |
+| 57383968 | `ijepa-s16-cache` | Sample-limited or capacity-limited? The RAM cache removes the I/O bottleneck. |
+| 57383969 | `ijepa-ti16-cache` | Is ViT-S already too big for 100k tiles? |
+| 57383970 | `ijepa-b16-cache` | The other direction — worth a slot only with the cache on. |
+| 57383971 | `ijepa-s16-lr15` | The least-confident hyperparameter. 3.0e-4 is sqrt-scaled from the reference's batch-2048 peak, which is a rule of thumb, not a measurement. |
+| 57375685 | `ae-d512` ✓ | The fair comparator. Every autoencoder row above is at 5,000 steps, so without this "I-JEPA beats the AE" compares against an undertrained baseline. |
 
 **gpuhost004 took three of these and failed the GPU preflight on all three**
 (jobs 57375251, 57375254, 57375255, each dead in 2–7 s). `nvidia-smi -L` printed
@@ -86,6 +86,41 @@ handing the slot straight back.
 
 Note the orchid QOS allows **four concurrent jobs per user**, so a six-run
 sweep runs in two waves.
+
+### What the first attempt taught
+
+**`ae-d512` is the most informative completed run, and it is bad news for the
+autoencoder.** At 20,000 steps it scores 0.8036 — against `d512_w64`'s 0.803 at
+*5,000* steps. Four times the training changed nothing, and `task_6` moved from
+0.415 to 0.417, well inside the ±0.017 noise on that task. The autoencoder is
+**saturated, not undertrained**, which removes the obvious objection to the
+I-JEPA comparison and sharpens the hypothesis: 0.803 is what pixel
+reconstruction is worth here, whatever you spend on it.
+
+**All four cached runs died ~4 minutes in, and it was my bug, not the cluster.**
+`quantisation_range` returned a float64 upper bound — `.astype(np.float32)` does
+not rebind the name, so adding the un-cast `lo` back re-promoted it — which made
+every cached image a double and the first conv raise *"Input type (double) and
+bias type (c10::BFloat16) should be the same"*. Three things let it through and
+all three are now fixed:
+
+- **The cache path had no test at all**, and every smoke run used
+  `cache: none`, so a real job was the first thing to exercise it.
+  `tests/test_cache.py` now covers the dtypes, the quantisation fidelity, and a
+  cached batch going through `IJepa.forward` — the exact step that failed.
+- **`share_memory_()` doubled peak RSS.** It allocates a second 39 GB block in
+  /dev/shm and copies into it, and both halves count against the job's `--mem`
+  cgroup: measured at 96.7 GB of a 120 GB limit. Dropped in favour of fork
+  copy-on-write, which gives the same sharing for one copy, with a guard that
+  refuses the `spawn` start method (which would pickle 39 GB per worker).
+- **`_sample_block_mask` could loop forever.** On a grid too small to satisfy
+  `min_keep` it spun with no bound. A hung job is indistinguishable from a slow
+  one and would have consumed its whole allocation silently; it now raises after
+  a bounded number of attempts and names the fix.
+
+Resubmitted as 57383968 / 57383969 / 57383970 / 57383971 at
+`WALLTIME=08:00:00 MAX_SECONDS=23400`, shortened again to clear the 05:00
+maintenance window, and still excluding gpuhost004.
 
 Two scheduling notes, both of which shaped the numbers above:
 

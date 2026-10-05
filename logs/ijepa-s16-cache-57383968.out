@@ -1,0 +1,28 @@
+Job 57383968 (ijepa-s16-cache) on gpuhost005.jc.rl.ac.uk, started Mon  5 Oct 19:48:10 BST 2026
+module=train_ijepa config=configs/ijepa.yaml overrides=--set data.cache=ram_uint8 --set training.steps=150000 --set training.max_seconds=23400
+CUDA_VISIBLE_DEVICES=[0]
+GPU 0: NVIDIA A100-SXM4-40GB (UUID: GPU-4db4f38b-9ad0-cffb-8916-b99bff264d56)
+torch 2.14.0+cu130  cuda 13.0  devices 1
+ok: NVIDIA A100-SXM4-40GB
+preflight passed
+train: 100000 tiles | val: 4000 tiles | 6 channels | 256x256
+sentinel zeros in tile 0: 0.00000%
+building 39.3 GB uint8 RAM cache of 100,000 tiles
+  cached 20,032/100,000 tiles  720 tiles/s
+  cached 40,000/100,000 tiles  747 tiles/s
+  cached 60,032/100,000 tiles  754 tiles/s
+  cached 80,000/100,000 tiles  754 tiles/s
+  cached 100,000/100,000 tiles  758 tiles/s
+  cache built: 39.3 GB in 2.2 min
+model: ijepa/vit_small, 24.70M trainable, embedding_dim 768
+wandb: online run 'ijepa-s16-cache' -> https://wandb.ai/moritz-hauschulz/iecdt-hackathon/runs/knbisf8r
+pooling variants: mean, meanstd, mean4, mean4std
+step      50/150000  loss 0.283840  lr 6.08e-05  wd 0.040  m 0.9960  ctx  68 tgt  42  3.07 it/s
+step     100/150000  loss 0.141261  lr 6.16e-05  wd 0.040  m 0.9960  ctx  89 tgt  35  4.39 it/s
+step     150/150000  loss 0.080705  lr 6.24e-05  wd 0.040  m 0.9960  ctx  72 tgt  42  5.42 it/s
+step     200/150000  loss 0.064357  lr 6.32e-05  wd 0.040  m 0.9960  ctx  69 tgt  42  6.11 it/s
+step     250/150000  loss 0.051293  lr 6.40e-05  wd 0.041  m 0.9960  ctx  67 tgt  48  6.61 it/s
+step     300/150000  loss 0.035993  lr 6.48e-05  wd 0.041  m 0.9960  ctx  68 tgt  42  6.92 it/s
+step     350/150000  loss 0.025764  lr 6.56e-05  wd 0.041  m 0.9960  ctx  65 tgt  48  7.21 it/s
+step     400/150000  loss 0.020687  lr 6.64e-05  wd 0.041  m 0.9960  ctx  69 tgt  49  7.50 it/s
+step     450/150000  loss 0.017777  lr 6.72e-05  wd 0.041  m 0.9960  ctx  93 tgt  36  7.74 it/s
