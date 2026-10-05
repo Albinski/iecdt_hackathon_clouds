@@ -98,10 +98,10 @@ uv run python -m iecdt_hackathon.evaluate \
   --embeddings base=embeddings/val/baseline.npz new=embeddings/val/new.npz
 ```
 
-### 4. Track runs (optional)
+### 4. Track runs
 
 Pass `--wandb` to either training script to log losses, learning rate, weight
-decay, EMA momentum and the in-loop probe score to
+decay, EMA momentum, the in-loop probe score and the collapse diagnostics to
 [Weights & Biases](https://wandb.ai). Install it once and log in:
 
 ```bash
@@ -109,21 +109,17 @@ uv sync --extra wandb
 uv run wandb login          # or export WANDB_API_KEY=...
 ```
 
-The run is named after its `--out` directory and tagged with the objective and
+Orchid compute nodes **do** have outbound internet — verified from gpuhost003:
+DNS resolves `api.wandb.ai`, HTTPS reaches it, `pypi.org` returns 200, and no
+proxy is configured. So `training.wandb_mode: online` is the default and the
+loss is visible in the browser while the job runs. Set it to `offline` if the
+network ever misbehaves; the run then goes to disk and the push command is left
+in `runs/<name>/wandb_sync.txt`.
+
+Runs are named after their `--out` directory and tagged with the objective and
 architecture, so one string identifies the checkpoint, the embedding file and
-the graphs.
-
-**Orchid compute nodes have no outbound network**, so `training.wandb_mode:
-auto` writes the run to disk whenever `SLURM_JOB_ID` is set and leaves the push
-command in `runs/<name>/wandb_sync.txt`. After the job finishes, from a *login*
-node:
-
-```bash
-uv run wandb sync runs/<name>/wandb/offline-run-*
-```
-
-Logging never affects training: a missing package, a missing API key or a failed
-handshake prints one line and the run continues without it.
+the graphs. Logging never affects training: a missing package, a missing API key
+or a failed handshake prints one line and the run continues without it.
 
 ### 5. Submit
 
@@ -225,7 +221,7 @@ iecdt_hackathon/
   models.py             model registry (any model must expose .encode)
   train.py              autoencoder training loop, config-driven
   train_ijepa.py        I-JEPA training loop
-  tracking.py           Weights & Biases setup, offline-safe
+  tracking.py           Weights & Biases setup, with the cluster specifics
   ijepa/
     vision_transformer.py  ViT encoder and predictor, no CLS token
     masking.py             multi-block context/target mask collator
@@ -243,7 +239,7 @@ iecdt_hackathon/
   print_leaderboard.py  current standings in the terminal
 configs/default.yaml    baseline autoencoder configuration
 configs/ijepa.yaml      I-JEPA configuration
-tests/test_ijepa.py     shape, masking and checkpoint-contract tests
+tests/                  shape, masking, checkpoint-contract and logging tests
 run-log.md              every experiment, its parameters and its scores
 sweep_dim.sh            embedding-size sweep
 train_ijepa.sbatch      I-JEPA pretraining on one A100, with a GPU preflight

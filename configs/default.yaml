@@ -44,6 +44,8 @@ training:
   val_every: 1000
   val_batches: 20
   wandb_project: iecdt-hackathon
-  # auto -> offline inside a SLURM job (orchid nodes have no outbound
-  # network), online on a login node. online | offline | disabled to force.
-  wandb_mode: auto
+  # online | offline | disabled. Orchid compute nodes do have outbound
+  # internet (verified from gpuhost003: DNS, HTTPS to api.wandb.ai and
+  # pypi.org all fine, no proxy), so runs appear live. 'offline' writes to
+  # disk and leaves the `wandb sync` command in the run directory.
+  wandb_mode: online

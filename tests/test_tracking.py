@@ -24,20 +24,20 @@ def clean_env(monkeypatch):
     monkeypatch.delenv("SLURM_JOB_ID", raising=False)
 
 
-def test_auto_is_online_outside_slurm():
+def test_auto_is_online():
+    assert tracking.resolve_mode("auto") == "online"
+    assert tracking.resolve_mode(None) == "online"
+
+
+def test_auto_stays_online_inside_slurm(monkeypatch):
+    """Orchid compute nodes have egress, verified by a probe on gpuhost003."""
+    monkeypatch.setenv("SLURM_JOB_ID", "12345")
     assert tracking.resolve_mode("auto") == "online"
 
 
-def test_auto_is_offline_inside_slurm(monkeypatch):
-    """Orchid nodes have no outbound network, so a SLURM job must go to disk."""
-    monkeypatch.setenv("SLURM_JOB_ID", "12345")
-    assert tracking.resolve_mode("auto") == "offline"
-    assert tracking.resolve_mode(None) == "offline"
-
-
-def test_explicit_mode_beats_the_slurm_heuristic(monkeypatch):
-    monkeypatch.setenv("SLURM_JOB_ID", "12345")
-    assert tracking.resolve_mode("online") == "online"
+def test_explicit_mode_is_respected():
+    assert tracking.resolve_mode("offline") == "offline"
+    assert tracking.resolve_mode("disabled") == "disabled"
 
 
 def test_env_beats_the_config(monkeypatch):

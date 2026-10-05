@@ -27,11 +27,9 @@ echo "Job $SLURM_JOB_ID on $(hostname), started $(date)"
 #   uv sync --extra wandb        <- needed once, for the logging
 RUN="uv run --frozen --no-sync"
 
-# Orchid compute nodes have no outbound network, so the run is written to
-# disk and pushed afterwards from a login node. `tracking.resolve_mode`
-# already picks offline whenever SLURM_JOB_ID is set; this makes it explicit
-# and survives anyone copying the command out of this file by hand.
-export WANDB_MODE=offline
+# Orchid compute nodes do have outbound internet (verified on gpuhost003),
+# so wandb runs appear live and need no post-hoc sync. Set
+# WANDB_MODE=offline here if the network ever misbehaves.
 
 # --- GPU preflight ----------------------------------------------------------
 # A previous run died at torch._C._cuda_init() with "No CUDA GPUs are available"
@@ -92,6 +90,11 @@ $RUN python -m iecdt_hackathon.embed \
     --overwrite
 
 echo "Finished $(date)"
-echo
-echo "Push the offline wandb run from a LOGIN node (not here):"
-cat "$RUN_DIR/wandb_sync.txt" 2>/dev/null || echo "  uv run wandb sync $RUN_DIR/wandb/offline-run-*"
+
+# A no-op unless WANDB_MODE was forced to offline above: an online run is
+# already in the browser and needs no push.
+if [ -f "$RUN_DIR/wandb_sync.txt" ]; then
+    echo
+    echo "This run logged offline. Push it from a LOGIN node:"
+    cat "$RUN_DIR/wandb_sync.txt"
+fi

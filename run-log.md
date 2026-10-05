@@ -81,9 +81,6 @@ uv run python -m iecdt_hackathon.evaluate --out results/<name> \
 rather than recomputing it, so without it a retrained model is silently scored
 on its predecessor's embeddings.
 
-Then copy the four per-task numbers and the overall into the table, and push the
-offline wandb run from a **login** node:
-
-```bash
-uv run wandb sync runs/<name>/wandb/offline-run-*
-```
+Then copy the four per-task numbers and the overall into the table. Runs log to
+wandb live by default; only a run forced to `wandb_mode: offline` needs a push
+afterwards, and it leaves the command in `runs/<name>/wandb_sync.txt`.

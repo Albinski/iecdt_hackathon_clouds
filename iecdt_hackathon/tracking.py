@@ -5,11 +5,12 @@ A bare `wandb.init()` loses data or kills the job in three ways on this setup:
 1. **`wandb` is an optional extra** (`pyproject.toml`), so it may simply not be
    installed. A logging import must never take down a 12 h training run, which
    is what `import wandb` at the top of `train.py` would do.
-2. **Orchid compute nodes have no outbound internet.** An online run blocks on
-   the handshake and then fails or silently drops metrics. Runs are written to
-   disk with `WANDB_MODE=offline` instead and pushed afterwards from a login
-   node with `wandb sync`. `mode="auto"` picks offline whenever `SLURM_JOB_ID`
-   is set, which is exactly the case where the network is missing.
+2. **Orchid compute nodes do have outbound internet**, verified from
+   gpuhost003: DNS resolves `api.wandb.ai`, HTTPS reaches it, `pypi.org`
+   returns 200, and no proxy is configured. So `online` is the default and a
+   run is visible in the browser while it trains. `offline` stays available for
+   when the network misbehaves, and leaves the `wandb sync` command in the run
+   directory, since an offline run is worthless until it is pushed.
 3. **Unnamed runs are unusable.** The default is a random name like
    `fiery-sponge-7`, which cannot be matched against a results table keyed by
    run directory. Runs are named after their `--out` directory and tagged with
@@ -27,17 +28,17 @@ SYNC_HINT = "wandb_sync.txt"
 
 
 def resolve_mode(mode):
-    """`auto` -> offline inside a SLURM job, online outside it.
+    """`auto` -> `online`; an explicit `WANDB_MODE` in the environment wins.
 
-    An explicit `WANDB_MODE` in the environment wins over the config, so a
-    one-off `WANDB_MODE=disabled` on the command line works as expected.
+    `auto` once meant "offline inside SLURM", on the assumption that compute
+    nodes had no egress. A probe job on gpuhost003 showed they do, so it no
+    longer needs to. The environment override means a one-off
+    `WANDB_MODE=offline` on the command line still works.
     """
     env = os.environ.get("WANDB_MODE")
     if env:
         return env
-    if mode in (None, "auto"):
-        return "offline" if os.environ.get("SLURM_JOB_ID") else "online"
-    return mode
+    return "online" if mode in (None, "auto") else mode
 
 
 def init(cfg, run_dir, enabled=True, name=None, tags=()):
