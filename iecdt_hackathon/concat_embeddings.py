@@ -25,6 +25,50 @@ import numpy as np
 from .embeddings import load_all, require_same_tiles, save_embeddings
 
 
+
+def require_same_split(submissions, allow_unknown=False):
+    """Refuse to join files from different splits.
+
+    This is the one error this script cannot otherwise catch, and it is silent.
+    `val` and `test` carry the **same** tile indices -- both are 0-9999, so both
+    have the same `tiles_digest` -- which means joining a test embedding to a
+    val feature file passes `require_same_tiles`, passes every validity check,
+    and writes a file that looks perfect. Every row then pairs one tile's
+    learned embedding with a different tile's handcrafted features, and the
+    probes score catastrophically negative rather than merely badly.
+
+    `embed.py` records the split it read in each file's metadata, so a mismatch
+    is detectable whenever both sides carry it. A file with no split recorded
+    cannot be checked, so it is refused by default rather than waved through:
+    the whole point is to fail here instead of on the leaderboard.
+    """
+    splits = {}
+    for name, sub in submissions.items():
+        split = sub.meta.get("split")
+        splits[name] = Path(split).name if split else None
+
+    unknown = [n for n, s in splits.items() if s is None]
+    if unknown and not allow_unknown:
+        raise SystemExit(
+            f"These inputs do not record which split they came from: "
+            f"{', '.join(unknown)}.\n"
+            f"val and test share tile indices 0-9999, so a cross-split join "
+            f"cannot be detected from the tile indices alone and would score "
+            f"catastrophically. Rebuild them with a tool that records the "
+            f"split, or pass --allow-unknown-split if you are certain."
+        )
+
+    distinct = {s for s in splits.values() if s is not None}
+    if len(distinct) > 1:
+        lines = "\n".join(f"  {n:<24} {s or 'unknown'}" for n, s in splits.items())
+        raise SystemExit(
+            f"Refusing to join embeddings from different splits:\n{lines}\n"
+            f"Every input must come from the same split. Embed the split you "
+            f"are submitting with every model, then join those."
+        )
+    return distinct.pop() if distinct else None
+
+
 def concat(submissions):
     """-> (z, tile_index) with every input's columns, in the order given.
 
@@ -49,6 +93,11 @@ def main():
     p.add_argument("--inputs", nargs="+", required=True, metavar="[NAME=]PATH",
                    help="Two or more embedding files to concatenate")
     p.add_argument("--out", required=True, help="Where to write the joined file")
+    p.add_argument(
+        "--allow-unknown-split", action="store_true",
+        help="Join inputs that do not record their split. Only safe if you "
+             "built them yourself and know they match; see require_same_split.",
+    )
     args = p.parse_args()
 
     if len(args.inputs) < 2:
@@ -56,6 +105,9 @@ def main():
 
     submissions = load_all(args.inputs)
     require_same_tiles(submissions)
+    split = require_same_split(submissions, allow_unknown=args.allow_unknown_split)
+    if split:
+        print(f"  all inputs from the {split!r} split", flush=True)
     for name, sub in submissions.items():
         print(f"  {name:<24} {len(sub):>7,} tiles x {sub.dim:>5} dims", flush=True)
 

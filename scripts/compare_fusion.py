@@ -197,6 +197,7 @@ def main():
         z, tile_index = concat({path.stem: emb, args.fuse_with: partner})
         out_path = directory / f"{path.stem}{args.suffix}.npz"
         save_embeddings(out_path, z, tile_index,
+                        split=emb.meta.get("split") or directory.name,
                         sources={path.stem: str(path),
                                  args.fuse_with: str(partner_path)})
         fused = score(f"{path.stem}{args.suffix}", z, tile_index, labels,

@@ -184,7 +184,8 @@ def main():
     assert X.shape[1] == len(names), (X.shape, len(names))
 
     out = Path(args.out) / args.split / f"{args.name}.npz"
-    save_embeddings(out, X, tile_ix, model="physical_v2", features=",".join(names))
+    save_embeddings(out, X, tile_ix, model="physical_v2",
+                    split=data_dir, features=",".join(names))
     print(f"Wrote {out}  ({X.shape[0]} tiles x {X.shape[1]} features)")
 
 
