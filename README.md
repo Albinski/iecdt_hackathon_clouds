@@ -132,8 +132,33 @@ Each team gets four scored submissions per day, and the leaderboard keeps each t
 | `d256_seed1` | default config (seed 1) | 5,000 | 0.885 | 0.905 | 0.418 | 0.928 | 0.784 | Seed noise ≈ 0.008 overall, 0.017 on task 6 |
 | `d512_w64` | `embedding_dim` 512, `width` 64 | 5,000 | 0.926 | 0.928 | 0.415 | 0.944 | 0.803 | Best so far; regression up, task 6 flat. Width and dim changed together |
 | `handcrafted` | 55 per-tile statistics, no training | — | 0.914 | 0.923 | 0.516 | 0.886 | 0.810 | Best overall so far; beats AE on task 6 by +0.10, loses on task 7 |
+| `physical` | 144 physical features (`hand` + 89 new), no training | — | 0.949 | 0.958 | 0.547 | 0.960 | 0.853 | Beats every autoencoder on every task; +0.03 on task 6 over `hand` |
+| `ae512_phys` | `d512_w64` + `physical` stacked (656 dims) | 5,000 | 0.954 | 0.968 | 0.553 | 0.969 | 0.861 | Best on val so far; submitted as submission 1 |
 
 **Dimension sweep takeaways:** Scores rise steadily with embedding size up to 256, with diminishing returns (+0.04 from 32 → 64, about +0.01 from 128 → 256). Widening the encoder to 64 at D = 512 improves the regression tasks well beyond seed noise but leaves task 6 unchanged. Task 6 plateaus at a macro-F1 of about 0.42 for all D ≥ 128, which suggests the reconstruction objective, not the embedding size, is what limits the classification task.
+
+**Physical features takeaways:** Converting radiances to reflectance and brightness temperature, and adding a reflectance × temperature regime histogram, height relative to the local sea surface, cirrus/phase band differences, cloud-object statistics and multiscale texture, lifts every task: 144 untrained features (0.853) beat every autoencoder trained so far. Stacking them with the 512-dim autoencoder adds a further, smaller gain (0.861). Task 6 is still limited by its rare classes: in the combined model class 4 gets 1 of 20 tiles right, class 6 gets 11 of 41 and class 9 gets 17 of 43. Its balanced accuracy is lower than `physical` alone (0.57 vs 0.62), so stacking traded some rare-class recall for accuracy on the common classes.
+
+### Submissions
+
+| # | Date | Embedding | Dims | Test overall (10 tasks) | Rank | Notes |
+|---|---|---|---|---|---|---|
+| 1 | 2026-10-05 | `ae512_physical` (`d512_w64` + `physical`) | 656 | 0.780 | 1 of 3 | First submission |
+
+#### Submission 1: per-task scores
+
+| Task | Metric | Test | Val (5-fold CV) |
+|---|---|---|---|
+| task_1 | R² | 0.932 | hidden |
+| task_2 | macro-F1 | 0.605 | hidden |
+| task_3 | R² | 0.682 | hidden |
+| task_4 | R² | 0.949 | 0.954 |
+| task_5 | R² | 0.968 | 0.968 |
+| task_6 | macro-F1 | 0.541 | 0.553 |
+| task_7 | R² | 0.961 | 0.969 |
+| task_8 | R² | 0.882 | hidden |
+| task_9 | R² | 0.629 | hidden |
+| task_10 | R² | 0.651 | hidden |
 
 ## Repository layout
 
