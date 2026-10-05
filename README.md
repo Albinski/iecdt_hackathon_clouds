@@ -1,186 +1,157 @@
-# IECDT Hackathon: MODIS tile embeddings
+<p align="center">
+  <img src="IE_Hackathon_2026_logo.png" alt="IE Hackathon 2026 logo" width="320">
+</p>
 
-This repository supplies you with the basic functionality to train a convolutional
-auto-encoder on MODIS satellite imagery, extract latent embeddings on a validation set, 
-and evaluate linear probes on four validation tasks.
+<h1 align="center">Cloud embeddings from MODIS</h1>
 
-**Hackathon goal:** Develop your own embedding model which achieves the highest skill
-on extracting cloud properties with a linear probe from the embeddings. This requires 
-you to generate embeddings for the test MODIS tiles and submit them in the form of 
-a `*.npz` file through a mechanism described below. **To be able to make a submission 
-each team needs to send an email to tim.reichelt@physics.ox.ac.uk with the JASMIN
-usernames of all team members and a team name.** 
+<p align="center">
+  Learning general-purpose representations of satellite cloud scenes for the<br>
+  Intelligent Earth CDT Hackathon 2026
+</p>
 
-The code provided in this repository is meant to merely provide a guidance for how 
-to use the supplied data and is quite heavily Claude-generated. I'm expecting that 
-most teams will want to build their own repository for training their models. The 
-key bits of the repository are:
-- The PyTorch dataset `ModisTileDataset` at `iecdt_hackathon/data.py` that describes 
-  how to load the data.
-- The embedding script at `iecdt_hackathon/embed.py` that shows you how to format the 
-  embedding file. If you develop your own model this script won't work anymore but it 
-  shows you how to format the `*.npz` file for submission
-- Evaluation of validation embeddings on 4 validation tasks with `iecdt_hackathon/evaluate.py`.
-- The `submit.sh` file that you'll use to submit your test embeddings for scoring.
+---
 
-## Quickstart
+## About this repository
 
-```bash
-uv sync                                    # or: pip install -e .
-uv run python -m iecdt_hackathon.train     # train the baseline autoencoder
+This is my working repository for the IECDT Hackathon 2026. It started from the organisers' starter code (see [Acknowledgements](#acknowledgements)) and is where I develop, run and keep track of my own embedding models.
 
-ROOT=/gws/ssde/j25b/iecdt/modis_hackathon
+The challenge in one sentence: build a model that turns a 256 × 256 km MODIS satellite tile into a compact vector, such that physical cloud properties can be read off that vector with a **linear** model.
 
-# embed validation split, then evaluate on validation tasks
-uv run python -m iecdt_hackathon.embed \
-    --checkpoint runs/baseline/best.pt \
-    --data-dir $ROOT/val --out embeddings/val 
-uv run python -m iecdt_hackathon.evaluate --embeddings embeddings/val/*.npz
+## The challenge
 
-# embed test split and then submit for evaluation
-uv run python -m iecdt_hackathon.embed \
-    --checkpoint runs/baseline/best.pt \
-    --data-dir $ROOT/test --out embeddings/test --name yourteam
-./submit.sh embeddings/test/yourteam.npz
-```
+**Input.** Aqua/MODIS Level-1B tiles, 256 × 256 pixels at roughly 1 km resolution, with six radiance channels:
 
-## The data
-
-All the data for the hackathon is stored at `/gws/ssde/j25b/iecdt/modis_hackathon`:
-```
-train/       100,000 tiles (2003–2010)
-val/          10,000 tiles (2015-2019)
-test/         10,000 tiles (2020-2025)
-labels/    val_labels.nc 
-stats/     modis_band_stats.json
-```
-
-The `ModisTileDataset` at `iecdt_hackathon/data.py` provides you with a PyTorch 
-`Dataset` class to load the data into a training loop. Each tile is a 256×256 crop 
-of an Aqua/MODIS L1B granule, ~1 km per pixel:
-
-| variable | meaning |
+| Channels | What they see |
 |---|---|
-| `Rad_1`, `Rad_3`, `Rad_4` | visible red / blue / green (0.645, 0.469, 0.555 µm) |
-| `Rad_29`, `Rad_31`, `Rad_32` | thermal infrared (8.55, 11.03, 12.02 µm) |
-| `solar_zenith_angle` | degrees |
-| `land_mask` | 0 = sea, 1 = land |
+| `Rad_1`, `Rad_3`, `Rad_4` | Visible red, blue, green (0.645, 0.469, 0.555 µm): cloud brightness and texture |
+| `Rad_29`, `Rad_31`, `Rad_32` | Thermal infrared (8.55, 11.03, 12.02 µm): cloud-top temperature, and so height |
 
-The six `Rad_{ix}` bands are what your model needs to encode to an embedding.
-You are not required to use `solar_zenith_angle` or `land_mask` but it might provide 
-helpful metadata.
+Each tile also carries `solar_zenith_angle` and a `land_mask`, which models may optionally use.
 
-`ModisTileDataset` min-max normalises each band to roughly [0, 1] using
-`stats/modis_band_stats.json`.
+**Output.** One embedding vector per tile, of any width between 1 and 4,096.
 
-## Generating embeddings
+**Scoring.** For each of ten downstream tasks, a linear probe (linear regression, or logistic regression for the classification task) is fitted on the embeddings with 5-fold cross-validation. Regression tasks are scored by R² and the classification task by macro-F1, and the leaderboard ranks submissions by their mean across tasks.
 
-The `iecdt_hackathon/embed.py` provides an example with how to generate embeddings
-from a checkpoint of the baseline model. For the test tiles this can be done with
+Only four of the ten tasks have published labels, and what each task physically measures is deliberately withheld:
+
+| Task | Type | Notes |
+|---|---|---|
+| `task_4`, `task_5`, `task_7` | Regression | Standardised to zero mean, unit variance; left-skewed |
+| `task_6` | 10-class classification | Highly imbalanced; the four rarest classes make up under 1.5% of tiles |
+| `task_1`–`task_3`, `task_8`–`task_10` | Withheld | Scored on the leaderboard only |
+
+Because most of the leaderboard is hidden, the aim is a general-purpose representation rather than one tuned to the four visible tasks.
+
+## Data
+
+Everything lives on JASMIN in the `iecdt` group workspace:
+
+```
+/gws/ssde/j25b/iecdt/modis_hackathon/
+├── train/        100,000 tiles   2003–2010   (no labels)
+├── val/           10,000 tiles   2015–2019   (labels for tasks 4–7)
+├── test/          10,000 tiles   2020–2025   (embed and submit these)
+├── labels/       val_labels.nc
+└── stats/        modis_band_stats.json      per-band min/max for normalisation
+```
+
+The three splits cover separate time periods, so embeddings need to generalise across years.
+
+## Workflow
+
+### 1. Train
+
+```bash
+uv run python -m iecdt_hackathon.train --out runs/baseline
+```
+
+Any config value can be overridden from the command line:
+
+```bash
+uv run python -m iecdt_hackathon.train --out runs/d128 \
+  --set model.embedding_dim=128 --set training.steps=5000
+```
+
+Training runs for a fixed number of steps on a cosine learning-rate schedule. To shorten a run, lower `training.steps` rather than stopping it partway. The validation loss printed during training is **reconstruction error**, which checks that training is working but is not the leaderboard metric.
+
+### 2. Embed
+
 ```bash
 uv run python -m iecdt_hackathon.embed \
-    --checkpoint runs/baseline/best.pt \
-    --data-dir $ROOT/test --out embeddings/test --name yourteam
+  --checkpoint runs/baseline/best.pt \
+  --data-dir /gws/ssde/j25b/iecdt/modis_hackathon/val \
+  --out embeddings/val --name baseline
 ```
-Note that the script assumes a checkpoint from the baseline auto-encoder architecture 
-in `iecdt_hackathon/train.py`. If you use your own model architecture you need to 
-adapt the embedding script accordingly.
 
-### What the `.npz` has to contain
+`--limit N` embeds only the first N tiles, which is useful for quick checks.
 
-The file is read with `np.load(path, allow_pickle=False)`, so write it with
-`np.savez_compressed`. It must hold two arrays:
+### 3. Evaluate locally
 
-| array | shape | dtype | |
-|---|---|---|---|
-| `embeddings` | `(10000, D)` | float32 | one row per held-out tile (float64 is read too) |
-| `tile_index` | `(10000,)` | int64 | which tile each row belongs to |
-
-and satisfy all of the following. Each one is checked before any probe is
-fitted:
-
-- **Exactly the held-out split: all 10,000 tiles, nothing else.** For `test/`
-  that is `tile_index` covering `0 … 9999` once each. A missing tile is refused
-  (every submission is scored on the same rows, so never pass `--limit` to the
-  file you send), and so is a tile that is not in the split — which is what
-  embedding `val/` by mistake looks like.
-- **`tile_index` is the tile's own index, not the row number.** It is the
-  integer in the tile's filename (`4321.nc` → `4321`), which is what
-  `ModisTileDataset` hands you as `batch["tile_index"]`; so **row order does not matter**.
-- **No repeated index.** A duplicate is the one error that could put a single
-  tile in both a probe's fitting folds and the fold it is scored on, so it is
-  refused outright.
-- **Every value finite.** One `NaN` or `inf` anywhere in `embeddings` and no
-  probe can be fitted.
-- **`1 ≤ D ≤ 4096`**, the same `D` for every row (so `embeddings` is strictly
-  2-D). At the top of that range an "embedding" is a copy of the tile rather
-  than a representation of it.
-- **At most 256 MB on disk.** A 256-dimensional submission is about 10 MB and
-  even a 4,096-dimensional one is under 170 MB, so this only catches mistakes.
-
-### How to submit
-
-You can submit embeddings with the following command:
 ```bash
-./submit.sh embeddings/test/yourteam.npz
+uv run python -m iecdt_hackathon.evaluate --embeddings embeddings/val/baseline.npz
 ```
 
-**You are identified by the account you submit from**, so the filename is ignored. 
-As mentioned at the top tell me every JASMIN account your team will use so that I can
-whitelist these accounts for submission. Submissions from non-whitelisted accounts 
-will fail.
+Several embeddings can be compared side by side using `NAME=PATH` pairs:
 
-Your result is appended to `/gws/ssde/j25b/iecdt/modis_hackathon/submissions/feedback/<your team>.md` and should 
-appear within a few minutes (email me if there are any issues), and the standings are in 
-`/gws/ssde/j25b/iecdt/modis_hackathon/leaderboard/leaderboard.md`. You can write into the drop directory but not read it, so
-nobody sees anyone else's embeddings.
+```bash
+uv run python -m iecdt_hackathon.evaluate \
+  --embeddings base=embeddings/val/baseline.npz new=embeddings/val/new.npz
+```
 
-**Your row is your best submission, not your latest**, a worse attempt is
-reported to you and leaves the standings alone.
+### 4. Submit
 
-**Four scored submissions per team per day**, resetting at midnight UK time and
-counted per team however many of your accounts submit. If an error occurs during the scoring of your 
-submission it won't count towards your submission limit. If a submission is refused, 
-the feedback file should tell you why. Some potential reasons include:
+Embed the **test** split, then submit from a JASMIN **sci server** over SSH.
 
-| | |
+```bash
+uv run python -m iecdt_hackathon.embed \
+  --checkpoint runs/baseline/best.pt \
+  --data-dir /gws/ssde/j25b/iecdt/modis_hackathon/test \
+  --out embeddings/test --name myteam
+
+# then, on a sci server:
+./submit.sh embeddings/test/myteam.npz
+```
+
+Each team gets four scored submissions per day, and the leaderboard keeps each team's best result. A valid submission is a `.npz` containing `embeddings` (shape `(10000, D)`, finite float32) and `tile_index` (shape `(10000,)`, int64), covering every test tile exactly once.
+
+## Experiments
+
+| Script | What it does |
 |---|---|
-| not a `.npz`, or unreadable | check it arrived whole and is the file `embed.py` wrote |
-| does not cover the held-out split | you passed `--limit`, or embedded `val` |
-| too wide | over 4,096 dimensions; pool or project your output |
-| not registered | that account is not on your team's list |
-| out of submissions today | nothing was scored; resubmit after midnight UK time |
+| `sweep_dim.sh` | Trains, embeds and evaluates the baseline autoencoder at embedding sizes 32–512, plus a repeat seed to measure run-to-run noise. Run with `STEPS=5000 nohup ./sweep_dim.sh > sweep_dim.log 2>&1 &` |
 
-### Watching the leaderboard
+### Log
 
-To see the current leaderboard of submissions run:
-```bash
-uv run python -m iecdt_hackathon.print_leaderboard              # both tables
-```
-
-## Scoring locally
-
-Running
-```bash
-uv run python -m iecdt_hackathon.evaluate --embeddings embeddings/val/*.npz
-```
-fits linear probes on your embeddings for 4 different tasks.
-
+| Run | Change from baseline | Steps | task_4 R² | task_5 R² | task_6 F1 | task_7 R² | Notes |
+|---|---|---|---|---|---|---|---|
+| `baseline` | — | 20,000 | | | | | Reference |
+| `dim_sweep` | `embedding_dim` 32–512 | 5,000 | | | | | In progress |
 
 ## Repository layout
 
 ```
 iecdt_hackathon/
-  data.py               ModisTileDataset, build_dataloader
-  models.py             ConvAutoencoder
-  train.py              training loop
-  tasks.py              the downstream task registry
-  embed.py              run your model over a split -> an embedding file
-  embeddings.py         the .npz submission format, and its validity checks
-  evaluate.py           linear probes over an embedding file
-  ranking.py            per-task scores -> one global order
-  tile_layout.py        flat/sharded tile paths
-  print_leaderboard.py  pretty-print the standings in the console
-configs/                training configuration
-submit.sh               copy an embedding file into the drop directory
+  data.py               ModisTileDataset and dataloader
+  models.py             ConvAutoencoder baseline (any model must expose .encode)
+  train.py              training loop, config-driven
+  embed.py              model -> .npz embedding file for a split
+  embeddings.py         submission format and validity checks
+  evaluate.py           linear probes on validation tasks
+  tasks.py              task definitions
+  ranking.py            per-task scores -> leaderboard ranking
+  tile_layout.py        flat or sharded tile paths
+  print_leaderboard.py  current standings in the terminal
+configs/default.yaml    baseline configuration
+sweep_dim.sh            embedding-size sweep
+submit.sh               submit test embeddings to the leaderboard
 ```
+
+## Acknowledgements
+
+The starter code, data pipeline and evaluation framework were written by **Tim Reichelt** (University of Oxford) for the IECDT Hackathon, and are published at [treigerm/iecdt_hackathon_climate](https://github.com/treigerm/iecdt_hackathon_climate). This repository builds on that work.
+
+Compute and storage are provided by [JASMIN](https://jasmin.ac.uk), the UK's collaborative data analysis environment. MODIS data are from NASA's Aqua satellite. The hackathon is part of the Intelligent Earth CDT at the University of Oxford.
+
+## Licence
+
+My own additions are released under the MIT licence; see [LICENSE](LICENSE). The original starter code was published without a licence and remains the copyright of its author; see the note in [LICENSE](LICENSE).
