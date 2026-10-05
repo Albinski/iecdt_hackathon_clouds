@@ -80,7 +80,9 @@ class ConvAutoencoder(nn.Module):
 
 def build_model(name="conv_autoencoder", **kwargs):
     """Factory used by train.py and evaluate.py to rebuild from a checkpoint."""
-    models = {"conv_autoencoder": ConvAutoencoder}
+    from .ijepa.model import IJepa  # local: keeps models.py cheap to import
+
+    models = {"conv_autoencoder": ConvAutoencoder, "ijepa": IJepa}
     if name not in models:
         raise ValueError(f"Unknown model '{name}'; choose from {sorted(models)}")
     return models[name](**kwargs)

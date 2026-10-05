@@ -197,9 +197,19 @@ def collate(batch):
 
 
 def build_dataloader(
-    dataset, batch_size, shuffle, num_workers=8, drop_last=False, seed=0
+    dataset,
+    batch_size,
+    shuffle,
+    num_workers=8,
+    drop_last=False,
+    seed=0,
+    collate_fn=None,
 ):
-    """DataLoader with the settings that keep GWS-backed reads fast."""
+    """DataLoader with the settings that keep GWS-backed reads fast.
+
+    `collate_fn` defaults to `collate`. I-JEPA passes a collator that also
+    samples its patch masks, so these settings stay in one place.
+    """
     generator = torch.Generator()
     generator.manual_seed(seed)
     return torch.utils.data.DataLoader(
@@ -211,6 +221,6 @@ def build_dataloader(
         drop_last=drop_last,
         persistent_workers=num_workers > 0,
         prefetch_factor=4 if num_workers > 0 else None,
-        collate_fn=collate,
+        collate_fn=collate if collate_fn is None else collate_fn,
         generator=generator,
     )

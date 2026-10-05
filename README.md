@@ -119,6 +119,70 @@ Each team gets four scored submissions per day, and the leaderboard keeps each t
 | Script | What it does |
 |---|---|
 | `sweep_dim.sh` | Trains, embeds and evaluates the baseline autoencoder at embedding sizes 32–512, plus a repeat seed to measure run-to-run noise. Run with `STEPS=5000 nohup ./sweep_dim.sh > sweep_dim.log 2>&1 &` |
+| `train_ijepa.sbatch` | Pretrains I-JEPA, scores all four pooling variants on the validation split, then embeds the test split. `sbatch train_ijepa.sbatch` |
+
+### I-JEPA
+
+The dimension sweep below says something specific: the regression tasks keep
+improving with embedding size, but `task_6` plateaus at a macro-F1 of about 0.42
+for every D ≥ 128, and a 55-dimensional *untrained* statistics vector beats the
+autoencoder on it by +0.10. The limit is the objective, not the capacity.
+Reconstruction has to spend capacity on high-frequency radiance detail that a
+scene-type label does not depend on.
+
+[I-JEPA](https://arxiv.org/abs/2301.08243) replaces it with masked prediction in
+latent space. A context encoder sees one large block of patches, an EMA copy of
+itself encodes the whole tile, and a deliberately narrow predictor has to produce
+the *representations* of four held-out target blocks from the context plus their
+positions alone. There is no pixel decoder, so nothing rewards fidelity to
+detail, and no photometric augmentation, which matters here because radiance
+magnitude is the label — band-31 brightness temperature *is* cloud-top height.
+
+```bash
+sbatch train_ijepa.sbatch                      # the full 12 h run
+
+# or interactively, for a two-minute smoke test
+uv run python -m iecdt_hackathon.train_ijepa \
+  --set training.steps=200 --set training.probe_every=100 \
+  --set data.n_val_tiles=500 --out runs/ijepa-smoke
+```
+
+Notes on the implementation, which follows
+[facebookresearch/ijepa](https://github.com/facebookresearch/ijepa):
+
+- **ViT-S/16 on full 256×256 tiles.** 256/16 gives a 16×16 token grid, the same
+  geometry as the paper's 224/14. Training at the probes' own resolution also
+  removes a generalisation gap the autoencoder has to cover, since
+  `configs/default.yaml` trains it on 128 crops.
+- **Positional embeddings are scale-preserving and are not in the
+  `state_dict`.** The reference bicubically resamples its sin-cos table when the
+  token count changes, which normalises position to the field of view — wrong
+  for fixed ~1 km/pixel tiles, where a 256 tile covers four times the ground
+  area of a 128 crop. Here the coordinate is the patch index and the table is
+  generated on demand, so one checkpoint embeds any resolution.
+- **Model selection is a linear probe, not the training loss.** The I-JEPA loss
+  is minimised by representation collapse, so it cannot be used to pick a
+  checkpoint. Every `probe_every` steps the run fits `evaluate.py`'s probes on
+  4,000 labelled validation tiles. It scores only the three regression tasks:
+  `task_6`'s rarest classes have two or three rows in a subset that size, which
+  makes its macro-F1 fold-assignment noise. The full four-task evaluation runs
+  at the end.
+- **One run, four embeddings.** Pooling lives in `model_cfg`, so training ends by
+  writing `best_mean.pt` (D=384), `best_meanstd.pt` (768), `best_mean4.pt`
+  (1536) and `best_mean4std.pt` (3072) from the same weights. `embed.py` loads
+  each unchanged and `evaluate.py` ranks them side by side, so the pooling is
+  measured rather than guessed. `mean+std` is the default: the standard
+  deviation across tokens measures sub-tile heterogeneity, which is what cloud
+  fraction and scene type turn on and what a mean pool discards.
+- **Fusion.** `concat_embeddings.py` joins any two embedding files on
+  `tile_index`. Since the handcrafted statistics and the learned encoder fail in
+  different places (+0.10 on `task_6`, −0.06 on `task_7`), the union is worth
+  measuring:
+  ```bash
+  uv run python -m iecdt_hackathon.concat_embeddings \
+    --inputs embeddings/val/ijepa_meanstd.npz embeddings/val/handcrafted.npz \
+    --out embeddings/val/fused.npz
+  ```
 
 ### Log
 
@@ -132,6 +196,8 @@ Each team gets four scored submissions per day, and the leaderboard keeps each t
 | `d256_seed1` | default config (seed 1) | 5,000 | 0.885 | 0.905 | 0.418 | 0.928 | 0.784 | Seed noise ≈ 0.008 overall, 0.017 on task 6 |
 | `d512_w64` | `embedding_dim` 512, `width` 64 | 5,000 | 0.926 | 0.928 | 0.415 | 0.944 | 0.803 | Best so far; regression up, task 6 flat. Width and dim changed together |
 | `handcrafted` | 55 per-tile statistics, no training | — | 0.914 | 0.923 | 0.516 | 0.886 | 0.810 | Best overall so far; beats AE on task 6 by +0.10, loses on task 7 |
+| `ijepa_meanstd` | I-JEPA ViT-S/16, mean+std pooling, D = 768 | | | | | | | Not yet run |
+| `fused` | `ijepa_meanstd` ⊕ `handcrafted`, D = 823 | | | | | | | Not yet run |
 
 **Dimension sweep takeaways:** Scores rise steadily with embedding size up to 256, with diminishing returns (+0.04 from 32 → 64, about +0.01 from 128 → 256). Widening the encoder to 64 at D = 512 improves the regression tasks well beyond seed noise but leaves task 6 unchanged. Task 6 plateaus at a macro-F1 of about 0.42 for all D ≥ 128, which suggests the reconstruction objective, not the embedding size, is what limits the classification task.
 
@@ -140,17 +206,29 @@ Each team gets four scored submissions per day, and the leaderboard keeps each t
 ```
 iecdt_hackathon/
   data.py               ModisTileDataset and dataloader
-  models.py             ConvAutoencoder baseline (any model must expose .encode)
-  train.py              training loop, config-driven
+  models.py             model registry (any model must expose .encode)
+  train.py              autoencoder training loop, config-driven
+  train_ijepa.py        I-JEPA training loop
+  ijepa/
+    vision_transformer.py  ViT encoder and predictor, no CLS token
+    masking.py             multi-block context/target mask collator
+    transforms.py          the dihedral augmentation, and what is left out
+    schedules.py           LR, weight-decay and EMA schedules
+    cache.py               in-RAM uint8 copy of a split, for I/O-bound runs
+    model.py               IJepa: the objective and the .encode contract
   embed.py              model -> .npz embedding file for a split
   embeddings.py         submission format and validity checks
+  concat_embeddings.py  join embedding files on tile_index
   evaluate.py           linear probes on validation tasks
   tasks.py              task definitions
   ranking.py            per-task scores -> leaderboard ranking
   tile_layout.py        flat or sharded tile paths
   print_leaderboard.py  current standings in the terminal
-configs/default.yaml    baseline configuration
+configs/default.yaml    baseline autoencoder configuration
+configs/ijepa.yaml      I-JEPA configuration
+tests/test_ijepa.py     shape, masking and checkpoint-contract tests
 sweep_dim.sh            embedding-size sweep
+train_ijepa.sbatch      I-JEPA pretraining on one A100, with a GPU preflight
 submit.sh               submit test embeddings to the leaderboard
 ```
 
