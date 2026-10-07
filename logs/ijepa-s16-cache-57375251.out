@@ -1,5 +1,0 @@
-Job 57375251 (ijepa-s16-cache) on gpuhost004.jc.rl.ac.uk, started Mon  5 Oct 18:29:11 BST 2026
-module=train_ijepa config=configs/ijepa.yaml overrides=--set data.cache=ram_uint8 --set training.steps=150000 --set training.max_seconds=25200
-CUDA_VISIBLE_DEVICES=[0]
-GPU 0: NVIDIA A100-SXM4-40GB (UUID: GPU-e72a782c-ddef-68df-1444-b99012f2738c)
-torch 2.14.0+cu130  cuda 13.0  devices 0
