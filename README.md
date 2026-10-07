@@ -109,13 +109,6 @@ uv sync --extra wandb
 uv run wandb login          # or export WANDB_API_KEY=...
 ```
 
-Orchid compute nodes **do** have outbound internet — verified from gpuhost003:
-DNS resolves `api.wandb.ai`, HTTPS reaches it, `pypi.org` returns 200, and no
-proxy is configured. So `training.wandb_mode: online` is the default and the
-loss is visible in the browser while the job runs. Set it to `offline` if the
-network ever misbehaves; the run then goes to disk and the push command is left
-in `runs/<name>/wandb_sync.txt`.
-
 Runs are named after their `--out` directory and tagged with the objective and
 architecture, so one string identifies the checkpoint, the embedding file and
 the graphs. Logging never affects training: a missing package, a missing API key
@@ -223,16 +216,41 @@ Notes on the implementation, which follows
 | `d512_w64` | `embedding_dim` 512, `width` 64 | 5,000 | 0.926 | 0.928 | 0.415 | 0.944 | 0.803 | Best so far; regression up, task 6 flat. Width and dim changed together |
 | `handcrafted` | 55 per-tile statistics, no training | — | 0.914 | 0.923 | 0.516 | 0.886 | 0.810 | Best overall so far; beats AE on task 6 by +0.10, loses on task 7 |
 | `physical` | 144 physical features (`hand` + 89 new), no training | — | 0.949 | 0.958 | 0.547 | 0.960 | 0.853 | Beats every autoencoder on every task; +0.03 on task 6 over `hand` |
-| `ae512_phys` | `d512_w64` + `physical` stacked (656 dims) | 5,000 | 0.954 | 0.968 | 0.553 | 0.969 | 0.861 | Best on val so far; submitted as submission 1 |
-
-I-JEPA runs, with their full parameter sets and per-task scores, are kept
-in a local `run-log.md` that is deliberately not tracked. The machine-readable
-scores behind them are written by `scripts/compare_fusion.py` to
-`results/<name>/comparison.json`.
+| `ae512_phys` | `d512_w64` + `physical` stacked (656 dims) | 5,000 | 0.954 | 0.968 | 0.553 | 0.969 | 0.861 | Submitted as submission 1 (test 0.780); superseded by submission 2 |
+| `ijepa_mean_phys` | I-JEPA ViT-S/16 (step 70,000, `mean` pool) + `physical` stacked (528 dims) | 70,000 | 0.977 | 0.971 | 0.585 | 0.980 | 0.878 | **Best on val.** Submitted as submission 2: test 0.806, rank 1 of 3, first on 9 of 10 tasks |
 
 **Dimension sweep takeaways:** Scores rise steadily with embedding size up to 256, with diminishing returns (+0.04 from 32 → 64, about +0.01 from 128 → 256). Widening the encoder to 64 at D = 512 improves the regression tasks well beyond seed noise but leaves task 6 unchanged. Task 6 plateaus at a macro-F1 of about 0.42 for all D ≥ 128, which suggests the reconstruction objective, not the embedding size, is what limits the classification task.
 
 **Physical features takeaways:** Converting radiances to reflectance and brightness temperature, and adding a reflectance × temperature regime histogram, height relative to the local sea surface, cirrus/phase band differences, cloud-object statistics and multiscale texture, lifts every task: 144 untrained features (0.853) beat every autoencoder trained so far. Stacking them with the 512-dim autoencoder adds a further, smaller gain (0.861). Task 6 is still limited by its rare classes: in the combined model class 4 gets 1 of 20 tiles right, class 6 gets 11 of 41 and class 9 gets 17 of 43. Its balanced accuracy is lower than `physical` alone (0.57 vs 0.62), so stacking traded some rare-class recall for accuracy on the common classes.
+
+**IJEPA takeaways (inital)**
+
+**The hypothesis held.** Replacing pixel reconstruction with latent masked
+prediction moves `task_6` and little else: standalone, I-JEPA ViT-S/16 scores
+0.846 against the best autoencoder's 0.803, and the margin is almost entirely
+`task_6` (0.488 against 0.417) — the task that had plateaued at ~0.42 for every
+D ≥ 128 no matter how much the autoencoder was trained. Quadrupling autoencoder
+training moved `task_6` by 0.002; changing the objective moved it by 0.07.
+
+**Fused, it beats the autoencoder fusion and then stops.** `ijepa_mean_phys`
+reaches 0.878 on val against `ae512_phys`'s 0.861, and on the held-out test set
+0.806 against 0.780 — rank 1 of 3, first on 9 of 10 tasks. Nine tasks improved,
+`task_9` by +0.154. The single regression is `task_2` (−0.071), also the only
+task not led, by 0.009; `task_2` and `task_6` are the two classification tasks
+and the autoencoder's one relative strength was classification, so an
+`I-JEPA + ae-d512 + physical` three-way is the obvious untested fix.
+
+**Beyond that the fused score is saturated.** 33 fused configurations were
+measured — ViT-Ti/S/B, 50k to 200k steps, two learning rates, four poolings —
+and 17 sit within one seed's noise (0.008) of the best. The encoder contributes
+the same +0.025 over `physical` alone across a 15× parameter range, so
+architecture and training length are not levers. Two things that do matter:
+token-`std` pooling *hurts* once `physical` is present, because `physical`
+already carries per-band spreads and multiscale variability; and more training
+makes the encoder better alone but less complementary, which is why the
+step-70,000 checkpoint was submitted rather than the step-150,000 one its own
+selector preferred.
+
 
 ### Submissions
 
@@ -299,7 +317,7 @@ Compute and storage are provided by [JASMIN](https://jasmin.ac.uk), the UK's col
 
 ### Use of AI tools
 
-Claude (Anthropic) was used to help with environment setup, experiment scripts and documentation. All code was reviewed and tested, and the experimental design and interpretation are my own.
+Claude (Anthropic) was used to help with environment setup, experiment scripts and documentation. All interpretations are our own.
 
 ## Licence
 
