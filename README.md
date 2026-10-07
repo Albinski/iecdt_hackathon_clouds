@@ -207,7 +207,7 @@ Notes on the implementation, which follows
 
 | Run | Change from baseline | Steps | task_4 R² | task_5 R² | task_6 F1 | task_7 R² | Overall | Notes |
 |---|---|---|---|---|---|---|---|---|
-| `baseline` | — | 20,000 | | | | | | Not yet run |
+| `baseline` | — | 20,000 | 0.887 | 0.913 | 0.422 | 0.931 | 0.788 | |
 | `d32` | `embedding_dim` 32 | 5,000 | 0.789 | 0.855 | 0.334 | 0.812 | 0.697 | |
 | `d64` | `embedding_dim` 64 | 5,000 | 0.816 | 0.859 | 0.380 | 0.901 | 0.739 | |
 | `d128` | `embedding_dim` 128 | 5,000 | 0.871 | 0.905 | 0.411 | 0.922 | 0.777 | |
@@ -218,6 +218,7 @@ Notes on the implementation, which follows
 | `physical` | 144 physical features (`hand` + 89 new), no training | — | 0.949 | 0.958 | 0.547 | 0.960 | 0.853 | Beats every autoencoder on every task; +0.03 on task 6 over `hand` |
 | `ae512_phys` | `d512_w64` + `physical` stacked (656 dims) | 5,000 | 0.954 | 0.968 | 0.553 | 0.969 | 0.861 | Submitted as submission 1 (test 0.780); superseded by submission 2 |
 | `ijepa_mean_phys` | I-JEPA ViT-S/16 (step 70,000, `mean` pool) + `physical` stacked (528 dims) | 70,000 | 0.977 | 0.971 | 0.585 | 0.980 | 0.878 | **Best on val.** Submitted as submission 2: test 0.806, rank 1 of 3, first on 9 of 10 tasks |
+| `contr_loss` | `d512_w64` + contrastive loss | 5,000 | 0.476 | 0.817 | 0.392 | 0.905 | 0.647 | Worse on all metrics :P |
 
 **Dimension sweep takeaways:** Scores rise steadily with embedding size up to 256, with diminishing returns (+0.04 from 32 → 64, about +0.01 from 128 → 256). Widening the encoder to 64 at D = 512 improves the regression tasks well beyond seed noise but leaves task 6 unchanged. Task 6 plateaus at a macro-F1 of about 0.42 for all D ≥ 128, which suggests the reconstruction objective, not the embedding size, is what limits the classification task.
 
