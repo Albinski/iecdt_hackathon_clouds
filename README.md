@@ -225,7 +225,10 @@ Notes on the implementation, which follows
 | `physical` | 144 physical features (`hand` + 89 new), no training | — | 0.949 | 0.958 | 0.547 | 0.960 | 0.853 | Beats every autoencoder on every task; +0.03 on task 6 over `hand` |
 | `ae512_phys` | `d512_w64` + `physical` stacked (656 dims) | 5,000 | 0.954 | 0.968 | 0.553 | 0.969 | 0.861 | Best on val so far; submitted as submission 1 |
 
-I-JEPA runs, with their full parameter sets, are in [`run-log.md`](run-log.md).
+I-JEPA runs, with their full parameter sets and per-task scores, are kept
+in a local `run-log.md` that is deliberately not tracked. The machine-readable
+scores behind them are written by `scripts/compare_fusion.py` to
+`results/<name>/comparison.json`.
 
 **Dimension sweep takeaways:** Scores rise steadily with embedding size up to 256, with diminishing returns (+0.04 from 32 → 64, about +0.01 from 128 → 256). Widening the encoder to 64 at D = 512 improves the regression tasks well beyond seed noise but leaves task 6 unchanged. Task 6 plateaus at a macro-F1 of about 0.42 for all D ≥ 128, which suggests the reconstruction objective, not the embedding size, is what limits the classification task.
 
@@ -283,7 +286,6 @@ scripts/
   physical_features.py  the 144 physical features (reflectance, Tb, regimes)
   concat_embeddings.py  positional-argument variant of the joiner
 tests/                  shape, masking, checkpoint-contract and logging tests
-run-log.md              every experiment, its parameters and its scores
 sweep_dim.sh            embedding-size sweep
 train_ijepa.sbatch      I-JEPA pretraining on one A100, with a GPU preflight
 submit.sh               submit test embeddings to the leaderboard
