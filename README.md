@@ -124,7 +124,7 @@ Each team gets four scored submissions per day, and the leaderboard keeps each t
 
 | Run | Change from baseline | Steps | task_4 R² | task_5 R² | task_6 F1 | task_7 R² | Overall | Notes |
 |---|---|---|---|---|---|---|---|---|
-| `baseline` | — | 20,000 | | | | | | Not yet run |
+| `baseline` | — | 20,000 | 0.887 | 0.913 | 0.422 | 0.931 | 0.788 | |
 | `d32` | `embedding_dim` 32 | 5,000 | 0.789 | 0.855 | 0.334 | 0.812 | 0.697 | |
 | `d64` | `embedding_dim` 64 | 5,000 | 0.816 | 0.859 | 0.380 | 0.901 | 0.739 | |
 | `d128` | `embedding_dim` 128 | 5,000 | 0.871 | 0.905 | 0.411 | 0.922 | 0.777 | |
