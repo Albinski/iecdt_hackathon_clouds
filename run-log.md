@@ -49,7 +49,12 @@ Conventions:
 | `ijepa-b16-cache_mean` | I-JEPA ViT-B/16 | 768 | 70,000 | `model.arch=vit_base` `model.pred_emb_dim=384` `model.pred_num_heads=6` `data.cache=ram_uint8` | 0.9618 | 0.9604 | 0.4877 | 0.9749 | 0.8462 |
 | `ijepa-b16-cache_meanstd` | I-JEPA ViT-B/16 | 1536 | 70,000 | `model.arch=vit_base` `model.pred_emb_dim=384` `model.pred_num_heads=6` `data.cache=ram_uint8` | 0.9605 | 0.9633 | 0.4636 | 0.9742 | 0.8404 |
 | `ijepa-b16-cache_mean4` | I-JEPA ViT-B/16 | 3072 | 70,000 | `model.arch=vit_base` `model.pred_emb_dim=384` `model.pred_num_heads=6` `data.cache=ram_uint8` | 0.9507 | 0.9536 | 0.4662 | 0.9694 | 0.8350 |
-| `ijepa-s16-lr15` | I-JEPA ViT-S/16 | 768 | 150,000 | `data.cache=ram_uint8` `training.lr=1.5e-4` `training.start_lr=3.0e-5` | — | — | — | — | *blocked, not run* |
+| `ijepa-s16-lr15_mean` | I-JEPA ViT-S/16 | 384 | 54,000 | `data.cache=ram_uint8` `training.lr=1.5e-4` `training.start_lr=3.0e-5` | 0.9701 | 0.9584 | 0.4994 | 0.9726 | 0.8501 |
+| `ijepa-s16-lr15_meanstd` | I-JEPA ViT-S/16 | 768 | 54,000 | `data.cache=ram_uint8` `training.lr=1.5e-4` `training.start_lr=3.0e-5` | 0.9710 | 0.9614 | 0.4719 | 0.9745 | 0.8447 |
+| `ijepa-s16-lr15_mean4` | I-JEPA ViT-S/16 | 1536 | 54,000 | `data.cache=ram_uint8` `training.lr=1.5e-4` `training.start_lr=3.0e-5` | 0.9741 | 0.9662 | 0.5277 | 0.9793 | 0.8618 |
+| `ijepa-s16-lr15_mean4std` | I-JEPA ViT-S/16 | 3072 | 54,000 | `data.cache=ram_uint8` `training.lr=1.5e-4` `training.start_lr=3.0e-5` | 0.9681 | 0.9599 | 0.4944 | 0.9756 | 0.8495 |
+| `ijepa-s16-lr15-last_mean` | I-JEPA ViT-S/16 | 384 | 150,000 | `data.cache=ram_uint8` `training.lr=1.5e-4` `training.start_lr=3.0e-5` (`last.pt`, re-pooled) | 0.9730 | 0.9512 | 0.5142 | 0.9682 | 0.8517 |
+| `ijepa-s16-lr15-last_mean4` | I-JEPA ViT-S/16 | 1536 | 150,000 | `data.cache=ram_uint8` `training.lr=1.5e-4` `training.start_lr=3.0e-5` (`last.pt`, re-pooled) | 0.9766 | 0.9646 | 0.5319 | 0.9782 | 0.8628 |
 | `ae512_phys*` | `ae-d512` ⊕ `physical` | 656 | — | `concat_embeddings.py` | 0.9546 | 0.9679 | **0.5709** | 0.9692 | 0.8656 |
 | `ijepa_phys` | `ijepa-s16_meanstd` ⊕ `physical` | 912 | — | `concat_embeddings.py` | 0.9688 | 0.9704 | 0.5275 | 0.9802 | 0.8617 |
 | `ijepa4_phys` | `ijepa-s16_mean4` ⊕ `physical` | 1680 | — | `concat_embeddings.py` | 0.9685 | 0.9692 | 0.5455 | **0.9812** | **0.8661** |
@@ -65,16 +70,75 @@ Conventions:
 | `ijepa-s16-cache_meanstd_phys` | `ijepa-s16-cache_meanstd` ⊕ `physical` | 912 | — | `compare_fusion.py` | 0.9802 | 0.9726 | 0.5434 | 0.9812 | 0.8693 |
 | `ijepa-b16-cache_mean4_phys` | `ijepa-b16-cache_mean4` ⊕ `physical` | 3216 | — | `compare_fusion.py` | 0.9546 | 0.9607 | 0.5376 | 0.9726 | 0.8564 |
 | `ijepa-b16-cache_meanstd_phys` | `ijepa-b16-cache_meanstd` ⊕ `physical` | 1680 | — | `compare_fusion.py` | 0.9644 | 0.9694 | 0.4991 | 0.9777 | 0.8526 |
+| `ijepa-s16-lr15-last_mean4_phys` | `ijepa-s16-lr15-last_mean4` ⊕ `physical` | 1680 | — | `compare_fusion.py` | 0.9801 | 0.9724 | 0.5747 | 0.9815 | 0.8772 |
+| `ijepa-s16-lr15_mean_phys` | `ijepa-s16-lr15_mean` ⊕ `physical` | 528 | — | `compare_fusion.py` | 0.9751 | 0.9713 | 0.5671 | 0.9797 | 0.8733 |
+| `ijepa-s16-lr15-last_mean_phys` | `ijepa-s16-lr15-last_mean` ⊕ `physical` | 528 | — | `compare_fusion.py` | 0.9779 | 0.9718 | 0.5586 | 0.9791 | 0.8719 |
+| `ijepa-s16-lr15_mean4_phys` | `ijepa-s16-lr15_mean4` ⊕ `physical` | 1680 | — | `compare_fusion.py` | 0.9770 | 0.9726 | 0.5522 | 0.9816 | 0.8709 |
+| `ijepa-s16-lr15_meanstd_phys` | `ijepa-s16-lr15_meanstd` ⊕ `physical` | 912 | — | `compare_fusion.py` | 0.9752 | 0.9714 | 0.5468 | 0.9802 | 0.8684 |
+| `ijepa-s16-lr15_mean4std_phys` | `ijepa-s16-lr15_mean4std` ⊕ `physical` | 3216 | — | `compare_fusion.py` | 0.9714 | 0.9651 | 0.5154 | 0.9775 | 0.8574 |
+
+## The fused score has saturated at ~0.875
+
+`ijepa-s16-lr15` did run: the `Oct2026PatchDay` reservation lifted and it
+completed on 6 Oct at 21:58, 5:13 elapsed, 150,000 steps at `lr=1.5e-4`. It is
+the healthiest run in the log by every collapse diagnostic — `eff_rank` peaked
+at **95.3** (against 87.5 for `s16-cache` at the same width) and `token_std`
+ended at **0.935** against 0.791. Cancelling it, as recommended on 6 Oct, would
+have been wrong.
+
+Its `best_*.pt` was selected at **step 54,000**, not 150,000: the in-loop probe
+peaked early and declined. Because that selector is 3 regression tasks on a
+4,000-tile subset while `eff_rank` was still climbing through step ~78k, the
+step-150,000 `last.pt` was re-saved under the two pools that win fused
+(`mean`, `mean4`) and scored as well. The selector was half right — at `mean4`
+the full checkpoint is better (0.8709 → 0.8772), at `mean` it is not
+(0.8733 → 0.8719). Both differences are inside noise.
+
+**With lr15 added, 33 fused configurations have been measured, and the best is
+still the one already submitted.**
+
+| | fused |
+|---|---|
+| `ijepa-s16-cache--best_mean` ⊕ `physical` — **submitted, scored +0.8062** | **0.8783** |
+| `ijepa-s16-lr15-last_mean4` ⊕ `physical` — best new row | 0.8772 |
+| best of the other 31 | 0.8760 |
+| `physical` alone | 0.8533 |
+
+- **17 of the 33 are within 0.008 of the top.** The top-10 spread is 0.0052 and
+  the top-16 spread is 0.0074 — both under the single-seed threshold.
+- The best encoder contribution over `physical` alone is **+0.0250**, and it is
+  the *same* +0.025 whether the encoder is ViT-Ti (5.6M params, 192 wide),
+  ViT-S (21.9M) or ViT-B (86.2M); whether it trained 50k or 200k steps; and
+  whether `lr` was 3e-4 or 1.5e-4.
+
+That is a plateau, not a ranking. Architecture, learning rate and step count
+have all been varied across a 15× parameter range and a 4× step range without
+moving the fused score outside one seed's noise. The remaining headroom is not
+in the encoder.
+
+Where the configurations *do* differ is in profile, and only at the margin:
+
+| | best at | value | its fused |
+|---|---|---|---|
+| `task_6` (macro-F1) | `ijepa-ti16-cache--best_mean` (336 dims) | 0.5885 | 0.8760 |
+| the three regressions | `ijepa-s16-cache_mean4` (1680 dims) | 0.9798 | 0.8754 |
+
+Since the leaderboard is 8 regressions to 2 classifications where published val
+is 3 to 1, a regression-strong row is mildly favoured relative to what val
+shows. That is the same reasoning as the `lb-weighted` column, which predicted
+0.8978 against an actual 0.8062 — it got the *direction* right and the level
+badly wrong, so it is worth a tie-break and nothing more.
 
 ## The three cached runs, and what more training did not buy
 
 All three finished their configured schedules on 6 Oct — no walltime
-truncation, so the LR, WD and EMA anneals all completed. `ijepa-s16-lr15` has not
-run: its 8 h request cannot fit the gap before the `Oct2026PatchDay`
-maintenance reservation (06 Oct 05:00–23:00), so it sits `PENDING` with reason
-`ReqNodeNotAvail` and cannot start before 23:00 on 6 Oct. It was only ever
-insurance against a collapse at `lr=3e-4` that did not happen in either healthy
-run, so there is no reason left to wait for it.
+truncation, so the LR, WD and EMA anneals all completed. `ijepa-s16-lr15` was delayed
+by a day: its 8 h request could not fit the gap before the `Oct2026PatchDay`
+maintenance reservation (06 Oct 05:00–23:00), so it sat `PENDING` with reason
+`ReqNodeNotAvail` until the reservation lifted, then ran and completed on 6 Oct
+at 21:58. The recommendation to cancel it — on the grounds that it was only
+insurance against a collapse at `lr=3e-4` that did not happen — was wrong: it
+turned out to be the healthiest run of the four. See the section above.
 
 | Run | Steps | Elapsed | `feature_std` | `token_std` | `eff_rank` | held-out JEPA loss |
 |---|---|---|---|---|---|---|
